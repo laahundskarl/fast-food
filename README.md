@@ -6,6 +6,7 @@ Este projeto é a Fase 1 do Tech Challenge do curso SOAT, que consiste na implem
 
 ## 📦 Estrutura do Projeto
 
+```markdown
 api/                          → Coleções Postman para testes dos endpoints  
 src/  
 ├── core/  
@@ -22,6 +23,7 @@ src/
 │   ├── config/               → Configurações (ex: TypeORM, módulos)  
 │   └── persistence/          → Implementações com banco de dados  
 └── main.ts                   → Arquivo principal da aplicação  
+```
 
 ---
 
