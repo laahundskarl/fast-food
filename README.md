@@ -6,7 +6,7 @@ Este projeto é a Fase 1 do Tech Challenge do curso SOAT, que consiste na implem
 
 ## 📦 Estrutura do Projeto
 
-api/                          → Collections postman para testes dos endpoints
+api/                          → Collections Postman para testes dos endpoints
 src/
 ├── core/  
 │   ├── application/          → Casos de uso e lógica de negócio  
