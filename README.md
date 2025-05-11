@@ -5,7 +5,6 @@ Este projeto é a Fase 1 do Tech Challenge do curso SOAT, que consiste na implem
 ---
 
 ## 📦 Estrutura do Projeto
-
 api/                          → Collections Postman para testes dos endpoints
 src/
 ├── core/  
@@ -21,7 +20,7 @@ src/
 │   │   └── dtos/             → Objetos de Transferência de Dados
 │   ├── config/               → Configurações (ex: TypeORM, módulos)  
 │   └── persistence/          → Implementações com banco de dados  
-└── main.ts   
+└── main.ts    
 
 ---
 
