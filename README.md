@@ -9,7 +9,9 @@ Este projeto é a Fase 1 do Tech Challenge do curso SOAT, que consiste na implem
 api/                          → Collections Postman para testes dos endpoints
 src/
 ├── core/  
-│   ├── application/          → Casos de uso e lógica de negócio  
+│   ├── application/         
+│   │   ├── ports/            → Interfaces que definem os contratos para adaptadores externos
+│   │   └── usecases/         → Implementações dos casos de uso da aplicação 
 │   └── domain/
 │       ├── entities/         → Entidades do domínio com TypeORM  
 │       └── repositories/     → Interfaces dos repositórios  
@@ -19,7 +21,7 @@ src/
 │   │   └── dtos/             → Objetos de Transferência de Dados
 │   ├── config/               → Configurações (ex: TypeORM, módulos)  
 │   └── persistence/          → Implementações com banco de dados  
-└── main.ts                   → Arquivo principal  
+└── main.ts   
 
 ---
 
