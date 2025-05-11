@@ -5,22 +5,23 @@ Este projeto é a Fase 1 do Tech Challenge do curso SOAT, que consiste na implem
 ---
 
 ## 📦 Estrutura do Projeto
-api/                          → Collections Postman para testes dos endpoints
-src/
+
+api/                          → Coleções Postman para testes dos endpoints  
+src/  
 ├── core/  
-│   ├── application/         
-│   │   ├── ports/            → Interfaces que definem os contratos para adaptadores externos
-│   │   └── usecases/         → Implementações dos casos de uso da aplicação 
-│   └── domain/
+│   ├── application/  
+│   │   ├── ports/            → Interfaces que definem os contratos para adaptadores externos  
+│   │   └── usecases/         → Implementações dos casos de uso da aplicação  
+│   └── domain/  
 │       ├── entities/         → Entidades do domínio com TypeORM  
 │       └── repositories/     → Interfaces dos repositórios  
-├── infrastructure/
-│   ├── adapters/             → Implementações de adaptadores para interagir com o mundo externo
-│   │   ├── controllers/      → Controladores HTTP    
-│   │   └── dtos/             → Objetos de Transferência de Dados
+├── infrastructure/  
+│   ├── adapters/             → Implementações de adaptadores para interagir com o mundo externo  
+│   │   ├── controllers/      → Controladores HTTP  
+│   │   └── dtos/             → Objetos de Transferência de Dados  
 │   ├── config/               → Configurações (ex: TypeORM, módulos)  
 │   └── persistence/          → Implementações com banco de dados  
-└── main.ts    
+└── main.ts                   → Arquivo principal da aplicação  
 
 ---
 
