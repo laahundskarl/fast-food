@@ -13,20 +13,30 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: fastfood_app
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: mysql://admin:admin123@db:3306/fastfood
-    ports:
-      - "3000:3000"
+  api-dev:
+    image: node:22-alpine
+    working_dir: /app
     volumes:
       - .:/app
       - /app/node_modules
+    ports:
+      - "${PORT}:${PORT}"
+    env_file:
+      - .env
+    command: sh -c "npm ci && npm run start:dev"
+    depends_on:
+      - db
+
+  api-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - db
 
 volumes:
   db_data:
