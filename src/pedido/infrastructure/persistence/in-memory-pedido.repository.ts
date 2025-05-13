@@ -1,5 +1,5 @@
-import { Pedido } from '../../../domain/entities/pedido.entity';
-import { PedidoRepository } from '../../../domain/repositories/pedido.repository';
+import { Pedido } from "../../core/domain/entities/pedido.entity";
+import { PedidoRepository } from "../../core/domain/repositories/pedido.repository";
 
 export class InMemoryPedidoRepository implements PedidoRepository {
   private pedidos: Pedido[] = [];

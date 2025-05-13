@@ -7,22 +7,24 @@ Este projeto é a Fase 1 do Tech Challenge do curso SOAT, que consiste na implem
 ## 📦 Estrutura do Projeto
 
 ```markdown
-api/                          → Coleções Postman para testes dos endpoints  
-src/  
-├── core/  
-│   ├── application/  
-│   │   ├── ports/            → Interfaces que definem os contratos para adaptadores externos  
-│   │   └── usecases/         → Implementações dos casos de uso da aplicação  
-│   └── domain/  
-│       ├── entities/         → Entidades do domínio com TypeORM  
-│       └── repositories/     → Interfaces dos repositórios  
-├── infrastructure/  
-│   ├── adapters/             → Implementações de adaptadores para interagir com o mundo externo  
-│   │   ├── controllers/      → Controladores HTTP  
-│   │   └── dtos/             → Objetos de Transferência de Dados  
-│   ├── config/               → Configurações (ex: TypeORM, módulos)  
-│   └── persistence/          → Implementações com banco de dados  
-└── main.ts                   → Arquivo principal da aplicação  
+api/                              → Coleções Postman para testes dos endpoints  
+src/
+├── pedido/  
+│   ├── core/  
+│   │   ├── application/  
+│   │   │   ├── ports/            → Interfaces que definem os contratos para serviços HTTP externos  
+│   │   │   └── usecases/         → Implementações dos casos de uso da aplicação  
+│   │   └── domain/  
+│   │       ├── entities/         → Entidades do domínio com TypeORM  
+│   │       └── repositories/     → Interfaces dos repositórios  
+│   └── infrastructure/  
+│       ├── adapters/             → Implementações de adaptadores para interagir com o mundo externo  
+│       │   ├── services/         → Serviços HTTP externos 
+│       │   └── dtos/             → Objetos de Transferência de Dados  
+│       ├── config/               → Configurações (ex: módulos)  
+│       └── persistence/          → Implementações com banco de dados  
+├── database/                     → Configurações do TypeORM
+└── main.ts                       → Arquivo principal da aplicação  
 ```
 
 ---

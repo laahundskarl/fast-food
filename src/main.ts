@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './infrastructure/config/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { PedidoModule } from './pedido/infrastructure/config/pedido.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(PedidoModule);
 
   const config = new DocumentBuilder()
     .setTitle('FastFood API')

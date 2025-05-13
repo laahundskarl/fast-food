@@ -1,6 +1,6 @@
-import { Pedido, PedidoItem } from '../../domain/entities/pedido.entity';
+import { Pedido } from '../../domain/entities/pedido.entity';
+import { PedidoItem } from '../../domain/entities/pedido-item.entity';
 import { PedidoRepository } from '../../domain/repositories/pedido.repository';
-import { randomUUID } from 'crypto';
 
 interface CriarPedidoDTO {
   clienteId: string;
@@ -12,7 +12,6 @@ export class CriarPedidoUseCase {
 
   async execute(dto: CriarPedidoDTO): Promise<Pedido> {
     const pedido = new Pedido(
-      randomUUID(),
       dto.clienteId,
       dto.itens.map(i => new PedidoItem(i.produtoId, i.quantidade))
     );

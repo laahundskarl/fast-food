@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { typeOrmConfig } from './typeorm.config';
-import { Pedido } from '../../domain/entities/pedido.entity';
-import { PedidoItem } from '../../domain/entities/pedido-item.entity';
+import { typeOrmConfig } from '../../../database/typeorm.config';
+import { Pedido } from '../../core/domain/entities/pedido.entity';
+import { PedidoItem } from '../../core/domain/entities/pedido-item.entity';
 import { TypeormPedidoRepository } from '../persistence/typeorm-pedido.repository';
 
 @Module({
@@ -17,4 +17,4 @@ import { TypeormPedidoRepository } from '../persistence/typeorm-pedido.repositor
     },
   ],
 })
-export class AppModule {}
+export class PedidoModule {}

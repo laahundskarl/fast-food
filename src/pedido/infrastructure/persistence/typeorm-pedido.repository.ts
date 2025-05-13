@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Pedido } from '../../domain/entities/pedido.entity';
-import { PedidoRepository } from '../../domain/repositories/pedido.repository';
+import { Pedido } from '../../core/domain/entities/pedido.entity';
+import { PedidoRepository } from '../../core/domain/repositories/pedido.repository';
 
 @Injectable()
 export class TypeormPedidoRepository implements PedidoRepository {

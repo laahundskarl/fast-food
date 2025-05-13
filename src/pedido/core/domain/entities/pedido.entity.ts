@@ -21,4 +21,10 @@ export class Pedido {
 
   @OneToMany(() => PedidoItem, item => item.pedido, { cascade: true, eager: true })
   itens: PedidoItem[];
+
+  constructor(clienteId: string, itens: PedidoItem[]) {
+    this.clienteId = clienteId;
+    this.itens = itens;
+    this.status = StatusPedido.RECEBIDO;
+  }
 }

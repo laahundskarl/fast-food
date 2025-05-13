@@ -1,9 +1,9 @@
 import { Controller, Post, Body, Get } from '@nestjs/common';
-import { CriarPedidoUseCase } from '../../../application/use-cases/criar-pedido.usecase';
+import { CriarPedidoUseCase } from '../../../core/application/usecases/criar-pedido';
 import { InMemoryPedidoRepository } from '../../persistence/in-memory-pedido.repository';
 
 @Controller('pedidos')
-export class PedidoController {
+export class PedidoService {
   private readonly useCase = new CriarPedidoUseCase(new InMemoryPedidoRepository());
 
   @Post()
