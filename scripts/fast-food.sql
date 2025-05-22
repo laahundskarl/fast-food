@@ -1,3 +1,5 @@
+USE `fast-food`;
+
 -- Tabela de Produtos
 CREATE TABLE `product` (
   `id` INTEGER PRIMARY KEY AUTO_INCREMENT,

@@ -1,0 +1,29 @@
+services:
+  db:
+    image: mysql:8
+    container_name: fastfood_db
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASS}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASS}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    ports:
+      - "${DATABASE_PORT:-3306}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./scripts/fast-food.sql:/docker-entrypoint-initdb.d/fast-food.sql
+
+  api-prod:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
