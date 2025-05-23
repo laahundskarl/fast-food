@@ -23,13 +23,13 @@ export class Payment {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'order_id' })
+    @Column({ name: 'order_id', type: 'char', length: 36 })
     orderId!: string;
 
     @Column({ type: 'enum', enum: StatusPayment, nullable: true })
     status?: StatusPayment;
 
-    @Column({ name: 'external_reference', nullable: true })
+    @Column({ name: 'external_reference', type: 'varchar', length: 100, nullable: true })
     externalReference?: string;
 
     @Column({ name: 'qr_code', type: 'text', nullable: true })

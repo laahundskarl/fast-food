@@ -17,16 +17,16 @@ export class OrderProduct {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'order_id' })
+    @Column({ name: 'order_id', type: 'char', length: 36 })
     orderId!: string;
 
-    @Column({ name: 'product_id' })
+    @Column({ name: 'product_id', type: 'char', length: 36 })
     productId!: string;
 
-    @Column('numeric', { nullable: true })
+    @Column({ type: 'decimal', precision: 10, scale: 0, nullable: true })
     amount?: number;
 
-    @Column('numeric', { nullable: true })
+    @Column({ type: 'decimal', precision: 10, scale: 0, nullable: true })
     value?: number;
 
     @CreateDateColumn({ name: 'created_at' })

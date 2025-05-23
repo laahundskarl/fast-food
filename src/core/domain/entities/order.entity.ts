@@ -25,16 +25,16 @@ export class Order {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'product_id' })
+    @Column({ name: 'product_id', type: 'char', length: 36 })
     publicId!: string;
 
-    @Column({ nullable: true })
-    client_id!: string;
+    @Column({ name: 'client_id', type: 'char', length: 36, nullable: true })
+    clientId!: string;
 
-    @Column('numeric', { nullable: true })
+    @Column({ type: 'decimal', precision: 10, scale: 0, nullable: true })
     value?: number;
 
-    @Column({ name: 'order_number' })
+    @Column({ name: 'order_number', type: 'int' })
     orderNumber!: number;
 
     @Column({ type: 'enum', enum: OrderStatus })

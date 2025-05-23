@@ -80,6 +80,6 @@ export default [
         },
     },
     {
-        ignores: ['jest.config.js'],
+        ignores: ['jest.config.js', 'node_modules', 'tsup.config.ts'],
     },
 ];

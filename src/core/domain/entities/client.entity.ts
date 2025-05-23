@@ -16,16 +16,16 @@ export class Client {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'public_id' })
+    @Column({ name: 'public_id', type: 'char', length: 36 })
     publicId!: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     name!: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 11 })
     cpf!: string;
 
-    @Column({ nullable: true })
+    @Column({ type: 'varchar', length: 255, nullable: true })
     email?: string;
 
     @CreateDateColumn({ name: 'created_at' })

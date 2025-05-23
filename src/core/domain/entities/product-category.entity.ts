@@ -16,10 +16,10 @@ export class ProductCategory {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'product_id' })
+    @Column({ name: 'product_id', type: 'char', length: 36 })
     productId!: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     name!: string;
 
     @CreateDateColumn({ name: 'created_at' })

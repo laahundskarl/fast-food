@@ -1,6 +1,13 @@
 import { DataSource } from 'typeorm';
 
 import { env } from '#/config/env';
+import { Client } from '#/core/domain/entities/client.entity';
+import { OrderProduct } from '#/core/domain/entities/order-product.entity';
+import { Order } from '#/core/domain/entities/order.entity';
+import { Payment } from '#/core/domain/entities/payment.entity';
+import { ProductCategory } from '#/core/domain/entities/product-category.entity';
+import { Product } from '#/core/domain/entities/product.entity';
+import { User } from '#/core/domain/entities/user.entity';
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
@@ -11,5 +18,5 @@ export const AppDataSource = new DataSource({
     database: env.DATABASE_NAME,
     synchronize: true,
     logging: false,
-    entities: [],
+    entities: [Client, OrderProduct, Order, Payment, ProductCategory, Product, User],
 });

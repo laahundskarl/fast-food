@@ -16,13 +16,13 @@ export class Product {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     name!: string;
 
-    @Column('numeric')
+    @Column({ type: 'decimal', precision: 10, scale: 0 })
     value!: number;
 
-    @Column({ length: 500, nullable: true })
+    @Column({ type: 'varchar', length: 500, nullable: true })
     description?: string;
 
     @CreateDateColumn({ name: 'created_at' })

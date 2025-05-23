@@ -21,13 +21,13 @@ export class User {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'client_id', nullable: true })
+    @Column({ name: 'client_id', type: 'char', length: 36, nullable: true })
     clientId?: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     username!: string;
 
-    @Column()
+    @Column({ type: 'varchar', length: 255 })
     password!: string;
 
     @Column({ type: 'enum', enum: UserType })
