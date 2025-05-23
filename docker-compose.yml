@@ -12,7 +12,7 @@ services:
       - "${DATABASE_PORT:-3306}:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./scripts/fast-food.sql:/docker-entrypoint-initdb.d/fast-food.sql
+      - ./scripts/fastfood.sql:/docker-entrypoint-initdb.d/fastfood.sql
 
   api-dev:
     image: node:22-alpine
