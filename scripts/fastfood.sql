@@ -27,8 +27,8 @@ CREATE TABLE `client` (
   `id` CHAR(36) PRIMARY KEY,
   `public_id` CHAR(36) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
-  `cpf` VARCHAR(11) NOT NULL,
-  `email` VARCHAR(255),
+  `cpf` VARCHAR(11) NOT NULL UNIQUE,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
   `created_at` TIMESTAMP NOT NULL,
   `update_at` TIMESTAMP,
   `deleted_at` TIMESTAMP

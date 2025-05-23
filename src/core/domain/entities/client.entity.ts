@@ -9,7 +9,6 @@ import {
 } from 'typeorm';
 
 import { Order } from '#/core/domain/entities/order.entity';
-import { User } from '#/core/domain/entities/user.entity';
 
 @Entity('client')
 export class Client {
@@ -22,11 +21,11 @@ export class Client {
     @Column({ type: 'varchar', length: 255 })
     name!: string;
 
-    @Column({ type: 'varchar', length: 11 })
+    @Column({ type: 'varchar', length: 11, unique: true })
     cpf!: string;
 
-    @Column({ type: 'varchar', length: 255, nullable: true })
-    email?: string;
+    @Column({ type: 'varchar', length: 255, unique: true })
+    email!: string;
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
@@ -39,7 +38,4 @@ export class Client {
 
     @OneToMany(() => Order, order => order.client)
     orders!: Order[];
-
-    @OneToMany(() => User, user => user.client)
-    users!: User[];
 }
