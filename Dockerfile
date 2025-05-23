@@ -6,6 +6,7 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
+COPY tsconfig.json ./
 RUN npm ci
 
 COPY . .
@@ -20,5 +21,6 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 COPY --from=build /app/dist ./dist
-
-CMD ["node", "dist/main.js"]
+COPY tsconfig.json ./
+ENV NODE_PATH=./dist
+CMD ["node", "dist/index.js"]
