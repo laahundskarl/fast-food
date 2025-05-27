@@ -7,7 +7,6 @@ const isTestEnv = process.env.NODE_ENV === 'test';
 const isDevEnv = process.env.NODE_ENV === 'dev';
 
 const shouldSeedDb = isTestEnv || isDevEnv;
-console.log(process.env);
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
