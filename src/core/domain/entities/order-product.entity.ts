@@ -23,16 +23,13 @@ export class OrderProduct {
     @Column({ name: 'product_id', type: 'char', length: 36 })
     productId!: string;
 
-    @Column({ type: 'decimal', precision: 10, scale: 0, nullable: true })
-    amount?: number;
-
-    @Column({ type: 'decimal', precision: 10, scale: 0, nullable: true })
+    @Column({ type: 'int', nullable: true })
     value?: number;
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'update_at' })
+    @UpdateDateColumn({ name: 'updated_at' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })

@@ -6,6 +6,8 @@ import {
     UpdateDateColumn,
     DeleteDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
 
 import { OrderProduct } from '#/core/domain/entities/order-product.entity';
@@ -16,10 +18,13 @@ export class Product {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
+    @Column({ name: 'product_category_id', type: 'char', length: 36, nullable: true })
+    productCategoryId!: string;
+
     @Column({ type: 'varchar', length: 255 })
     name!: string;
 
-    @Column({ type: 'decimal', precision: 10, scale: 0 })
+    @Column({ type: 'int' })
     value!: number;
 
     @Column({ type: 'varchar', length: 500, nullable: true })
@@ -28,14 +33,15 @@ export class Product {
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'update_at' })
+    @UpdateDateColumn({ name: 'updated_at' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })
     deletedAt?: Date;
 
-    @OneToMany(() => ProductCategory, productCategory => productCategory.product)
-    categories!: ProductCategory[];
+    @ManyToOne(() => ProductCategory, productCategory => productCategory.product)
+    @JoinColumn({ name: 'product_category_id' })
+    productCategory!: ProductCategory;
 
     @OneToMany(() => OrderProduct, orderProduct => orderProduct.product)
     orderProducts!: OrderProduct[];

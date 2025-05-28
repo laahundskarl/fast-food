@@ -23,12 +23,13 @@
     "homepage": "https://github.com/laahundskarl/fast-food#readme",
     "engineStrict": true,
     "engines": {
-        "node": ">=20"
+        "node": ">=22"
     },
     "dependencies": {
         "@fastify/cors": "^11.0.1",
         "@fastify/swagger": "^9.5.1",
         "@fastify/swagger-ui": "^5.2.2",
+        "cpf-cnpj-validator": "^1.0.3",
         "dotenv": "^16.5.0",
         "fastify": "^5.3.3",
         "fastify-type-provider-zod": "^4.0.2",
@@ -56,8 +57,8 @@
         "prettier": "^3.5.3",
         "rimraf": "^6.0.1",
         "ts-jest": "^29.3.3",
-        "tsup": "^8.5.0",
         "tsc-alias": "^1.8.16",
+        "tsup": "^8.5.0",
         "tsx": "^4.19.4",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.32.1"

@@ -31,7 +31,7 @@ export class Order {
     @Column({ name: 'client_id', type: 'char', length: 36, nullable: true })
     clientId!: string;
 
-    @Column({ type: 'decimal', precision: 10, scale: 0, nullable: true })
+    @Column({ type: 'int', nullable: true })
     value?: number;
 
     @Column({ name: 'order_number', type: 'int' })
@@ -43,7 +43,7 @@ export class Order {
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'update_at' })
+    @UpdateDateColumn({ name: 'updated_at' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })

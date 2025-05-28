@@ -11,6 +11,10 @@ export class TypeormClientRepository implements IClientRepository {
         this.repository = AppDataSource.getRepository(Client);
     }
 
+    async create(client: Client): Promise<Client> {
+        return await this.repository.save(client);
+    }
+
     async findByCpf(cpf: string): Promise<Client | null> {
         return await this.repository.findOneBy({ cpf });
     }
