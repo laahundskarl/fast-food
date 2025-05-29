@@ -25,16 +25,13 @@ export class Order {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'product_id' })
-    publicId!: string;
-
-    @Column({ nullable: true })
+    @Column({ name: 'client_id', type: 'char', nullable: true })
     client_id!: string;
 
     @Column('numeric', { nullable: true })
     value?: number;
 
-    @Column({ name: 'order_number' })
+    @Column({ name: 'order_number', type: 'int' })
     orderNumber!: number;
 
     @Column({ type: 'enum', enum: OrderStatus })
@@ -43,7 +40,7 @@ export class Order {
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'update_at' })
+    @UpdateDateColumn({ name: 'updated_at' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })

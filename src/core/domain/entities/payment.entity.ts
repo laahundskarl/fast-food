@@ -23,13 +23,13 @@ export class Payment {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'order_id' })
+    @Column({ name: 'order_id', type: 'char' })
     orderId!: string;
 
     @Column({ type: 'enum', enum: StatusPayment, nullable: true })
     status?: StatusPayment;
 
-    @Column({ name: 'external_reference', nullable: true })
+    @Column({ name: 'external_reference', type: 'varchar', nullable: true })
     externalReference?: string;
 
     @Column({ name: 'qr_code', type: 'text', nullable: true })
@@ -38,7 +38,7 @@ export class Payment {
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'update_at' })
+    @UpdateDateColumn({ name: 'updated_at' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })

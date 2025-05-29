@@ -17,10 +17,10 @@ export class OrderProduct {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'order_id' })
+    @Column({ name: 'order_id', type: 'char' })
     orderId!: string;
 
-    @Column({ name: 'product_id' })
+    @Column({ name: 'product_id', type: 'char' })
     productId!: string;
 
     @Column('numeric', { nullable: true })
@@ -32,7 +32,7 @@ export class OrderProduct {
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'update_at' })
+    @UpdateDateColumn({ name: 'updated_at' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })

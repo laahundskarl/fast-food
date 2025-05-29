@@ -10,6 +10,7 @@ COPY tsconfig.json ./
 RUN npm ci
 
 COPY . .
+RUN npm run typeorm migration:run -- -d src/database/typeorm.config.ts
 RUN npm run build
 
 # Etapa final de produção
@@ -23,4 +24,5 @@ RUN npm ci --only=production
 COPY --from=build /app/dist ./dist
 COPY tsconfig.json ./
 ENV NODE_PATH=./dist
+
 CMD ["node", "dist/index.js"]

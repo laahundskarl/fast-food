@@ -1,15 +1,23 @@
 import { DataSource } from 'typeorm';
+import dotenv from 'dotenv';
 
-import { env } from '#/config/env';
+dotenv.config();
+
+const isTestEnv = process.env.NODE_ENV === 'test';
+const isDevEnv = process.env.NODE_ENV === 'dev';
+
+const shouldSeedDb = isTestEnv || isDevEnv;
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
-    host: env.DATABASE_HOST,
-    port: env.DATABASE_PORT,
-    username: env.DATABASE_USER,
-    password: env.DATABASE_PASS,
-    database: env.DATABASE_NAME,
-    synchronize: true,
+    host: process.env.DATABASE_HOST,
+    port: Number(process.env.DATABASE_PORT),
+    username: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASS,
+    database: process.env.DATABASE_NAME,
+    // synchronize: true,
     logging: false,
-    entities: [],
+    entities: [__dirname + '/../core/domain/entities/*.entity.{js,ts}'],
+    migrationsTableName: 'migrations_fast_food',
+    migrations: [__dirname + '/migrations/*.{js,ts}', ...(!shouldSeedDb ? [] : [__dirname + '/seeds/*.{js,ts}'])],
 });
