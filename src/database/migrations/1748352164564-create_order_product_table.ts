@@ -58,6 +58,7 @@ export class CreateOrderProductTable1748352164564 implements MigrationInterface 
                 referencedColumnNames: ['id'],
                 referencedTableName: 'order',
                 onUpdate: 'CASCADE',
+                onDelete: 'CASCADE',
             }),
         );
 
@@ -68,6 +69,7 @@ export class CreateOrderProductTable1748352164564 implements MigrationInterface 
                 referencedColumnNames: ['id'],
                 referencedTableName: 'product',
                 onUpdate: 'CASCADE',
+                onDelete: 'CASCADE',
             }),
         );
     }

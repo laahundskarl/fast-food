@@ -57,8 +57,8 @@ export class CreateProductTable1748352153788 implements MigrationInterface {
                 columnNames: ['category_id'],
                 referencedColumnNames: ['id'],
                 referencedTableName: 'product_category',
-                onDelete: 'SET NULL',
                 onUpdate: 'CASCADE',
+                onDelete: 'CASCADE',
             }),
         );
     }
