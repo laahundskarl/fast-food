@@ -9,7 +9,7 @@
     "baseUrl": "./",
     "outDir": "dist",
     "rootDir": "src",
-    "paths": { "#/*": ["src/*"], "!/*": ["test/*"]},
+    "paths": { "#/*": ["src/*"] },
     "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,

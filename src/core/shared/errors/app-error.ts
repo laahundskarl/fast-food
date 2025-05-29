@@ -1,21 +1,21 @@
 export class AppError extends Error {
     constructor(
-        public message: string,
+        public message: string = 'Internal server error',
         public statusCode = 500,
+        public code = 'InternalServerException',
     ) {
         super(message);
-        this.name = 'AppError';
     }
 }
 
 export class NotFoundError extends AppError {
     constructor(message = 'NotFoundException') {
-        super(message, 404);
+        super(message, 404, 'Not Found');
     }
 }
 
 export class ConflictError extends AppError {
     constructor(message = 'ConflictException') {
-        super(message, 409);
+        super(message, 409, 'Conflict');
     }
 }
