@@ -5,7 +5,10 @@ import fastify, { FastifyInstance } from 'fastify';
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
 
 import { errorHandler } from '#/interfaces/errors/error-handler';
-import { registerRoutes } from '#/interfaces/http/routes';
+import { clientRoute } from '#/interfaces/http/routes/client.route';
+import { orderRoute } from '#/interfaces/http/routes/order.route';
+import { productCategoryRoutes } from '#/interfaces/http/routes/product-category.routes';
+import { productRoute } from '#/interfaces/http/routes/product.route';
 
 export function buildApp(): FastifyInstance {
     const app = fastify({ logger: true });
@@ -28,7 +31,11 @@ export function buildApp(): FastifyInstance {
         routePrefix: '/docs',
     });
 
-    registerRoutes(app);
+    app.register(clientRoute, { prefix: '/client' });
+    app.register(orderRoute, { prefix: '/order' });
+    app.register(productRoute, { prefix: '/product' });
+    app.register(productCategoryRoutes, { prefix: '/product-category' });
+
     app.setErrorHandler(errorHandler);
 
     return app;

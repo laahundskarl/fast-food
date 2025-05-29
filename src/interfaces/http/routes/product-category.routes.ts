@@ -6,10 +6,6 @@ import { productCategoryListSchema } from '#/interfaces/http/routes/schema/produ
 export function productCategoryRoutes(app: FastifyInstance) {
     const controller = new ProductCategoryController();
 
-    app.get('/', productCategoryListSchema, async (request, reply) => {
-        return controller.list(request, reply);
-    });
-    app.get('/:id', async (request, reply) => {
-        return controller.get(request, reply);
-    });
+    app.get('/', productCategoryListSchema, controller.list.bind(controller));
+    app.get('/:id', controller.get.bind(controller));
 }

@@ -13,10 +13,15 @@ export function errorHandler(error: FastifyError, request: FastifyRequest, reply
     const statusCode = error.statusCode ?? 500;
 
     if (error.validation) {
+        const details = error.validation.map(err => ({
+            field: err.instancePath.replace('/', ''),
+            message: err.message,
+        }));
+
         return reply.status(StatusCodes.BAD_REQUEST).send({
             error: 'Bad Request',
             message: 'Validation failed',
-            details: error.validation,
+            details,
         });
     }
 
