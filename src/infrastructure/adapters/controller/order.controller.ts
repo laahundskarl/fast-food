@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { Order } from '#/core/application/use-cases/order';
+import { Order } from '#/core/application/usecases/order';
 import { OrderListDTO } from '#/infrastructure/adapters/dto/order-list.dto';
 import { TypeormOrderRepository } from '#/infrastructure/persistence/typeorm-order.repository';
 
