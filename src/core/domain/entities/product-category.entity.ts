@@ -16,16 +16,13 @@ export class ProductCategory {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'product_id', type: 'char' })
-    productId!: string;
-
-    @Column('varchar')
+    @Column({ type: 'varchar', length: 255 })
     name!: string;
 
-    @CreateDateColumn({ name: 'created_at' })
+    @CreateDateColumn({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'updated_at' })
+    @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })

@@ -23,22 +23,22 @@ export class Payment {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'order_id', type: 'char' })
+    @Column({ name: 'order_id', type: 'char', length: 36 })
     orderId!: string;
 
     @Column({ type: 'enum', enum: StatusPayment, nullable: true })
     status?: StatusPayment;
 
-    @Column({ name: 'external_reference', type: 'varchar', nullable: true })
+    @Column({ name: 'external_reference', type: 'varchar', length: 100, nullable: true })
     externalReference?: string;
 
     @Column({ name: 'qr_code', type: 'text', nullable: true })
     qrCode?: string;
 
-    @CreateDateColumn({ name: 'created_at' })
+    @CreateDateColumn({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'updated_at' })
+    @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })
