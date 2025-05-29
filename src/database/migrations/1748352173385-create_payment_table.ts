@@ -59,6 +59,7 @@ export class CreatePaymentTable1748352173385 implements MigrationInterface {
                 referencedColumnNames: ['id'],
                 referencedTableName: 'order',
                 onUpdate: 'CASCADE',
+                onDelete: 'CASCADE',
             }),
         );
     }

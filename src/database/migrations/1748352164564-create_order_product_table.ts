@@ -23,6 +23,16 @@ export class CreateOrderProductTable1748352164564 implements MigrationInterface 
                         isNullable: false,
                     },
                     {
+                        name: 'amount',
+                        type: 'int',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'value',
+                        type: 'int',
+                        isNullable: true,
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()',
@@ -48,6 +58,7 @@ export class CreateOrderProductTable1748352164564 implements MigrationInterface 
                 referencedColumnNames: ['id'],
                 referencedTableName: 'order',
                 onUpdate: 'CASCADE',
+                onDelete: 'CASCADE',
             }),
         );
 
@@ -58,6 +69,7 @@ export class CreateOrderProductTable1748352164564 implements MigrationInterface 
                 referencedColumnNames: ['id'],
                 referencedTableName: 'product',
                 onUpdate: 'CASCADE',
+                onDelete: 'CASCADE',
             }),
         );
     }
