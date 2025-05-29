@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { Product } from '#/core/application/use-cases/product';
-import { ProductCreateDTO, ProductListDTO } from '#/infrastructure/adapters/dto/product-list.dto';
+import { ProductCreateDTO, ProductListDTO, ProductUpdateDTO } from '#/infrastructure/adapters/dto/product-list.dto';
 import { TypeormProductRepository } from '#/infrastructure/persistence/typeorm-product.repository';
 
 export class ProductController {
@@ -36,5 +36,28 @@ export class ProductController {
         const result = await useCase.create(payload);
 
         return reply.status(201).send(result);
+    }
+
+    async update(request: FastifyRequest, reply: FastifyReply) {
+        const { id } = request.params as { id: string };
+        const payload = request.body as ProductUpdateDTO;
+
+        const repository = new TypeormProductRepository();
+        const useCase = new Product(repository);
+
+        const result = await useCase.update(id, payload);
+
+        return reply.status(200).send(result);
+    }
+
+    async destroy(request: FastifyRequest, reply: FastifyReply) {
+        const { id } = request.params as { id: string };
+
+        const repository = new TypeormProductRepository();
+        const useCase = new Product(repository);
+
+        await useCase.destroy(id);
+
+        return reply.status(200).send({ message: 'Product deleted successfully' });
     }
 }

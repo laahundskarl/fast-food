@@ -3,7 +3,7 @@ import { DataSource, ILike, Repository } from 'typeorm';
 import { Product } from '#/core/domain/entities/product.entity';
 import { ProductRepository } from '#/core/domain/repositories/product.repository';
 import { AppDataSource } from '#/database/typeorm.config';
-import { ProductCreateDTO, ProductListDTO } from '#/infrastructure/adapters/dto/product-list.dto';
+import { ProductCreateDTO, ProductListDTO, ProductUpdateDTO } from '#/infrastructure/adapters/dto/product-list.dto';
 
 export class TypeormProductRepository implements ProductRepository {
     private dataSource: DataSource;
@@ -37,5 +37,25 @@ export class TypeormProductRepository implements ProductRepository {
 
     create(product: ProductCreateDTO): any {
         return this.productRepository.save(product);
+    }
+
+    async update(id: string, product: ProductUpdateDTO): Promise<any> {
+        await this.productRepository.update(id, {
+            ...(product.name && { name: product.name }),
+            ...(product.description && { description: product.description }),
+            ...(product.value && { value: product.value }),
+            ...(product.categoryId && { categoryId: product.categoryId }),
+        });
+
+        return this.productRepository.findOne({
+            where: { id },
+            relations: {
+                category: true,
+            },
+        });
+    }
+
+    async destroy(id: string): Promise<void> {
+        await this.productRepository.delete(id);
     }
 }

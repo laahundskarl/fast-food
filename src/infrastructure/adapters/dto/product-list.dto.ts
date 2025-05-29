@@ -9,3 +9,10 @@ export interface ProductCreateDTO {
     value: number;
     categoryId: string;
 }
+
+export interface ProductUpdateDTO {
+    name?: string;
+    description?: string;
+    value?: number;
+    categoryId?: string;
+}

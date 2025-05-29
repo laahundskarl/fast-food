@@ -1,7 +1,12 @@
 import { FastifyInstance } from 'fastify';
 
 import { ProductController } from '#/infrastructure/adapters/controller/product.controller';
-import { productCreateSchema, productListSchema } from '#/interfaces/http/routes/schema/product.schema';
+import {
+    productCreateSchema,
+    productDeleteSchema,
+    productListSchema,
+    productUpdateSchema,
+} from '#/interfaces/http/routes/schema/product.schema';
 
 export const productRoute = (app: FastifyInstance) => {
     const controller = new ProductController();
@@ -16,5 +21,13 @@ export const productRoute = (app: FastifyInstance) => {
 
     app.post('/', productCreateSchema, async (request, reply) => {
         return controller.create(request, reply);
+    });
+
+    app.put('/:id', productUpdateSchema, async (request, reply) => {
+        return controller.update(request, reply);
+    });
+
+    app.delete('/:id', productDeleteSchema, async (request, reply) => {
+        return controller.destroy(request, reply);
     });
 };

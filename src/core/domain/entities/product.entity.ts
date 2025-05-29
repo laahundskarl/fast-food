@@ -27,6 +27,9 @@ export class Product {
     @Column({ length: 500, type: 'varchar', nullable: true })
     description?: string;
 
+    @Column({ name: 'category_id', type: 'char' })
+    categoryId!: string;
+
     @CreateDateColumn({ name: 'created_at' })
     createdAt!: Date;
 
