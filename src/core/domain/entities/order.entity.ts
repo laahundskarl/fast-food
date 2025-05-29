@@ -26,7 +26,7 @@ export class Order {
     id!: string;
 
     @Column({ name: 'client_id', type: 'char', nullable: true })
-    client_id!: string;
+    clientId!: string;
 
     @Column('numeric', { nullable: true })
     value?: number;
