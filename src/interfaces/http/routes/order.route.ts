@@ -12,23 +12,13 @@ import {
 export const orderRoute = (app: FastifyInstance) => {
     const controller = new OrderController();
 
-    app.get('/', orderListSchema, async (request, reply) => {
-        return controller.list(request, reply);
-    });
+    app.get('/', orderListSchema, controller.list.bind(controller));
 
-    app.get('/:id', orderGetSchema, async (request, reply) => {
-        return controller.get(request, reply);
-    });
+    app.get('/:id', orderGetSchema, controller.get.bind(controller));
 
-    app.post('/', orderCreateSchema, async (request, reply) => {
-        return controller.create(request, reply);
-    });
+    app.post('/', orderCreateSchema, controller.create.bind(controller));
 
-    app.put('/:id', orderUpdateSchema, async (request, reply) => {
-        return controller.update(request, reply);
-    });
+    app.put('/:id', orderUpdateSchema, controller.update.bind(controller));
 
-    app.delete('/:id', orderDeleteSchema, async (request, reply) => {
-        return controller.destroy(request, reply);
-    });
+    app.delete('/:id', orderDeleteSchema, controller.destroy.bind(controller));
 };

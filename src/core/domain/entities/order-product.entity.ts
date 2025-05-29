@@ -17,22 +17,22 @@ export class OrderProduct {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
 
-    @Column({ name: 'order_id', type: 'char' })
+    @Column({ name: 'order_id', type: 'char', length: 36 })
     orderId!: string;
 
-    @Column({ name: 'product_id', type: 'char' })
+    @Column({ name: 'product_id', type: 'char', length: 36 })
     productId!: string;
 
-    @Column('numeric', { nullable: true })
-    amount?: number;
+    @Column({ name: 'amount', type: 'int' })
+    amount!: number;
 
-    @Column('numeric', { nullable: true })
+    @Column({ type: 'int', nullable: true })
     value?: number;
 
-    @CreateDateColumn({ name: 'created_at' })
+    @CreateDateColumn({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
     createdAt!: Date;
 
-    @UpdateDateColumn({ name: 'updated_at' })
+    @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
     updatedAt!: Date;
 
     @DeleteDateColumn({ name: 'deleted_at' })

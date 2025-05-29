@@ -9,7 +9,7 @@ export const orderListSchema = {
 export const orderGetSchema = {
     schema: {
         params: z.object({
-            id: z.string().uuid(),
+            id: z.string(),
         }),
     },
 };

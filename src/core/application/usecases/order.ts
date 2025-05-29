@@ -1,8 +1,7 @@
-import { OrderUseCase } from '#/core/application/ports/order.use-case';
 import { OrderRepository } from '#/core/domain/repositories/order.repository';
 import { OrderCreateDTO, OrderListDTO, OrderUpdateDTO } from '#/infrastructure/adapters/dto/order-list.dto';
 
-export class Order implements OrderUseCase {
+export class Order {
     constructor(private readonly repository: OrderRepository) {}
 
     list(query: OrderListDTO): Promise<any> {

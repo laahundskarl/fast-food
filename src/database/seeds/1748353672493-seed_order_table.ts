@@ -25,6 +25,6 @@ export class SeedOrderTable1748353672493 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DELETE FROM order;`);
+        await queryRunner.query(`DELETE FROM \`fast-food\`.order;`);
     }
 }

@@ -5,5 +5,5 @@ export interface OrderRepository {
     get(id: string): Promise<any>;
     create(order: OrderCreateDTO): Promise<any>;
     update(id: string, order: OrderUpdateDTO): Promise<any>;
-    destroy(id: string): void;
+    destroy(id: string): Promise<void>;
 }

@@ -37,7 +37,7 @@ export class TypeormOrderRepository implements OrderRepository {
 
     get(id: string): Promise<any> {
         return this.orderRepository.findOne({
-            where: { id },
+            where: [{ id }, { publicId: Number(id) }],
             relations: {
                 client: true,
                 orderProducts: true,
@@ -76,7 +76,7 @@ export class TypeormOrderRepository implements OrderRepository {
         });
     }
 
-    destroy(id: string) {
-        this.orderRepository.delete(id);
+    async destroy(id: string): Promise<void> {
+        await this.orderRepository.delete(id);
     }
 }

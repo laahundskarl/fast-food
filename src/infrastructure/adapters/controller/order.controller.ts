@@ -1,6 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { Order } from '#/core/application/use-cases/order';
+import { CreateOrderUseCase } from '#/core/application/usecases/order/create-order.usecase';
+import { DeleteOrderUseCase } from '#/core/application/usecases/order/delete-order.usecase';
+import { GetOrderUseCase } from '#/core/application/usecases/order/get-order.usecase';
+import { ListOrderUseCase } from '#/core/application/usecases/order/list-order.usecase';
+import { UpdateOrderUseCase } from '#/core/application/usecases/order/update-order.usecase';
 import { OrderCreateDTO, OrderListDTO, OrderUpdateDTO } from '#/infrastructure/adapters/dto/order-list.dto';
 import { TypeormOrderRepository } from '#/infrastructure/persistence/typeorm-order.repository';
 
@@ -9,9 +13,9 @@ export class OrderController {
         const query = request.query as OrderListDTO;
 
         const repository = new TypeormOrderRepository();
-        const useCase = new Order(repository);
+        const useCase = new ListOrderUseCase(repository);
 
-        const result = await useCase.list(query);
+        const result = await useCase.execute(query);
 
         return reply.status(201).send(result);
     }
@@ -20,9 +24,9 @@ export class OrderController {
         const { id } = request.params as { id: string };
 
         const repository = new TypeormOrderRepository();
-        const useCase = new Order(repository);
+        const useCase = new GetOrderUseCase(repository);
 
-        const result = await useCase.get(id);
+        const result = await useCase.execute(id);
 
         return reply.status(200).send(result);
     }
@@ -31,9 +35,9 @@ export class OrderController {
         const body = request.body as OrderCreateDTO;
 
         const repository = new TypeormOrderRepository();
-        const useCase = new Order(repository);
+        const useCase = new CreateOrderUseCase(repository);
 
-        const result = await useCase.create(body);
+        const result = await useCase.execute(body);
 
         return reply.status(201).send(result);
     }
@@ -43,9 +47,9 @@ export class OrderController {
         const body = request.body as OrderUpdateDTO;
 
         const repository = new TypeormOrderRepository();
-        const useCase = new Order(repository);
+        const useCase = new UpdateOrderUseCase(repository);
 
-        const result = await useCase.update(id, body);
+        const result = await useCase.execute(id, body);
 
         return reply.status(200).send(result);
     }
@@ -54,9 +58,9 @@ export class OrderController {
         const { id } = request.params as { id: string };
 
         const repository = new TypeormOrderRepository();
-        const useCase = new Order(repository);
+        const useCase = new DeleteOrderUseCase(repository);
 
-        await useCase.destroy(id);
+        await useCase.execute(id);
 
         return reply.status(200).send({ message: 'Order deleted successfully' });
     }
