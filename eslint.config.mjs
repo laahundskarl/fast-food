@@ -30,6 +30,7 @@ export default [
             },
         },
         rules: {
+            "@typescript-eslint/no-unsafe-member-access": false,
             'semi-style': 'error',
             'no-octal-escape': 'error',
             quotes: ['error', 'single', { allowTemplateLiterals: true }],

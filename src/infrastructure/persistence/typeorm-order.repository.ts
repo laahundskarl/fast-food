@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { DataSource } from 'typeorm/browser';
 
 import { Order, OrderStatus } from '#/core/domain/entities/order.entity';
@@ -21,9 +21,10 @@ export class TypeormOrderRepository implements OrderRepository {
                 createdAt: 'DESC',
             },
             where: {
-                ...(query?.status && { status: query.status as OrderStatus }),
+                ...(query?.status && { status: In(query.status) }),
                 ...(query?.productId && { orderProducts: { product: { id: query.productId } } }),
                 ...(query?.clientId && { client: { id: query.clientId } }),
+                ...(query?.paymentStatus && { payments: { status: In(query.paymentStatus) } }),
             },
             relations: {
                 client: true,
@@ -37,10 +38,11 @@ export class TypeormOrderRepository implements OrderRepository {
 
     get(id: string): Promise<any> {
         return this.orderRepository.findOne({
-            where: [{ id }, { publicId: Number(id) }],
+            where: [{ id }],
             relations: {
                 client: true,
                 orderProducts: true,
+                payments: true,
             },
         });
     }
