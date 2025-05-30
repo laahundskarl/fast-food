@@ -23,7 +23,7 @@ export class TypeormClientRepository implements IClientRepository {
         return await this.repository.save(client);
     }
 
-    async delete(id: string): Promise<void> {
+    async destroy(id: string): Promise<void> {
         await this.repository.delete(id);
     }
 }

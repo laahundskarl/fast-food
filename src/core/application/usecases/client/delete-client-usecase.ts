@@ -9,6 +9,6 @@ export class DeleteClientUseCase {
         if (!client) {
             throw new NotFoundError('Client not found');
         }
-        await this.clientRepository.delete(client.id);
+        await this.clientRepository.destroy(client.id);
     }
 }

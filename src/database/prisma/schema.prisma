@@ -4,13 +4,14 @@ generator client {
 }
 
 datasource db {
-    provider = "mysql"
-    url      = env("DATABASE_URL")
+    provider          = "mysql"
+    url               = env("DATABASE_URL")
+    shadowDatabaseUrl = env("MIGRATE_DATABASE_URL")
 }
 
 model Client {
     id       String @id @default(uuid())
-    publicId String @db.Char(36)
+    publicId String @map("public_id") @db.Char(36)
     name     String @db.VarChar(255)
     cpf      String @unique @db.VarChar(11)
     email    String @unique @db.VarChar(255)
@@ -20,12 +21,14 @@ model Client {
     deletedAt DateTime? @map("deleted_at")
 
     orders Order[]
+
+    @@map("client")
 }
 
 model Order {
     id          String      @id @default(uuid())
-    publicId    Int
-    clientId    String?     @db.Char(36)
+    publicId    String      @map("public_id") @db.Char(36)
+    clientId    String?     @map("client_id") @db.Char(36)
     value       Int?
     orderNumber Int         @map("order_number")
     status      OrderStatus
@@ -37,12 +40,14 @@ model Order {
     client        Client?        @relation(fields: [clientId], references: [id])
     orderProducts OrderProduct[]
     payments      Payment[]
+
+    @@map("order")
 }
 
 model OrderProduct {
     id        String @id @default(uuid())
-    orderId   String @db.Char(36)
-    productId String @db.Char(36)
+    orderId   String @map("order_id") @db.Char(36)
+    productId String @map("product_id") @db.Char(36)
     amount    Int
     value     Int?
 
@@ -52,20 +57,24 @@ model OrderProduct {
 
     order   Order   @relation(fields: [orderId], references: [id])
     product Product @relation(fields: [productId], references: [id])
+
+    @@map("order_product")
 }
 
 model Payment {
     id                String         @id @default(uuid())
-    orderId           String         @db.Char(36)
+    orderId           String         @map("order_id") @db.Char(36)
     status            StatusPayment?
-    externalReference String?        @db.VarChar(100)
-    qrCode            String?
+    externalReference String?        @map("external_reference") @db.VarChar(100)
+    qrCode            String?        @map("qr_code")
 
     createdAt DateTime  @default(now()) @map("created_at")
     updatedAt DateTime  @updatedAt @map("updated_at")
     deletedAt DateTime? @map("deleted_at")
 
     order Order @relation(fields: [orderId], references: [id])
+
+    @@map("payment")
 }
 
 model ProductCategory {
@@ -77,6 +86,8 @@ model ProductCategory {
     deletedAt DateTime? @map("deleted_at")
 
     products Product[]
+
+    @@map("product_category")
 }
 
 model Product {
@@ -84,7 +95,7 @@ model Product {
     name        String  @db.VarChar(255)
     value       Int
     description String? @db.VarChar(500)
-    categoryId  String  @db.Char(36)
+    categoryId  String  @map("category_id") @db.Char(36)
 
     createdAt DateTime  @default(now()) @map("created_at")
     updatedAt DateTime  @updatedAt @map("updated_at")
@@ -92,6 +103,8 @@ model Product {
 
     category      ProductCategory @relation(fields: [categoryId], references: [id])
     orderProducts OrderProduct[]
+
+    @@map("product")
 }
 
 enum OrderStatus {

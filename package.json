@@ -12,7 +12,7 @@
         "prisma:migrate": "prisma migrate dev --schema=src/database/prisma/schema.prisma",
         "prisma:generate": "prisma generate --schema=src/database/prisma/schema.prisma",
         "prisma:studio": "prisma studio --schema=src/database/prisma/schema.prisma",
-        "prisma:seed": "ts-node src/database/prisma/seed.ts",
+        "prisma:seed": "tsx src/database/prisma/seed.ts",
         "prod": "node dist/index.js"
     },
     "repository": {
@@ -39,12 +39,10 @@
         "pino": "^9.7.0",
         "pino-pretty": "^13.0.0",
         "reflect-metadata": "^0.2.2",
-        "typeorm": "^0.3.24",
         "zod": "^3.24.4"
     },
     "devDependencies": {
         "@eslint/js": "^9.26.0",
-        "@types/jest": "^29.5.14",
         "@types/node": "^22.15.18",
         "@typescript-eslint/eslint-plugin": "^8.32.1",
         "@typescript-eslint/parser": "^8.32.1",
@@ -57,7 +55,6 @@
         "prettier": "^3.5.3",
         "prisma": "^6.8.2",
         "rimraf": "^6.0.1",
-        "ts-node": "^10.9.2",
         "tsc-alias": "^1.8.16",
         "tsconfig-paths": "^4.2.0",
         "tsup": "^8.5.0",

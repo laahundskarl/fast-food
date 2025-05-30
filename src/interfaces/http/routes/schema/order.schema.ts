@@ -25,7 +25,7 @@ export const orderCreateSchema = {
                 amount: z.number(),
                 value: z.number(),
             }),
-        ),
+        ).min(1),
     }),
 };
 
@@ -41,7 +41,7 @@ export const orderUpdateSchema = {
                 amount: z.number(),
                 value: z.number(),
             }),
-        ),
+        ).min(1),
     }),
 };
 
