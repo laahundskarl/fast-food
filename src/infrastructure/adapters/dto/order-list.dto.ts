@@ -1,9 +1,19 @@
 import { OrderProduct } from '#/core/domain/entities/order-product.entity';
+import { OrderStatus } from '#/core/domain/entities/order.entity';
+import { StatusPayment } from '#/core/domain/entities/payment.entity';
 
-export interface OrderListDTO {
+export interface OrderListRequestDTO {
     status?: string;
     clientId?: string;
     productId?: string;
+    paymentStatus?: string;
+}
+
+export interface OrderListDTO {
+    status?: OrderStatus[];
+    clientId?: string;
+    productId?: string;
+    paymentStatus?: StatusPayment[];
 }
 
 export interface OrderCreateDTO {
