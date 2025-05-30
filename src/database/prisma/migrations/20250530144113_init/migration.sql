@@ -20,12 +20,13 @@ CREATE TABLE `order` (
     `public_id` CHAR(36) NOT NULL,
     `client_id` CHAR(36) NULL,
     `value` INTEGER NULL,
-    `order_number` INTEGER NOT NULL,
+    `order_number` INTEGER NOT NULL AUTO_INCREMENT,
     `status` ENUM('WAITING', 'IN_PROGRESS', 'READY') NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `deleted_at` DATETIME(3) NULL,
 
+    UNIQUE INDEX `order_order_number_key`(`order_number`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

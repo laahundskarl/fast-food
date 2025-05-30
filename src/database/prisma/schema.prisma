@@ -1,6 +1,5 @@
 generator client {
     provider = "prisma-client-js"
-    output   = "../../database/prisma/generated"
 }
 
 datasource db {
@@ -30,7 +29,7 @@ model Order {
     publicId    String      @map("public_id") @db.Char(36)
     clientId    String?     @map("client_id") @db.Char(36)
     value       Int?
-    orderNumber Int         @map("order_number")
+    orderNumber Int         @unique @default(autoincrement()) @map("order_number")
     status      OrderStatus
 
     createdAt DateTime  @default(now()) @map("created_at")

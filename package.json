@@ -10,6 +10,7 @@
         "dev": "tsx watch src/index.ts",
         "lint": "eslint ./src/**/*.ts",
         "prisma:migrate": "prisma migrate dev --schema=src/database/prisma/schema.prisma",
+        "prisma:migrate:reset": "prisma migrate reset --schema=src/database/prisma/schema.prisma",
         "prisma:generate": "prisma generate --schema=src/database/prisma/schema.prisma",
         "prisma:studio": "prisma studio --schema=src/database/prisma/schema.prisma",
         "prisma:seed": "tsx src/database/prisma/seed.ts",
@@ -40,6 +41,9 @@
         "pino-pretty": "^13.0.0",
         "reflect-metadata": "^0.2.2",
         "zod": "^3.24.4"
+    },
+    "prisma": {
+        "seed": "tsx src/database/prisma/seeds/seed-all.ts"
     },
     "devDependencies": {
         "@eslint/js": "^9.26.0",
