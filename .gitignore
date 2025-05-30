@@ -31,3 +31,5 @@
 # temp directory
 .temp
 .tmp
+
+/src/generated/prisma

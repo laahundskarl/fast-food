@@ -1,0 +1,108 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "../../database/prisma/generated"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Client {
+    id       String @id @default(uuid())
+    publicId String @db.Char(36)
+    name     String @db.VarChar(255)
+    cpf      String @unique @db.VarChar(11)
+    email    String @unique @db.VarChar(255)
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    orders Order[]
+}
+
+model Order {
+    id          String      @id @default(uuid())
+    publicId    Int
+    clientId    String?     @db.Char(36)
+    value       Int?
+    orderNumber Int         @map("order_number")
+    status      OrderStatus
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    client        Client?        @relation(fields: [clientId], references: [id])
+    orderProducts OrderProduct[]
+    payments      Payment[]
+}
+
+model OrderProduct {
+    id        String @id @default(uuid())
+    orderId   String @db.Char(36)
+    productId String @db.Char(36)
+    amount    Int
+    value     Int?
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    order   Order   @relation(fields: [orderId], references: [id])
+    product Product @relation(fields: [productId], references: [id])
+}
+
+model Payment {
+    id                String         @id @default(uuid())
+    orderId           String         @db.Char(36)
+    status            StatusPayment?
+    externalReference String?        @db.VarChar(100)
+    qrCode            String?
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    order Order @relation(fields: [orderId], references: [id])
+}
+
+model ProductCategory {
+    id   String @id @default(uuid())
+    name String @db.VarChar(255)
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    products Product[]
+}
+
+model Product {
+    id          String  @id @default(uuid())
+    name        String  @db.VarChar(255)
+    value       Int
+    description String? @db.VarChar(500)
+    categoryId  String  @db.Char(36)
+
+    createdAt DateTime  @default(now()) @map("created_at")
+    updatedAt DateTime  @updatedAt @map("updated_at")
+    deletedAt DateTime? @map("deleted_at")
+
+    category      ProductCategory @relation(fields: [categoryId], references: [id])
+    orderProducts OrderProduct[]
+}
+
+enum OrderStatus {
+    WAITING
+    IN_PROGRESS
+    READY
+}
+
+enum StatusPayment {
+    PENDING
+    PROCESSING
+    APPROVED
+    REJECTED
+}
