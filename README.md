@@ -1,6 +1,6 @@
 # FastFood Autoatendimento - Tech Challenge (Grupo 277)
 
-Este projeto é a implementação de um sistema backend para uma lanchonete com autoatendimento, utilizando TypeScript, Fastify, TypeORM e MySQL, seguindo a arquitetura hexagonal (também conhecida como Ports and Adapters).
+Este projeto é a implementação de um sistema backend para uma lanchonete com autoatendimento, utilizando TypeScript, Fastify, PrismaORM e MySQL, seguindo a arquitetura hexagonal (também conhecida como Ports and Adapters).
 
 ---
 
@@ -58,7 +58,7 @@ src/
 
 - Node.js com TypeScript
 - Fastify como framework HTTP
-- TypeORM para ORM
+- Prisma para ORM
 - MySQL como banco de dados
 - Zod para validação de dados
 - Docker & Docker Compose para conteinerização
@@ -119,9 +119,9 @@ src/
 O banco de dados utilizado é o MySQL. As entidades estão configuradas usando o TypeORM com migrations para versionamento do esquema do banco de dados.
 
 Para executar manualmente as migrations:
-
-    npm run typeorm migration:run -d src/database/typeorm.config.ts
-
+```bash
+    npm run prisma:generate
+```
 ---
 
 ## API Endpoints
@@ -163,8 +163,7 @@ Para executar manualmente as migrations:
 ## 🧑‍💻 Contribuidores
 
 - Grupo 277 — Tech Challenge
-    - RM 361923 - Leonardo Andreas - GitHub - laahundskarl
-    - RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1
-    - RM 364043 - Willian Borba - GitHub - WillianBorba
-    - RM 362223 - Fabio Smaniotto - GitHub - fabiosb
-
+- RM 361923 - Leonardo Andreas - GitHub - laahundskarl
+- RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1
+- RM 364043 - Willian Borba - GitHub - WillianBorba
+- RM 362223 - Fabio Smaniotto - GitHub - fabiosb
