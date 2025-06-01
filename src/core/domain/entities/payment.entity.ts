@@ -1,50 +1,25 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    ManyToOne,
-    JoinColumn,
-} from 'typeorm';
+import { StatusPayment } from '@prisma/client';
 
 import { Order } from '#/core/domain/entities/order.entity';
 
-export enum StatusPayment {
-    PENDENTE = 'pendente',
-    PROCESSANDO = 'processando',
-    APROVADO = 'aprovado',
-    RECUSADO = 'recusado',
-}
-
-@Entity('payment')
 export class Payment {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
+    public readonly id: string;
+    public status: StatusPayment;
+    public externalReference: string | null;
+    public qrCode: string | null;
+    public order?: Order;
 
-    @Column({ name: 'order_id', type: 'char', length: 36 })
-    orderId!: string;
-
-    @Column({ type: 'enum', enum: StatusPayment, nullable: true })
-    status?: StatusPayment;
-
-    @Column({ name: 'external_reference', type: 'varchar', length: 100, nullable: true })
-    externalReference?: string;
-
-    @Column({ name: 'qr_code', type: 'text', nullable: true })
-    qrCode?: string;
-
-    @CreateDateColumn({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt!: Date;
-
-    @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-    updatedAt!: Date;
-
-    @DeleteDateColumn({ name: 'deleted_at' })
-    deletedAt?: Date;
-
-    @ManyToOne(() => Order, order => order.payments)
-    @JoinColumn({ name: 'order_id' })
-    order!: Order;
+    constructor(
+        id: string,
+        status: StatusPayment,
+        externalReference: string | null,
+        qrCode: string | null,
+        order?: Order,
+    ) {
+        this.id = id;
+        this.status = status;
+        this.externalReference = externalReference;
+        this.qrCode = qrCode;
+        if (order) this.order = order;
+    }
 }

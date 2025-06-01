@@ -1,48 +1,15 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    ManyToOne,
-    JoinColumn,
-} from 'typeorm';
-
-import { Order } from '#/core/domain/entities/order.entity';
 import { Product } from '#/core/domain/entities/product.entity';
 
-@Entity('order_product')
 export class OrderProduct {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
+    public readonly id: string;
+    public amount: number;
+    public value: number;
+    public products?: Product;
 
-    @Column({ name: 'order_id', type: 'char', length: 36 })
-    orderId!: string;
-
-    @Column({ name: 'product_id', type: 'char', length: 36 })
-    productId!: string;
-
-    @Column({ name: 'amount', type: 'int' })
-    amount!: number;
-
-    @Column({ type: 'int', nullable: true })
-    value?: number;
-
-    @CreateDateColumn({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt!: Date;
-
-    @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-    updatedAt!: Date;
-
-    @DeleteDateColumn({ name: 'deleted_at' })
-    deletedAt?: Date;
-
-    @ManyToOne(() => Order, order => order.orderProducts)
-    @JoinColumn({ name: 'order_id' })
-    order!: Order;
-
-    @ManyToOne(() => Product, product => product.orderProducts)
-    @JoinColumn({ name: 'product_id' })
-    product!: Product;
+    constructor(id: string, amount: number, value: number, products?: Product) {
+        this.id = id;
+        this.amount = amount;
+        this.value = value;
+        if (products) this.products = products;
+    }
 }
