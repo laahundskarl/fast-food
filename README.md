@@ -1,87 +1,170 @@
-# 🧾 FastFood Autoatendimento - Tech Challenge (Grupo 277)
+# FastFood Autoatendimento - Tech Challenge (Grupo 277)
 
-Este projeto é a Fase 1 do Tech Challenge do curso SOAT, que consiste na implementação de um sistema **backend monolítico** para uma lanchonete com autoatendimento, utilizando **Node.js com NestJS**, **TypeORM** e **MySQL**, o projeto segue a **arquitetura hexagonal** (também conhecida como Ports and Adapters), organizada da seguinte forma:
+Este projeto é a implementação de um sistema backend para uma lanchonete com autoatendimento, utilizando TypeScript, Fastify, TypeORM e MySQL, seguindo a arquitetura hexagonal (também conhecida como Ports and Adapters).
 
 ---
 
-## 📦 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```markdown
-api/                              → Coleções Postman para testes dos endpoints  
+api/                              → Coleções Postman para testes dos endpoints
 src/
-├── pedido/  
-│   ├── core/  
-│   │   ├── application/  
-│   │   │   ├── ports/            → Interfaces que definem os contratos para serviços HTTP externos  
-│   │   │   └── usecases/         → Implementações dos casos de uso da aplicação  
-│   │   └── domain/  
-│   │       ├── entities/         → Entidades do domínio com TypeORM  
-│   │       └── repositories/     → Interfaces dos repositórios  
-│   └── infrastructure/  
-│       ├── adapters/             → Implementações de adaptadores para interagir com o mundo externo  
-│       │   ├── services/         → Serviços HTTP externos 
-│       │   └── dtos/             → Objetos de Transferência de Dados  
-│       ├── config/               → Configurações (ex: módulos)  
-│       └── persistence/          → Implementações com banco de dados  
-├── database/                     → Configurações do TypeORM
-└── main.ts                       → Arquivo principal da aplicação  
+├── config/                 → Configurações da aplicação
+│   ├── env.ts              → Configurações de ambiente
+│   └── logger.ts           → Configuração de logs
+│
+├── core/                   → Camada central da aplicação (domínio)
+│   ├── application/        → Casos de uso da aplicação
+│   │   └── usecases/       → Implementação dos casos de uso
+│   │       ├── client/     → Casos de uso para clientes
+│   │       ├── identify/   → Casos de uso para identificação
+│   │       ├── order/      → Casos de uso para pedidos
+│   │       ├── payment/    → Casos de uso para pagamentos
+│   │       └── product/    → Casos de uso para produtos
+│   │
+│   ├── domain/             → Definições de entidades e interfaces do domínio
+│   │   ├── entities/       → Entidades de domínio
+│   │   └── repositories/   → Interfaces dos repositórios
+│   │
+│   └── shared/             → Código compartilhado por toda a aplicação
+│       └── errors/         → Tratamento de erros centralizados
+│
+├── database/               → Configurações e migrações do banco
+│   ├── migrations/         → Scripts de migração para criar tabelas
+│   ├── seeds/              → Scripts para popular o banco com dados iniciais
+│   └── typeorm.config.ts   → Configuração do TypeORM
+│
+├── infrastructure/         → Camada de adaptadores e implementações concretas
+│   ├── adapters/           → Adaptadores para comunicação com o mundo externo
+│   │   ├── controller/     → Controladores HTTP
+│   │   └── dto/            → Objetos de Transferência de Dados
+│   │
+│   └── persistence/        → Implementações concretas dos repositórios
+│
+├── interfaces/             → Interface da aplicação com o mundo externo
+│   ├── errors/             → Tratamento de erros HTTP
+│   └── http/               → Configuração e definição da API HTTP
+│       ├── app.ts          → Configuração do Fastify
+│       ├── routes/         → Definição das rotas da API
+│       │   └── schema/     → Esquemas de validação das rotas
+│       └── server.ts       → Inicialização do servidor HTTP
+│
+└── index.ts                → Ponto de entrada da aplicação
 ```
 
 ---
 
 ## ✅ Tecnologias Utilizadas
 
-- Node.js  
-- NestJS  
-- TypeORM  
-- MySQL  
-- Docker & Docker Compose  
-- Arquitetura Hexagonal (Ports & Adapters)  
+- Node.js com TypeScript
+- Fastify como framework HTTP
+- TypeORM para ORM
+- MySQL como banco de dados
+- Zod para validação de dados
+- Docker & Docker Compose para conteinerização
+- Swagger para documentação da API
+- Arquitetura Hexagonal (Ports & Adapters)
 
 ---
 
-## 🧪 Casos de Uso da Fase 1
-
-- Criar um pedido com itens  
-- Consultar pedidos por ID  
-- Listar todos os pedidos  
-- Atualizar status do pedido  
+## Recursos Implementados
+- Cadastro e gerenciamento de clientes
+- Identificação por CPF
+- Gerenciamento de categorias de produtos
+- Gerenciamento de produtos
+- Criação e gerenciamento de pedidos
+- Processamento de pagamentos
+- API RESTful documentada
+- Tratamento de erros padronizado
+- Sistema de migração e seed de dados
 
 ---
 
 ## ⚙️ Como Rodar Localmente
 
-Pré-requisitos:  
-- Docker + Docker Compose  
+### Pré-requisitos:
+- Docker + Docker Compose
 
-Passos:  
-1. Clone o repositório:  
-   git clone incluir  
+### Passos:
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/laahundskarl/fast-food.git
    cd fast-food
+   ```
 
-2. Suba a aplicação com Docker Compose:  
-   docker-compose up --build  
+2. Configure as variáveis de ambiente:
+   ```markdown
+   cp .env.example .env
+   ```
 
-3. Acesse a API no endereço:  
-   http://localhost:3000  
+3. Acesse a API no endereço:
+   ```markdown
+   docker-compose up --build
+   ```
+
+4. Acesse a API no endereço:
+   ```markdown
+   http://localhost:3000
+   ```
+
+5. A documentação Swagger está disponível em:
+   ```markdown
+   http://localhost:3000/docs
+   ```
 
 ---
 
 ## 🗃️ Banco de Dados
 
-O banco de dados utilizado é o **MySQL**. As entidades estão configuradas com `synchronize: true` para facilitar o desenvolvimento (não recomendado para produção).
+O banco de dados utilizado é o MySQL. As entidades estão configuradas usando o TypeORM com migrations para versionamento do esquema do banco de dados.
+
+Para executar manualmente as migrations:
+
+    npm run typeorm migration:run -d src/database/typeorm.config.ts
 
 ---
 
-## 📌 Observações
+## API Endpoints
 
-- Essa versão cobre apenas a **Fase 1** do desafio, com foco em pedido e seus itens.  
-- A estrutura já está preparada para expansão futura (ex: administrativo, pagamento).  
+### Cliente
+
+- POST /client - Criar cliente
+- GET /client/:cpf - Obter cliente por CPF
+- PUT /client/:cpf - Atualizar cliente
+- DELETE /client/:cpf - Excluir cliente
+
+### Identificação
+
+- POST /identify - Identificar cliente por CPF
+
+### Produto
+
+- GET /product - Listar produtos
+- GET /product/:id - Obter produto por ID
+- POST /product - Criar produto
+- PUT /product/:id - Atualizar produto
+- DELETE /product/:id - Excluir produto
+
+### Categoria de Produto
+
+- GET /product-category - Listar categorias de produtos
+- GET /product-category/:id - Obter categoria por ID
+
+### Pedidos
+
+- GET /order - Listar pedidos
+- GET /order/:id - Obter pedido por ID
+- POST /order - Criar pedido
+- PUT /order/:id - Atualizar pedido
+- DELETE /order/:id - Excluir pedido
 
 ---
 
 ## 🧑‍💻 Contribuidores
 
-- Grupo 277 — Tech Challenge SOAT
+- Grupo 277 — Tech Challenge
+    - RM 361923 - Leonardo Andreas - GitHub - laahundskarl
+    - RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1
+    - RM 364043 - Willian Borba - GitHub - WillianBorba
+    - RM 362223 - Fabio Smaniotto - GitHub - fabiosb
 
-RM 361923 - Leonardo Andreas - GitHub - laahundskarl
