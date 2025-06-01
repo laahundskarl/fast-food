@@ -1,12 +1,14 @@
 import { PrismaClient } from '@prisma/client';
-import { seedClient } from './seeds-client';
-import { seedProduct } from './seeds-product';
-import { seedProductCategory } from './seeds-product-category';
-import { seedOrder } from './seed-order';
-import { seedOrderProduct } from './seed-order-product';
-import { seedPayment } from './seed-payment';
 
-console.log('Starting seeds...');
+import { logger } from '#/config/logger';
+import { seedClient } from '#/database/prisma/seeds/seed-client';
+import { seedOrder } from '#/database/prisma/seeds/seed-order';
+import { seedOrderProduct } from '#/database/prisma/seeds/seed-order-product';
+import { seedPayment } from '#/database/prisma/seeds/seed-payment';
+import { seedProduct } from '#/database/prisma/seeds/seed-product';
+import { seedProductCategory } from '#/database/prisma/seeds/seed-product-category';
+
+logger.info('Starting seeds...');
 const prismaClient = new PrismaClient();
 
 async function main() {
