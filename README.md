@@ -7,7 +7,8 @@ Este projeto é a implementação de um sistema backend para uma lanchonete com 
 ## Estrutura do Projeto
 
 ```markdown
-api/                              → Coleções Postman para testes dos endpoints
+api/                        → Coleções Postman para testes dos endpoints
+docs/                       → Informações do Event Storming
 src/
 ├── config/                 → Configurações da aplicação
 │   ├── env.ts              → Configurações de ambiente
@@ -53,6 +54,11 @@ src/
 ```
 
 ---
+
+## Event Storming (DDD)
+
+As informações bem como a imagem do event storming estão disponibilizadas na pasta /docs da aplicação.
+Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 
 ## ✅ Tecnologias Utilizadas
 
@@ -163,8 +169,8 @@ Para executar manualmente as migrations:
 ## 🧑‍💻 Contribuidores
 
 - Grupo 277 — Tech Challenge
-    - RM 361923 - Leonardo Andreas - GitHub - laahundskarl
-    - RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1
-    - RM 364043 - Willian Borba - GitHub - WillianBorba
-    - RM 362223 - Fabio Smaniotto - GitHub - fabiosb
+    - RM 361923 - Leonardo Andreas - GitHub - laahundskarl - Discord - leooandreas
+    - RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1 - Discord - gabrielgsd
+    - RM 364043 - Willian Borba - GitHub - WillianBorba - Discord - willianrocha
+    - RM 362223 - Fabio Smaniotto - GitHub - fabiosb - Discord - ofabiosb
 
