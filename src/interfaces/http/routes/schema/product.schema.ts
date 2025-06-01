@@ -1,5 +1,14 @@
 import z from 'zod';
 
+export const productCreateSchema = {
+    schema: z.object({
+        name: z.string(),
+        description: z.string().optional(),
+        value: z.number(),
+        categoryId: z.string(),
+    }),
+};
+
 export const productListSchema = {
     schema: z.object({
         query: z.object({
@@ -7,15 +16,6 @@ export const productListSchema = {
             categoryId: z.string().optional(),
             productId: z.string().optional(),
         }),
-    }),
-};
-
-export const productCreateSchema = {
-    schema: z.object({
-        name: z.string(),
-        description: z.string().optional(),
-        value: z.number(),
-        categoryId: z.string(),
     }),
 };
 

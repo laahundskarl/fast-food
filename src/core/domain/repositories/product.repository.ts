@@ -1,9 +1,10 @@
-import { ProductCreateDTO, ProductListDTO, ProductUpdateDTO } from '#/infrastructure/adapters/dto/product-list.dto';
+import { Product } from '#/core/domain/entities/product.entity';
+import { ProductCreateDto, ProductListDto, ProductUpdateDto } from '#/infrastructure/adapters/dto/product.dto';
 
 export interface ProductRepository {
-    list(query?: ProductListDTO): Promise<any>;
-    get(id: string): Promise<any>;
-    create(product: ProductCreateDTO): Promise<any>;
-    update(id: string, product: ProductUpdateDTO): Promise<any>;
+    create(product: ProductCreateDto): Promise<Product>;
+    findById(id: string): Promise<Product | null>;
+    list(query?: ProductListDto): Promise<Product[]>;
+    update(id: string, product: ProductUpdateDto): Promise<Product>;
     destroy(id: string): Promise<void>;
 }

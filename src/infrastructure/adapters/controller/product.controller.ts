@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { CreateProductUseCase } from '#/core/application/usecases/product/create-product.usecase';
@@ -5,63 +6,43 @@ import { DeleteProductUseCase } from '#/core/application/usecases/product/delete
 import { GetProductUseCase } from '#/core/application/usecases/product/get-product.usecase';
 import { ListProductUseCase } from '#/core/application/usecases/product/list-product-usecase';
 import { UpdateProductUseCase } from '#/core/application/usecases/product/update-product.usecase';
-import { ProductCreateDTO, ProductListDTO, ProductUpdateDTO } from '#/infrastructure/adapters/dto/product-list.dto';
-import { TypeormProductRepository } from '#/infrastructure/persistence/typeorm-product.repository';
+import { ProductCreateDto, ProductListDto, ProductUpdateDto } from '#/infrastructure/adapters/dto/product.dto';
+import { PrismaProductRepository } from '#/infrastructure/persistence/prisma-product.repository';
 
 export class ProductController {
-    async list(request: FastifyRequest, reply: FastifyReply) {
-        const query = request.query as ProductListDTO;
+    private readonly repository: PrismaProductRepository;
 
-        const repository = new TypeormProductRepository();
-        const useCase = new ListProductUseCase(repository);
-
-        const result = await useCase.execute(query);
-
-        return reply.status(200).send(result);
+    constructor() {
+        this.repository = new PrismaProductRepository(new PrismaClient());
     }
 
-    async get(request: FastifyRequest, reply: FastifyReply) {
-        const { id } = request.params as { id: string };
-
-        const repository = new TypeormProductRepository();
-        const useCase = new GetProductUseCase(repository);
-
-        const result = await useCase.execute(id);
-
-        return reply.status(200).send(result);
-    }
-
-    async create(request: FastifyRequest, reply: FastifyReply) {
-        const payload = request.body as ProductCreateDTO;
-
-        const repository = new TypeormProductRepository();
-        const useCase = new CreateProductUseCase(repository);
-
-        const result = await useCase.execute(payload);
-
+    async create(request: FastifyRequest<{ Body: ProductCreateDto }>, reply: FastifyReply) {
+        const useCase = new CreateProductUseCase(this.repository);
+        const result = await useCase.execute(request.body);
         return reply.status(201).send(result);
     }
 
-    async update(request: FastifyRequest, reply: FastifyReply) {
-        const { id } = request.params as { id: string };
-        const payload = request.body as ProductUpdateDTO;
-
-        const repository = new TypeormProductRepository();
-        const useCase = new UpdateProductUseCase(repository);
-
-        const result = await useCase.execute(id, payload);
-
-        return reply.status(200).send(result);
+    async get(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+        const useCase = new GetProductUseCase(this.repository);
+        const result = await useCase.execute(request.params.id);
+        return reply.send(result);
     }
 
-    async destroy(request: FastifyRequest, reply: FastifyReply) {
-        const { id } = request.params as { id: string };
+    async list(request: FastifyRequest<{ Querystring: ProductListDto }>, reply: FastifyReply) {
+        const useCase = new ListProductUseCase(this.repository);
+        const result = await useCase.execute(request.query);
+        return reply.send(result);
+    }
 
-        const repository = new TypeormProductRepository();
-        const useCase = new DeleteProductUseCase(repository);
+    async update(request: FastifyRequest<{ Params: { id: string }; Body: ProductUpdateDto }>, reply: FastifyReply) {
+        const useCase = new UpdateProductUseCase(this.repository);
+        const result = await useCase.execute(request.params.id, request.body);
+        return reply.send(result);
+    }
 
-        await useCase.execute(id);
-
-        return reply.status(200).send({ message: 'Product deleted successfully' });
+    async destroy(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+        const useCase = new DeleteProductUseCase(this.repository);
+        await useCase.execute(request.params.id);
+        return reply.send({ message: 'Product deleted successfully' });
     }
 }
