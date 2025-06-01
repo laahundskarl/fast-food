@@ -1,9 +1,11 @@
-import z from 'zod';
+export const productCategoryGetSchema = {
+    summary: 'Get product category',
+    tags: ['product-category'],
+    schema: {},
+};
 
 export const productCategoryListSchema = {
-    schema: z.object({
-        query: z.object({
-            name: z.string().optional(),
-        }),
-    }),
+    summary: 'List product category',
+    tags: ['product-category'],
+    schema: {},
 };

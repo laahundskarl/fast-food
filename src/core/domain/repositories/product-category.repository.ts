@@ -1,6 +1,7 @@
-import { ProductCategoryListDTO } from '#/infrastructure/adapters/dto/product-category-list.dto';
+import { ProductCategory } from '#/core/domain/entities/product-category.entity';
+import { ProductCategoryListDto } from '#/infrastructure/adapters/dto/product-category.dto';
 
 export interface ProductCategoryRepository {
-    list(query?: ProductCategoryListDTO): Promise<any>;
-    get(id: string): Promise<any>;
+    get(id: string): Promise<ProductCategory | null>;
+    list(query?: ProductCategoryListDto): Promise<ProductCategory[]>;
 }

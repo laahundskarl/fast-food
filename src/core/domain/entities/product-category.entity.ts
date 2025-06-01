@@ -1,32 +1,13 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    CreateDateColumn,
-    UpdateDateColumn,
-    DeleteDateColumn,
-    OneToMany,
-} from 'typeorm';
-
 import { Product } from '#/core/domain/entities/product.entity';
 
-@Entity('product_category')
 export class ProductCategory {
-    @PrimaryGeneratedColumn('uuid')
-    id!: string;
+    public readonly id?: string;
+    public name: string;
+    public products?: Product[] = [];
 
-    @Column({ type: 'varchar', length: 255 })
-    name!: string;
-
-    @CreateDateColumn({ name: 'created_at', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt!: Date;
-
-    @UpdateDateColumn({ name: 'updated_at', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-    updatedAt!: Date;
-
-    @DeleteDateColumn({ name: 'deleted_at' })
-    deletedAt?: Date;
-
-    @OneToMany(() => Product, product => product.category)
-    products!: Product[];
+    constructor(id: string, name: string, products?: Product[]) {
+        this.id = id;
+        this.name = name;
+        if (products) this.products = products;
+    }
 }
