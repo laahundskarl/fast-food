@@ -13,7 +13,7 @@
         "prisma:migrate:reset": "prisma migrate reset --schema=src/database/prisma/schema.prisma",
         "prisma:generate": "prisma generate --schema=src/database/prisma/schema.prisma",
         "prisma:studio": "prisma studio --schema=src/database/prisma/schema.prisma",
-        "prisma:seed": "tsx src/database/prisma/seed.ts",
+        "prisma:seed": "prisma db seed --schema=src/database/prisma/schema.prisma",
         "prod": "node dist/index.js"
     },
     "repository": {
@@ -26,6 +26,9 @@
     "engineStrict": true,
     "engines": {
         "node": ">=22"
+    },
+    "prisma": {
+        "seed": "tsx src/database/prisma/seeds/seed.ts"
     },
     "dependencies": {
         "@fastify/cors": "^11.0.1",
@@ -42,15 +45,12 @@
         "reflect-metadata": "^0.2.2",
         "zod": "^3.24.4"
     },
-    "prisma": {
-        "seed": "tsx src/database/prisma/seeds/seed-all.ts"
-    },
     "devDependencies": {
         "@eslint/js": "^9.26.0",
         "@types/node": "^22.15.18",
         "@typescript-eslint/eslint-plugin": "^8.32.1",
         "@typescript-eslint/parser": "^8.32.1",
-        "eslint": "^9.26.0",
+        "eslint": "^9.27.0",
         "eslint-config-prettier": "^10.1.5",
         "eslint-import-resolver-typescript": "^4.3.4",
         "eslint-plugin-import": "^2.31.0",
