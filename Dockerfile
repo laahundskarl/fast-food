@@ -11,6 +11,7 @@ RUN npm ci
 
 COPY . .
 RUN npx prisma generate
+RUN npm run prisma:migrate
 RUN npm run build
 
 # Etapa final de produção
@@ -27,9 +28,6 @@ COPY --from=build /app/src/database/prisma /app/src/database/prisma
 COPY --from=build /app/dist ./dist
 COPY tsconfig.json ./
 
-COPY wait-for.sh /wait-for.sh
-RUN chmod +x /wait-for.sh
-
 ENV NODE_PATH=./dist
 
-CMD ["sh", "-c", "/wait-for.sh $DATABASE_HOST:$DATABASE_PORT -- npx prisma migrate deploy && node dist/index.js"]
+CMD ["node", "dist/index.js"]
