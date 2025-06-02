@@ -21,7 +21,7 @@ export const validatorCreateOrder = z.object({
 });
 
 export const validatorUpdateOrder = z.object({
-    clientId: z.string({ required_error: messages.client_required }),
+    status: z.string().optional(),
     orderProducts: z
         .array(
             z.object({

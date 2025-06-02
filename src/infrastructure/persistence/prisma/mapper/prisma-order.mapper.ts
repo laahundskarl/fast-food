@@ -54,25 +54,20 @@ export class PrismaOrderMapper {
                     },
                 })),
             },
-            payments: {
-                create: data.payments?.map(item => ({
-                    externalReference: item.externalReference,
-                    qrCode: item.qrCode,
-                })),
-            },
         };
     }
 
-    static toUpdate(data: Order): Prisma.OrderUpdateInput {
+    static toUpdateOrderProducts(data: Order): Prisma.OrderUpdateInput {
         return {
             value: data.value,
             status: data.status,
             client: {
                 connect: {
-                    id: data.client?.id,
+                    id: data.clientId,
                 },
             },
             orderProducts: {
+                deleteMany: {},
                 create: data.orderProducts?.map(item => ({
                     amount: item.amount,
                     value: item.value,

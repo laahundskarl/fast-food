@@ -1,7 +1,5 @@
 import { OrderStatus, StatusPayment } from '@prisma/client';
 
-import { OrderProduct } from '#/core/domain/entities/order-product.entity';
-
 export interface OrderListRequestDto {
     status?: string;
     clientId?: string;
@@ -28,6 +26,10 @@ export interface OrderCreateDto {
 
 export interface OrderUpdateDto {
     status?: string;
-    value?: number;
-    orderProducts?: OrderProduct[];
+    orderProducts?: [
+        {
+            productId: string;
+            quantity: number;
+        },
+    ];
 }

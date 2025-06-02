@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 import { Order } from '#/core/domain/entities/order.entity';
 import { OrderRepository } from '#/core/domain/repositories/order.repository';
-import { NotFoundError } from '#/core/shared/errors/app-error';
 import { OrderListDto } from '#/infrastructure/adapters/dto/order.dto';
 import { PrismaOrderMapper } from '#/infrastructure/persistence/prisma/mapper/prisma-order.mapper';
 
@@ -80,10 +79,36 @@ export class PrismaOrderRepository implements OrderRepository {
         return data.map(item => PrismaOrderMapper.toDomain(item));
     }
 
-    async update(id: string, order: Order): Promise<Order> {
+    async updateOrderProducts(orderId: string, order: Order) {
+        await this.prisma.orderProduct.deleteMany({
+            where: { orderId },
+        });
+
+        const data = await this.prisma.order.update({
+            where: { id: order.id },
+            data: PrismaOrderMapper.toUpdateOrderProducts(order),
+            include: {
+                client: true,
+                orderProducts: {
+                    include: {
+                        product: true,
+                    },
+                },
+                payments: {
+                    orderBy: { createdAt: 'desc' },
+                    take: 1,
+                },
+            },
+        });
+        return PrismaOrderMapper.toDomain(data);
+    }
+
+    async updateStatus(id: string, order: Order): Promise<Order> {
         const data = await this.prisma.order.update({
             where: { id },
-            data: PrismaOrderMapper.toUpdate(order),
+            data: {
+                status: order.status,
+            },
             include: {
                 client: true,
                 orderProducts: {
@@ -98,12 +123,6 @@ export class PrismaOrderRepository implements OrderRepository {
     }
 
     async destroy(id: string): Promise<void> {
-        const order = await this.prisma.order.findUnique({
-            where: { id },
-        });
-        if (!order) {
-            throw new NotFoundError('Order not found');
-        }
         await this.prisma.order.delete({
             where: { id },
         });
