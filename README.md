@@ -105,9 +105,10 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
    cp .env.example .env
    ```
 
-3. Acesse a API no endereço:
+3. Suba a aplicação com o docker:
    ```markdown
-   docker-compose up --build
+   docker-compose up --build (ambiente dev)
+   docker compose -f docker-compose.prod.yml up --build (ambiente de prod)
    ```
 
 4. Acesse a API no endereço:
