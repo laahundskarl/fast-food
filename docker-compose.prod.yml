@@ -30,4 +30,4 @@ services:
         condition: service_healthy
 
 volumes:
- db_data_prod:
+  db_data_prod:
