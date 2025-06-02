@@ -1,10 +1,10 @@
-import { validatorClient } from '#/interfaces/http/routes/schema/validator/client.validator';
+import { validatorCreateClient, validatorUpdateClient } from '#/interfaces/http/routes/schema/validator/client.validator';
 
 export const schemaCreateClient = {
     summary: 'Register client',
     tags: ['client'],
     schema: {
-        body: validatorClient,
+        body: validatorCreateClient,
     },
 };
 
@@ -24,7 +24,7 @@ export const schemaUpdateClient = {
     summary: 'Update client',
     tags: ['client'],
     schema: {
-        body: validatorClient,
+        body: validatorUpdateClient,
     },
 };
 

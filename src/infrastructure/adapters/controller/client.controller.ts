@@ -28,9 +28,9 @@ export class ClientController {
         return reply.send(result);
     }
 
-    async getWithOrders(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+    async getWithOrders(request: FastifyRequest<{ Params: { cpf: string } }>, reply: FastifyReply) {
         const useCase = new GetClientWithOrders(this.repository);
-        const result = await useCase.execute(request.params.id);
+        const result = await useCase.execute(request.params.cpf);
         return reply.send(result);
     }
 
