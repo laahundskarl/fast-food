@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, StatusPayment } from '@prisma/client';
 
 import { OrderProduct } from '#/core/domain/entities/order-product.entity';
 import { Order } from '#/core/domain/entities/order.entity';
@@ -53,6 +53,13 @@ export class PrismaOrderMapper {
                         connect: { id: item.productId },
                     },
                 })),
+            },
+            payments: {
+                create: {
+                    status: StatusPayment.PENDING,
+                    externalReference: 'mocked-external-reference',
+                    qrCode: 'mocked-qr-code',
+                },
             },
         };
     }

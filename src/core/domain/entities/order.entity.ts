@@ -26,8 +26,8 @@ export class Order {
         if (id) this.id = id;
         if (clientId) this.clientId = clientId;
         this.value = value;
-        this.orderNumber = orderNumber;
-        this.status = status;
+        this.orderNumber = orderNumber ?? 0;
+        this.status = status ?? OrderStatus.WAITING;
         if (client) this.client = client;
         if (orderProducts) this.orderProducts = orderProducts;
         if (payments) this.payments = payments;
