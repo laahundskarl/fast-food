@@ -1,15 +1,15 @@
-import { IClientRepository } from '#/core/domain/repositories/client.repository';
+import { Client } from '#/core/domain/entities/client.entity';
+import { ClientRepository } from '#/core/domain/repositories/client.repository';
 import { NotFoundError } from '#/core/shared/errors/app-error';
-import { ClientResponseDto } from '#/infrastructure/adapters/dto/client-response.dto';
 
 export class IdentifyUseCase {
-    constructor(private readonly clientRepository: IClientRepository) {}
+    constructor(private readonly clientRepository: ClientRepository) {}
 
-    async execute(cpf: string): Promise<ClientResponseDto> {
+    async execute(cpf: string): Promise<Client> {
         const client = await this.clientRepository.findByCpf(cpf);
         if (!client) {
             throw new NotFoundError('Client not found, please register');
         }
-        return new ClientResponseDto(client);
+        return client;
     }
 }
