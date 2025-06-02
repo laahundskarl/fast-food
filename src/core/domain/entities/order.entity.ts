@@ -15,8 +15,8 @@ export class Order {
 
     constructor(
         value: number,
-        orderNumber: number,
-        status: OrderStatus,
+        status?: OrderStatus,
+        orderNumber?: number,
         clientId?: string,
         id?: string,
         client?: Client,

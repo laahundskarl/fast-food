@@ -18,8 +18,12 @@ export interface OrderListDto {
 
 export interface OrderCreateDto {
     clientId: string;
-    orderProducts: OrderProduct[];
-    value?: number;
+    orderProducts: [
+        {
+            productId: string;
+            quantity: number;
+        },
+    ];
 }
 
 export interface OrderUpdateDto {

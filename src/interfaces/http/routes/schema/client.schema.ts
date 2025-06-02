@@ -3,7 +3,7 @@ import {
     validatorUpdateClient,
 } from '#/interfaces/http/routes/schema/validator/client.validator';
 
-export const schemaCreateClient = {
+export const createClientSchema = {
     summary: 'Register client',
     tags: ['client'],
     schema: {
@@ -11,19 +11,19 @@ export const schemaCreateClient = {
     },
 };
 
-export const schemaGetClient = {
+export const getClientSchema = {
     summary: 'Get client',
     tags: ['client'],
     schema: {},
 };
 
-export const schemaGetClientWithOrders = {
+export const getClientWithOrdersSchema = {
     summary: 'Get client with orders',
     tags: ['client'],
     schema: {},
 };
 
-export const schemaUpdateClient = {
+export const updateClientSchema = {
     summary: 'Update client',
     tags: ['client'],
     schema: {
@@ -31,7 +31,7 @@ export const schemaUpdateClient = {
     },
 };
 
-export const schemaDeleteClient = {
+export const deleteClientSchema = {
     summary: 'Delete client',
     tags: ['client'],
     schema: {},

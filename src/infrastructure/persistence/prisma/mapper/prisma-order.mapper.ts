@@ -10,8 +10,9 @@ export class PrismaOrderMapper {
     static toDomain(data: OrderWithRelations): Order {
         return new Order(
             data.value,
-            data.orderNumber,
             data.status,
+            data.orderNumber,
+            data.clientId!,
             data.id,
             undefined,
             data.orderProducts.map(
@@ -19,17 +20,19 @@ export class PrismaOrderMapper {
                     new OrderProduct(
                         orderProduct.amount,
                         orderProduct.value,
+                        undefined,
                         orderProduct.id,
                         new Product(
                             orderProduct.product.name,
                             orderProduct.product.value,
                             orderProduct.product.description,
+                            undefined,
                             orderProduct.product.id,
                         ),
                     ),
             ),
             data.payments.map(
-                payment => new Payment(payment.status, payment.externalReference, payment.qrCode, payment.id),
+                payment => new Payment(payment.externalReference, payment.qrCode, payment.status, payment.id),
             ),
         );
     }
@@ -37,11 +40,9 @@ export class PrismaOrderMapper {
     static toCreate(data: Order): Prisma.OrderCreateInput {
         return {
             value: data.value,
-            orderNumber: undefined,
-            status: data.status,
             client: {
                 connect: {
-                    id: data.client?.id,
+                    id: data.clientId,
                 },
             },
             orderProducts: {
@@ -49,13 +50,12 @@ export class PrismaOrderMapper {
                     amount: item.amount,
                     value: item.value,
                     product: {
-                        connect: { id: item.products?.id },
+                        connect: { id: item.productId },
                     },
                 })),
             },
             payments: {
                 create: data.payments?.map(item => ({
-                    status: item.status,
                     externalReference: item.externalReference,
                     qrCode: item.qrCode,
                 })),

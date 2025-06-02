@@ -1,12 +1,18 @@
 import z from 'zod';
 
-export const orderListSchema = {
-    schema: z.object({
-        orderId: z.string(),
-    }),
+import { validatorCreateOrder, validatorUpdateOrder } from '#/interfaces/http/routes/schema/validator/order.validator';
+
+export const orderCreateSchema = {
+    summary: 'Create Order',
+    tags: ['order'],
+    schema: {
+        body: validatorCreateOrder,
+    },
 };
 
 export const orderGetSchema = {
+    summary: 'Get Order',
+    tags: ['order'],
     schema: {
         params: z.object({
             id: z.string(),
@@ -14,38 +20,25 @@ export const orderGetSchema = {
     },
 };
 
-export const orderCreateSchema = {
+export const orderListSchema = {
+    summary: 'List Order',
+    tags: ['order'],
     schema: z.object({
-        clientId: z.string(),
-        value: z.number(),
-        orderNumber: z.number(),
-        orderProducts: z.array(
-            z.object({
-                productId: z.string(),
-                amount: z.number(),
-                value: z.number(),
-            }),
-        ).min(1),
+        orderId: z.string(),
     }),
 };
 
 export const orderUpdateSchema = {
-    schema: z.object({
-        id: z.string(),
-        clientId: z.string(),
-        value: z.number(),
-        orderNumber: z.number(),
-        orderProducts: z.array(
-            z.object({
-                productId: z.string(),
-                amount: z.number(),
-                value: z.number(),
-            }),
-        ).min(1),
-    }),
+    summary: 'Update Order',
+    tags: ['order'],
+    schema: {
+        body: validatorUpdateOrder,
+    },
 };
 
 export const orderDeleteSchema = {
+    summary: 'Delete Order',
+    tags: ['order'],
     schema: {
         params: z.object({
             id: z.string().uuid(),
