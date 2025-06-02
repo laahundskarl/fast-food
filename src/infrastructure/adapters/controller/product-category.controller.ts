@@ -4,7 +4,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { GetProductCategoryUseCase } from '#/core/application/usecases/product-category/get-product-category.usecase';
 import { ListProductCategoryUseCase } from '#/core/application/usecases/product-category/list-product-category.usecase';
 import { ProductCategoryListDto } from '#/infrastructure/adapters/dto/product-category.dto';
-import { PrismaProductCategoryRepository } from '#/infrastructure/persistence/prisma-product-category.repository';
+import { PrismaProductCategoryRepository } from '#/infrastructure/persistence/prisma/prisma-product-category.repository';
 
 export class ProductCategoryController {
     private readonly repository: PrismaProductCategoryRepository;

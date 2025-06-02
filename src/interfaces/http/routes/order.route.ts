@@ -11,14 +11,9 @@ import {
 
 export const orderRoute = (app: FastifyInstance) => {
     const controller = new OrderController();
-
     app.get('/', orderListSchema, controller.list.bind(controller));
-
     app.get('/:id', orderGetSchema, controller.get.bind(controller));
-
     app.post('/', orderCreateSchema, controller.create.bind(controller));
-
-    app.put('/:id', orderUpdateSchema, controller.update.bind(controller));
-
+    app.patch('/:id', orderUpdateSchema, controller.update.bind(controller));
     app.delete('/:id', orderDeleteSchema, controller.destroy.bind(controller));
 };

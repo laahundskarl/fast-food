@@ -1,13 +1,14 @@
+import { PrismaClient } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { IdentifyUseCase } from '#/core/application/usecases/identify/identify.usecase';
-import { TypeormClientRepository } from '#/infrastructure/persistence/typeorm-client.repository';
+import { PrismaClientRepository } from '#/infrastructure/persistence/prisma/prisma-client.repository';
 
 export class IdentifyController {
-    private readonly repository: TypeormClientRepository;
+    private readonly repository: PrismaClientRepository;
 
     constructor() {
-        this.repository = new TypeormClientRepository();
+        this.repository = new PrismaClientRepository(new PrismaClient());
     }
 
     async get(request: FastifyRequest<{ Params: { cpf: string } }>, reply: FastifyReply) {

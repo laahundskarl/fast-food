@@ -7,7 +7,7 @@ import { GetProductUseCase } from '#/core/application/usecases/product/get-produ
 import { ListProductUseCase } from '#/core/application/usecases/product/list-product-usecase';
 import { UpdateProductUseCase } from '#/core/application/usecases/product/update-product.usecase';
 import { ProductCreateDto, ProductListDto, ProductUpdateDto } from '#/infrastructure/adapters/dto/product.dto';
-import { PrismaProductRepository } from '#/infrastructure/persistence/prisma-product.repository';
+import { PrismaProductRepository } from '#/infrastructure/persistence/prisma/prisma-product.repository';
 
 export class ProductController {
     private readonly repository: PrismaProductRepository;

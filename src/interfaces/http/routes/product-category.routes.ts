@@ -8,7 +8,6 @@ import {
 
 export function productCategoryRoutes(app: FastifyInstance) {
     const controller = new ProductCategoryController();
-
     app.get('/:id', productCategoryGetSchema, controller.get.bind(controller));
     app.get('/', productCategoryListSchema, controller.list.bind(controller));
 }

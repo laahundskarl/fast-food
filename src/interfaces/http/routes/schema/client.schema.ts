@@ -14,6 +14,12 @@ export const schemaGetClient = {
     schema: {},
 };
 
+export const schemaGetClientWithOrders = {
+    summary: 'Get client with orders',
+    tags: ['client'],
+    schema: {},
+};
+
 export const schemaUpdateClient = {
     summary: 'Update client',
     tags: ['client'],
