@@ -1,12 +1,14 @@
-import { OrderStatus, PrismaClient, StatusPayment } from '@prisma/client';
+import { OrderStatus, StatusPayment } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { CreateOrderUseCase } from '#/core/application/usecases/order/create-order.usecase';
 // import { DeleteOrderUseCase } from '#/core/application/usecases/order/delete-order.usecase';
+import { DeleteOrderUseCase } from '#/core/application/usecases/order/delete-order.usecase';
 import { GetOrderUseCase } from '#/core/application/usecases/order/get-order.usecase';
 import { ListOrderUseCase } from '#/core/application/usecases/order/list-order.usecase';
 import { UpdateOrderUseCase } from '#/core/application/usecases/order/update-order.usecase';
 // import { CreatePaymentUseCase } from '#/core/application/usecases/payment/create-payment.usecase';
+import { globalPrismaClient } from '#/database/prisma';
 import { OrderCreateDto, OrderListRequestDto, OrderUpdateDto } from '#/infrastructure/adapters/dto/order.dto';
 import { PrismaOrderRepository } from '#/infrastructure/persistence/prisma/prisma-order.repository';
 // import { PrismaPaymentRepository } from '#/infrastructure/persistence/prisma/prisma-payment.repository';
@@ -16,7 +18,7 @@ export class OrderController {
     // private readonly paymentRepository: PrismaPaymentRepository;
 
     constructor() {
-        this.repository = new PrismaOrderRepository(new PrismaClient());
+        this.repository = new PrismaOrderRepository(globalPrismaClient);
         // this.paymentRepository = new PrismaPaymentRepository(new PrismaClient());
     }
 
@@ -70,5 +72,15 @@ export class OrderController {
         const result = await useCase.execute(id, body);
 
         return reply.status(200).send(result);
+    }
+
+    async destroy(request: FastifyRequest, reply: FastifyReply) {
+        const { id } = request.params as { id: string };
+
+        const useCase = new DeleteOrderUseCase(this.repository);
+
+        await useCase.execute(id);
+
+        return reply.status(200).send({ message: 'Order deleted successfully' });
     }
 }

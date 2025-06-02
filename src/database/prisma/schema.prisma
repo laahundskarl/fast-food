@@ -34,7 +34,7 @@ model Order {
     updatedAt DateTime  @updatedAt @map("updated_at")
     deletedAt DateTime? @map("deleted_at")
 
-    client        Client?        @relation(fields: [clientId], references: [id])
+    client        Client?        @relation(fields: [clientId], references: [id], onDelete: Cascade)
     orderProducts OrderProduct[]
     payments      Payment[]
 
@@ -52,8 +52,8 @@ model OrderProduct {
     updatedAt DateTime  @updatedAt @map("updated_at")
     deletedAt DateTime? @map("deleted_at")
 
-    order   Order   @relation(fields: [orderId], references: [id])
-    product Product @relation(fields: [productId], references: [id])
+    order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
     @@map("order_product")
 }
@@ -69,7 +69,7 @@ model Payment {
     updatedAt DateTime  @updatedAt @map("updated_at")
     deletedAt DateTime? @map("deleted_at")
 
-    order Order @relation(fields: [orderId], references: [id])
+    order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
     @@map("payment")
 }
@@ -98,7 +98,7 @@ model Product {
     updatedAt DateTime  @updatedAt @map("updated_at")
     deletedAt DateTime? @map("deleted_at")
 
-    category      ProductCategory @relation(fields: [categoryId], references: [id])
+    category      ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
     orderProducts OrderProduct[]
 
     @@map("product")

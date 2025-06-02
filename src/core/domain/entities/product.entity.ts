@@ -6,6 +6,7 @@ export class Product {
         public value: number,
         public description: string | null,
         public readonly id?: string,
+        public categoryId?: string,
         public category?: ProductCategory,
     ) {}
 }

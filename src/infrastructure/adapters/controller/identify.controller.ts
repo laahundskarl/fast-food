@@ -1,14 +1,14 @@
-import { PrismaClient } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { IdentifyUseCase } from '#/core/application/usecases/identify/identify.usecase';
+import { globalPrismaClient } from '#/database/prisma';
 import { PrismaClientRepository } from '#/infrastructure/persistence/prisma/prisma-client.repository';
 
 export class IdentifyController {
     private readonly repository: PrismaClientRepository;
 
     constructor() {
-        this.repository = new PrismaClientRepository(new PrismaClient());
+        this.repository = new PrismaClientRepository(globalPrismaClient);
     }
 
     async get(request: FastifyRequest<{ Params: { cpf: string } }>, reply: FastifyReply) {

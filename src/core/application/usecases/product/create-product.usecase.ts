@@ -6,7 +6,13 @@ export class CreateProductUseCase {
     constructor(private readonly productRepository: ProductRepository) {}
 
     async execute(request: ProductCreateDto): Promise<Product> {
-        const product = new Product(request.name, request.value, request.description ?? null);
+        const product = new Product(
+            request.name,
+            request.value,
+            request.description ?? null,
+            undefined,
+            request.categoryId,
+        );
         return await this.productRepository.create(product);
     }
 }
