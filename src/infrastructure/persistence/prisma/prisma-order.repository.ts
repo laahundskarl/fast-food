@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 import { Order } from '#/core/domain/entities/order.entity';
 import { OrderRepository } from '#/core/domain/repositories/order.repository';
-import { OrderListDto } from '#/infrastructure/adapters/dto/order.dto';
+import { OrderListDTO } from '#/infrastructure/adapters/dto/order-list.dto';
 import { PrismaOrderMapper } from '#/infrastructure/persistence/prisma/mapper/prisma-order.mapper';
 
 export class PrismaOrderRepository implements OrderRepository {
@@ -41,7 +41,7 @@ export class PrismaOrderRepository implements OrderRepository {
         return PrismaOrderMapper.toDomain(data);
     }
 
-    async list(query?: OrderListDto): Promise<Order[]> {
+    async list(query?: OrderListDTO): Promise<Order[]> {
         const data = await this.prisma.order.findMany({
             orderBy: {
                 createdAt: 'desc',

@@ -2,6 +2,13 @@ import { OrderStatus, StatusPayment } from '@prisma/client';
 
 import { OrderProduct } from '#/core/domain/entities/order-product.entity';
 
+export interface OrderListRequestDto {
+    status?: string;
+    clientId?: string;
+    productId?: string;
+    paymentStatus?: string;
+}
+
 export interface OrderListDto {
     status?: OrderStatus[];
     clientId?: string;

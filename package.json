@@ -5,7 +5,7 @@
     "main": "src/index.ts",
     "author": "Grupo 277",
     "scripts": {
-        "build": "npm run build:clean && tsup",
+        "build": "npm run build:clean",
         "build:clean": "rimraf dist",
         "dev": "tsx watch src/index.ts",
         "lint": "eslint ./src/**/*.ts",

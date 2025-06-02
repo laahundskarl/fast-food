@@ -1,4 +1,4 @@
-import { StatusPayment } from '#/core/domain/entities/payment.entity';
+import { StatusPayment } from '@prisma/client';
 
 export interface PaymentCreateDTO {
     orderId: string;

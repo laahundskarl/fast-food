@@ -1,21 +1,16 @@
-// import { Repository } from 'typeorm';
-// import { DataSource } from 'typeorm';
+import { PrismaClient } from '@prisma/client';
 
-// import { Payment } from '#/core/domain/entities/payment.entity';
-// import { PaymentRepository } from '#/core/domain/repositories/payment.repository';
-// import { AppDataSource } from '#/database/typeorm.config';
-// import { PaymentCreateDTO } from '#/infrastructure/adapters/dto/payment.dto';
+import { Payment } from '#/core/domain/entities/payment.entity';
+import { PaymentRepository } from '#/core/domain/repositories/payment.repository';
+import { PaymentCreateDTO } from '#/infrastructure/adapters/dto/payment.dto';
+import { PrismaPaymentMapper } from '#/infrastructure/persistence/prisma/mapper/prisma-payment.mapper';
 
-// export class TypeormPaymentRepository implements PaymentRepository {
-//     private dataSource: DataSource;
-//     private paymentRepository: Repository<Payment>;
+export class PrismaPaymentRepository implements PaymentRepository {
+    constructor(private readonly prisma: PrismaClient) {}
 
-//     public constructor() {
-//         this.dataSource = AppDataSource;
-//         this.paymentRepository = this.dataSource.getRepository(Payment);
-//     }
-
-//     create(payment: PaymentCreateDTO): Promise<any> {
-//         return this.paymentRepository.save(payment);
-//     }
-// }
+    async create(payment: Payment): Promise<Payment> {
+        return this.prisma.payment.create({
+            data: PrismaPaymentMapper.toCreate(payment),
+        });
+    }
+}
