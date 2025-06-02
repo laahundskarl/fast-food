@@ -10,10 +10,10 @@ import { ClientWithRelations } from '#/infrastructure/persistence/prisma/types/c
 export class PrismaClientMapper {
     static toDomain(data: ClientWithRelations): Client {
         return new Client(
-            data.id,
             data.name,
             data.cpf,
             data.email,
+            data.id,
             data.orders?.map(
                 item =>
                     new Order(

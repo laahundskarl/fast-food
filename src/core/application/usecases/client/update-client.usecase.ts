@@ -13,8 +13,8 @@ export class UpdateClientUseCase {
         }
         const updateClient = new Client(
             request.name ?? client.name,
-            request.email ?? client.email,
             request.cpf ?? client.cpf,
+            request.email ?? client.email,
         );
         return await this.clientRepository.update(client.id!, updateClient);
     }
