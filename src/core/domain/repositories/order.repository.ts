@@ -1,9 +1,10 @@
-import { OrderCreateDTO, OrderListDTO, OrderUpdateDTO } from '#/infrastructure/adapters/dto/order-list.dto';
+import { Order } from '#/core/domain/entities/order.entity';
+import { OrderListDto } from '#/infrastructure/adapters/dto/order.dto';
 
 export interface OrderRepository {
-    list(query?: OrderListDTO): Promise<any>;
-    get(id: string): Promise<any>;
-    create(order: OrderCreateDTO): Promise<any>;
-    update(id: string, order: OrderUpdateDTO): Promise<any>;
+    create(order: Order): Promise<Order>;
+    findById(id: string): Promise<Order | null>;
+    list(query?: OrderListDto): Promise<Order[]>;
+    update(id: string, order: Order): Promise<Order>;
     destroy(id: string): Promise<void>;
 }

@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 
 import { ProductCategory } from '#/core/domain/entities/product-category.entity';
-import { Product } from '#/core/domain/entities/product.entity';
 import { ProductCategoryRepository } from '#/core/domain/repositories/product-category.repository';
 import { ProductCategoryListDto } from '#/infrastructure/adapters/dto/product-category.dto';
+import { PrismaProductCategoryMapper } from '#/infrastructure/persistence/prisma/mapper/prisma-product-category.mapper';
 
 export class PrismaProductCategoryRepository implements ProductCategoryRepository {
     constructor(private readonly prisma: PrismaClient) {}
@@ -16,11 +16,7 @@ export class PrismaProductCategoryRepository implements ProductCategoryRepositor
             },
         });
         if (!data) return null;
-        return new ProductCategory(
-            data.id,
-            data.name,
-            data.products.map(product => new Product(product.id, product.name, product.value, product.description)),
-        );
+        return PrismaProductCategoryMapper.toDomain(data);
     }
 
     async list(query?: ProductCategoryListDto): Promise<ProductCategory[]> {
@@ -32,15 +28,6 @@ export class PrismaProductCategoryRepository implements ProductCategoryRepositor
                 products: true,
             },
         });
-        return data.map(
-            item =>
-                new ProductCategory(
-                    item.id,
-                    item.name,
-                    item.products.map(
-                        product => new Product(product.id, product.name, product.value, product.description),
-                    ),
-                ),
-        );
+        return data.map(item => PrismaProductCategoryMapper.toDomain(item));
     }
 }

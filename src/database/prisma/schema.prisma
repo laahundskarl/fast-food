@@ -28,7 +28,7 @@ model Order {
     clientId    String?     @map("client_id") @db.Char(36)
     value       Int
     orderNumber Int         @unique @default(autoincrement()) @map("order_number")
-    status      OrderStatus
+    status      OrderStatus @default(WAITING)
 
     createdAt DateTime  @default(now()) @map("created_at")
     updatedAt DateTime  @updatedAt @map("updated_at")
@@ -61,7 +61,7 @@ model OrderProduct {
 model Payment {
     id                String        @id @default(uuid())
     orderId           String        @map("order_id") @db.Char(36)
-    status            StatusPayment
+    status            StatusPayment @default(PENDING)
     externalReference String?       @map("external_reference") @db.VarChar(100)
     qrCode            String?       @map("qr_code")
 
@@ -108,11 +108,11 @@ enum OrderStatus {
     WAITING
     IN_PROGRESS
     READY
+    CANCELED
 }
 
 enum StatusPayment {
     PENDING
-    PROCESSING
     APPROVED
     REJECTED
 }
