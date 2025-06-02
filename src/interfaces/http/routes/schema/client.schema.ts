@@ -1,4 +1,7 @@
-import { validatorCreateClient, validatorUpdateClient } from '#/interfaces/http/routes/schema/validator/client.validator';
+import {
+    validatorCreateClient,
+    validatorUpdateClient,
+} from '#/interfaces/http/routes/schema/validator/client.validator';
 
 export const schemaCreateClient = {
     summary: 'Register client',
