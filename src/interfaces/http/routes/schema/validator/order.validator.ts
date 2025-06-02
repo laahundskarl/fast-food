@@ -1,7 +1,6 @@
 import z from 'zod';
 
 const messages = {
-    client_required: 'ClientId is required',
     product_required: 'ProductId is required',
     quantity_required: 'Quantity is required',
     quantity_zero: 'The quantity must be greater than zero',
@@ -9,7 +8,7 @@ const messages = {
 };
 
 export const validatorCreateOrder = z.object({
-    clientId: z.string({ required_error: messages.client_required }),
+    clientId: z.string().optional(),
     orderProducts: z
         .array(
             z.object({

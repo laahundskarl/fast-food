@@ -1,4 +1,4 @@
-import { Prisma, StatusPayment, Order as PrismaOrder } from '@prisma/client';
+import { Prisma, Order as PrismaOrder } from '@prisma/client';
 
 import { OrderProduct } from '#/core/domain/entities/order-product.entity';
 import { Order } from '#/core/domain/entities/order.entity';
@@ -44,11 +44,11 @@ export class PrismaOrderMapper {
     static toCreate(data: Order): Prisma.OrderCreateInput {
         return {
             value: data.value,
-            client: {
-                connect: {
-                    id: data.clientId,
+            ...(data.clientId && {
+                client: {
+                    connect: { id: data.clientId },
                 },
-            },
+            }),
             orderProducts: {
                 create: data.orderProducts?.map(item => ({
                     amount: item.amount,
@@ -59,11 +59,10 @@ export class PrismaOrderMapper {
                 })),
             },
             payments: {
-                create: {
-                    status: StatusPayment.PENDING,
-                    externalReference: 'mocked-external-reference',
-                    qrCode: 'mocked-qr-code',
-                },
+                create: data.payments?.map(item => ({
+                    qrCode: item.qrCode,
+                    externalReference: item.externalReference,
+                })),
             },
         };
     }
