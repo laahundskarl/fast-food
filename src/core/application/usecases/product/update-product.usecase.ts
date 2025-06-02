@@ -15,6 +15,7 @@ export class UpdateProductUseCase {
             request.name ?? product.name,
             request.value ?? product.value,
             request.description ?? product.description,
+            request.categoryId ?? product.category?.id,
         );
         return await this.productRepository.update(id, updateProduct);
     }

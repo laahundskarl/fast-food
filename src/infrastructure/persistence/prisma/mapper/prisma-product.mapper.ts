@@ -10,9 +10,9 @@ export class PrismaProductMapper {
             data.name,
             data.value,
             data.description,
+            undefined,
             data.id,
-            data.categoryId,
-            new ProductCategory(data.category.id, data.category.name),
+            new ProductCategory(data.category.name, data.category.id),
         );
     }
 
@@ -33,7 +33,7 @@ export class PrismaProductMapper {
             value: data.value,
             description: data.description,
             category: {
-                connect: { id: data.category?.id },
+                connect: { id: data.categoryId },
             },
         };
     }

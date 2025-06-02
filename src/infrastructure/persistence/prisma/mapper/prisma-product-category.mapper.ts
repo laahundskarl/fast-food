@@ -7,7 +7,9 @@ export class PrismaProductCategoryMapper {
         return new ProductCategory(
             data.name,
             data.id,
-            data.products.map(product => new Product(product.name, product.value, product.description, product.id)),
+            data.products.map(
+                product => new Product(product.name, product.value, product.description, undefined, product.id),
+            ),
         );
     }
 }

@@ -9,7 +9,6 @@ export class PrismaProductRepository implements ProductRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     async create(product: Product): Promise<Product> {
-        console.log(product);
         const data = await this.prisma.product.create({
             data: PrismaProductMapper.toCreate(product),
             include: {
