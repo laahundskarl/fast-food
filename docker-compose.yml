@@ -12,7 +12,6 @@ services:
       - "${DATABASE_PORT:-3306}:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./scripts/fastfood.sql:/docker-entrypoint-initdb.d/fastfood.sql
 
   api-dev:
     image: node:22-alpine
@@ -20,11 +19,12 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - ./wait-for.sh:/wait-for.sh
     ports:
       - "${PORT:-3000}:${PORT:-3000}"
     env_file:
       - .env
-    command: sh -c "npm ci && npm run dev"
+    command: sh -c "/wait-for.sh $DATABASE_HOST:$DATABASE_PORT -- npx prisma migrate deploy && npm ci && npx prisma generate && npm run dev"
     depends_on:
       - db
 
