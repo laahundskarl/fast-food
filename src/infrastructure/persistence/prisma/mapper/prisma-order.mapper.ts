@@ -1,4 +1,4 @@
-import { Prisma, StatusPayment } from '@prisma/client';
+import { Prisma, StatusPayment, Order as PrismaOrder } from '@prisma/client';
 
 import { OrderProduct } from '#/core/domain/entities/order-product.entity';
 import { Order } from '#/core/domain/entities/order.entity';
@@ -35,6 +35,10 @@ export class PrismaOrderMapper {
                 payment => new Payment(payment.externalReference, payment.qrCode, payment.status, payment.id),
             ),
         );
+    }
+
+    static toDomainWithoutRelations(data: PrismaOrder): Order {
+        return new Order(data.value, data.status, data.orderNumber, data.clientId!, data.id, undefined);
     }
 
     static toCreate(data: Order): Prisma.OrderCreateInput {
