@@ -5,7 +5,8 @@ import { ProductCreateDto } from '#/infrastructure/adapters/dto/product.dto';
 export class CreateProductUseCase {
     constructor(private readonly productRepository: ProductRepository) {}
 
-    async execute(product: ProductCreateDto): Promise<Product> {
+    async execute(request: ProductCreateDto): Promise<Product> {
+        const product = new Product(request.name, request.value, request.description ?? null);
         return await this.productRepository.create(product);
     }
 }
