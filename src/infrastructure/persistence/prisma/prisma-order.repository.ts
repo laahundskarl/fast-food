@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 import { Order } from '#/core/domain/entities/order.entity';
 import { OrderRepository } from '#/core/domain/repositories/order.repository';
+import { NotFoundError } from '#/core/shared/errors/app-error';
 import { OrderListDTO } from '#/infrastructure/adapters/dto/order-list.dto';
 import { PrismaOrderMapper } from '#/infrastructure/persistence/prisma/mapper/prisma-order.mapper';
 
@@ -97,6 +98,12 @@ export class PrismaOrderRepository implements OrderRepository {
     }
 
     async destroy(id: string): Promise<void> {
+        const order = await this.prisma.order.findUnique({
+            where: { id },
+        });
+        if (!order) {
+            throw new NotFoundError('Order not found');
+        }
         await this.prisma.order.delete({
             where: { id },
         });
