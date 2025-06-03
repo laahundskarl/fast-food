@@ -131,6 +131,8 @@ Para executar manualmente as migrations:
 ```bash
     npm run prisma:generate
 ```
+
+OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão sendo populados com algumas informações
 ---
 
 ## API Endpoints
