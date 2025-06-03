@@ -4,6 +4,7 @@ export interface ClientRepository {
     create(client: Client): Promise<Client>;
     findWithOrders(id: string): Promise<Client | null>;
     findByCpf(cpf: string): Promise<Client | null>;
+    findByCpfOrEmail(cpf: string, email: string): Promise<Client | null>;
     update(id: string, client: Client): Promise<Client>;
     destroy(cpf: string): Promise<void>;
 }

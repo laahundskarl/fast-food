@@ -7,9 +7,10 @@ export class CreateClientUseCase {
     constructor(private readonly clientRepository: ClientRepository) {}
 
     async execute(request: ClientCreateDto): Promise<Client> {
-        const alreadyExists = await this.clientRepository.findByCpf(request.cpf);
+        const alreadyExists = await this.clientRepository.findByCpfOrEmail(request.cpf, request.email);
+        const conflictingField = alreadyExists?.cpf === request.cpf ? 'cpf' : 'email';
         if (alreadyExists) {
-            throw new ConflictError('Client already exists with this cpf.');
+            throw new ConflictError(`Client already exists with this ${conflictingField}.`);
         }
         const client = new Client(request.name, request.cpf, request.email);
         return await this.clientRepository.create(client);

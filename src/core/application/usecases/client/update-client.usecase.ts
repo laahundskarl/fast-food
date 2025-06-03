@@ -1,6 +1,6 @@
 import { Client } from '#/core/domain/entities/client.entity';
 import { ClientRepository } from '#/core/domain/repositories/client.repository';
-import { NotFoundError } from '#/core/shared/errors/app-error';
+import { ConflictError, NotFoundError } from '#/core/shared/errors/app-error';
 import { ClientUpdateDto } from '#/infrastructure/adapters/dto/client.dto';
 
 export class UpdateClientUseCase {
@@ -8,8 +8,13 @@ export class UpdateClientUseCase {
 
     async execute(cpf: string, request: ClientUpdateDto): Promise<Client> {
         const client = await this.clientRepository.findByCpf(cpf);
+        const alreadyExists = await this.clientRepository.findByCpfOrEmail(request.cpf ?? '', request.email ?? '');
+        const conflictingField = alreadyExists?.cpf === request.cpf ? 'cpf' : 'email';
         if (!client) {
             throw new NotFoundError('Client not found');
+        }
+        if (alreadyExists && alreadyExists.id !== client.id) {
+            throw new ConflictError(`Client already exists with this ${conflictingField}.`);
         }
         const updateClient = new Client(
             request.name ?? client.name,

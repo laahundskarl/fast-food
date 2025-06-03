@@ -22,6 +22,16 @@ export class PrismaClientRepository implements ClientRepository {
         return PrismaClientMapper.toDomain(data);
     }
 
+    async findByCpfOrEmail(cpf: string, email: string): Promise<Client | null> {
+        const data = await this.prisma.client.findFirst({
+            where: {
+                OR: [{ cpf }, { email }],
+            },
+        });
+        if (!data) return null;
+        return PrismaClientMapper.toDomain(data);
+    }
+
     async findWithOrders(cpf: string): Promise<Client | null> {
         const data = await this.prisma.client.findUnique({
             where: { cpf },
