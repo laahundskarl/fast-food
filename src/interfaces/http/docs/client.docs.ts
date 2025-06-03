@@ -67,6 +67,8 @@ export const clientDeleteSchema = {
             200: z.object({
                 message: z.string(),
             }),
+            404: errorNotFoundSchema,
+            400: errorResponseValidationSchema,
         },
     },
 };

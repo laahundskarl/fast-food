@@ -15,7 +15,7 @@ export class PrismaClientRepository implements ClientRepository {
     }
 
     async findByCpf(cpf: string): Promise<Client | null> {
-        const data = await this.prisma.client.findUnique({
+        const data = await this.prisma.client.findFirst({
             where: { cpf },
         });
         if (!data) return null;

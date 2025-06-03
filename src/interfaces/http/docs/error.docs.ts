@@ -14,6 +14,6 @@ export const errorResponseValidationSchema = z.object({
 });
 
 export const errorNotFoundSchema = z.object({
-    error: z.literal('Bad Request').describe('Tipo de erro HTTP'),
+    error: z.literal('Not Found').describe('Tipo de erro HTTP'),
     message: z.string().describe('Mensagem geral do erro'),
 });
