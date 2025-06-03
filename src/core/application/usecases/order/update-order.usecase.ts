@@ -50,7 +50,6 @@ export class UpdateOrderUseCase {
             return await this.orderRepository.updateOrderProducts(id, updateOrder);
         }
 
-        console.log(request);
         const updateOrder = new Order(
             order.value,
             request.status ? OrderStatus[request.status as OrderStatus] : order.status,
