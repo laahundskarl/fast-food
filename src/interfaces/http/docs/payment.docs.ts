@@ -1,3 +1,4 @@
+import { StatusPayment } from '@prisma/client';
 import z from 'zod';
 
 import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/util.docs';
@@ -39,10 +40,7 @@ export const paymentUpdateSchema = {
         tags: ['Pagamentos'],
         summary: 'Atualiza pagamento',
         body: z.object({
-            name: z.string().optional(),
-            description: z.string().optional(),
-            value: z.number().optional(),
-            categoryId: z.string().uuid().optional(),
+            status: z.enum([StatusPayment.PENDING, StatusPayment.APPROVED, StatusPayment.REJECTED]),
         }),
         params: z.object({
             id: z.string().uuid(),
