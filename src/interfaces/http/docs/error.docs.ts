@@ -17,3 +17,8 @@ export const errorNotFoundSchema = z.object({
     error: z.literal('Not Found').describe('Tipo de erro HTTP'),
     message: z.string().describe('Mensagem geral do erro'),
 });
+
+export const errorConflictSchema = z.object({
+    error: z.literal('Error').describe('Tipo de erro HTTP'),
+    message: z.string().describe('Mensagem geral do erro'),
+});

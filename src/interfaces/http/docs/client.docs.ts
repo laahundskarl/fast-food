@@ -1,6 +1,10 @@
 import z from 'zod';
 
-import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/error.docs';
+import {
+    errorConflictSchema,
+    errorNotFoundSchema,
+    errorResponseValidationSchema,
+} from '#/interfaces/http/docs/error.docs';
 import {
     clientResponseSchema,
     clientWithOrderResponseSchema,
@@ -17,6 +21,7 @@ export const clientCreateDocs = {
         response: {
             201: clientResponseSchema,
             400: errorResponseValidationSchema,
+            409: errorConflictSchema,
         },
     },
 };
