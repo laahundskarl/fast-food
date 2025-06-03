@@ -1,5 +1,8 @@
 import z from 'zod';
 
+import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/error.docs';
+import { productDeleteResponseSchema, productResponseSchema } from '#/interfaces/http/schema/product.schema';
+
 export const productCreateSchema = {
     schema: {
         tags: ['Produtos'],
@@ -8,8 +11,12 @@ export const productCreateSchema = {
             name: z.string(),
             description: z.string().optional(),
             value: z.number(),
-            categoryId: z.string(),
+            categoryId: z.string().uuid(),
         }),
+        response: {
+            201: productResponseSchema,
+            400: errorResponseValidationSchema,
+        },
     },
 };
 
@@ -18,8 +25,12 @@ export const productGetSchema = {
         tags: ['Produtos'],
         summary: 'Busca produto',
         params: z.object({
-            id: z.string(),
+            id: z.string().uuid(),
         }),
+        response: {
+            200: productResponseSchema,
+            404: errorNotFoundSchema,
+        },
     },
 };
 
@@ -29,9 +40,12 @@ export const productListSchema = {
         summary: 'Lista produto',
         query: z.object({
             name: z.string().optional(),
-            categoryId: z.string().optional(),
-            productId: z.string().optional(),
+            categoryId: z.string().uuid().optional(),
+            productId: z.string().uuid().optional(),
         }),
+        response: {
+            200: z.array(productResponseSchema),
+        },
     },
 };
 
@@ -43,11 +57,16 @@ export const productUpdateSchema = {
             name: z.string().optional(),
             description: z.string().optional(),
             value: z.number().optional(),
-            categoryId: z.string().optional(),
-            params: z.object({
-                id: z.string().uuid(),
-            }),
+            categoryId: z.string().uuid().optional(),
         }),
+        params: z.object({
+            id: z.string().uuid(),
+        }),
+        response: {
+            200: productResponseSchema,
+            404: errorNotFoundSchema,
+            400: errorResponseValidationSchema,
+        },
     },
 };
 
@@ -58,5 +77,9 @@ export const productDeleteSchema = {
         params: z.object({
             id: z.string().uuid(),
         }),
+        response: {
+            404: errorNotFoundSchema,
+            200: productDeleteResponseSchema,
+        },
     },
 };
