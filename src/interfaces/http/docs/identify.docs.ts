@@ -1,4 +1,4 @@
-import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/error.docs';
+import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/util.docs';
 import { clientResponseSchema } from '#/interfaces/http/schema/client.schema';
 import { validatorIdentify } from '#/interfaces/http/validator/identify.validator';
 

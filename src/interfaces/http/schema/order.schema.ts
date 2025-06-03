@@ -43,6 +43,7 @@ export const orderProductSchema = z.object({
 });
 
 export const orderResponseSchema = z.object({
+    id: z.string().uuid().optional(),
     value: z.number(),
     orderNumber: z.number(),
     status: z.string(),

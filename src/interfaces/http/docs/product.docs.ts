@@ -1,7 +1,11 @@
 import z from 'zod';
 
-import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/error.docs';
-import { productDeleteResponseSchema, productResponseSchema } from '#/interfaces/http/schema/product.schema';
+import {
+    deleteResponseSchema,
+    errorNotFoundSchema,
+    errorResponseValidationSchema,
+} from '#/interfaces/http/docs/util.docs';
+import { productResponseSchema } from '#/interfaces/http/schema/product.schema';
 
 export const productCreateSchema = {
     schema: {
@@ -78,8 +82,8 @@ export const productDeleteSchema = {
             id: z.string().uuid(),
         }),
         response: {
+            200: deleteResponseSchema,
             404: errorNotFoundSchema,
-            200: productDeleteResponseSchema,
         },
     },
 };

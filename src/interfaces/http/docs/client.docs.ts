@@ -1,10 +1,9 @@
-import z from 'zod';
-
 import {
+    deleteResponseSchema,
     errorConflictSchema,
     errorNotFoundSchema,
     errorResponseValidationSchema,
-} from '#/interfaces/http/docs/error.docs';
+} from '#/interfaces/http/docs/util.docs';
 import {
     clientResponseSchema,
     clientWithOrderResponseSchema,
@@ -69,11 +68,8 @@ export const clientDeleteSchema = {
         summary: 'Deletar cliente',
         params: validatorParams,
         response: {
-            200: z.object({
-                message: z.string(),
-            }),
+            200: deleteResponseSchema,
             404: errorNotFoundSchema,
-            400: errorResponseValidationSchema,
         },
     },
 };

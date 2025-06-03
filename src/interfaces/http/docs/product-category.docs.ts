@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/error.docs';
+import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/util.docs';
 import { productCategoryResponseSchema } from '#/interfaces/http/schema/product-category.schema';
 
 export const productCategoryGetSchema = {
