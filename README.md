@@ -171,6 +171,9 @@ OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão 
 
 ---
 
+## Vídeo
+[Disponível no Google Drive](https://drive.google.com/file/d/1g7Sn-VOfrwDRkErXO3EoisZLAg4psrhD/view)
+
 ## 🧑‍💻 Contribuidores
 
 - Grupo 277 — Tech Challenge
@@ -178,4 +181,3 @@ OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão 
     - RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1 - Discord - gabrielgsd
     - RM 364043 - Willian Borba - GitHub - WillianBorba - Discord - willianrocha
     - RM 362223 - Fabio Smaniotto - GitHub - fabiosb - Discord - ofabiosb
-
