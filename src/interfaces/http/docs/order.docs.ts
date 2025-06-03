@@ -1,19 +1,19 @@
 import z from 'zod';
 
-import { validatorCreateOrder, validatorUpdateOrder } from '#/interfaces/http/routes/schema/validator/order.validator';
+import { validatorCreateOrder, validatorUpdateOrder } from '#/interfaces/http/schema/order.schema';
 
 export const orderCreateSchema = {
-    summary: 'Create Order',
-    tags: ['order'],
     schema: {
+        tags: ['Pedidos'],
+        summary: 'Cria pedido',
         body: validatorCreateOrder,
     },
 };
 
 export const orderGetSchema = {
-    summary: 'Get Order',
-    tags: ['order'],
     schema: {
+        tags: ['Pedidos'],
+        summary: 'Busca pedido',
         params: z.object({
             id: z.string(),
         }),
@@ -21,25 +21,27 @@ export const orderGetSchema = {
 };
 
 export const orderListSchema = {
-    summary: 'List Order',
-    tags: ['order'],
-    schema: z.object({
-        orderId: z.string(),
-    }),
+    schema: {
+        tags: ['Pedidos'],
+        summary: 'Lista pedidos',
+        query: z.object({
+            orderId: z.string(),
+        }),
+    },
 };
 
 export const orderUpdateSchema = {
-    summary: 'Update Order',
-    tags: ['order'],
     schema: {
+        tags: ['Pedidos'],
+        summary: 'Atualiza pedido',
         body: validatorUpdateOrder,
     },
 };
 
 export const orderDeleteSchema = {
-    summary: 'Delete Order',
-    tags: ['order'],
     schema: {
+        tags: ['Pedidos'],
+        summary: 'Deleta pedido',
         params: z.object({
             id: z.string().uuid(),
         }),

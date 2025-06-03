@@ -1,5 +1,5 @@
 import { env } from '#/config/env';
-import { buildApp } from '#/interfaces/http/app';
+import { buildApp } from '#/interfaces/app';
 
 export async function startServer() {
     const app = buildApp();

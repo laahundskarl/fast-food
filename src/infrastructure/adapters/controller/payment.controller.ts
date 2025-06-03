@@ -3,13 +3,19 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { FindPaymentByIdUseCase } from '#/core/application/usecases/payment/find-payment.usecase';
 import { ListPaymentUseCase } from '#/core/application/usecases/payment/list-payment.usecase';
 import { UpdatePaymentUseCase } from '#/core/application/usecases/payment/update-payment-usecase';
-import { PaymentRepository } from '#/core/domain/repositories/payment.repository';
 import { globalPrismaClient } from '#/database/prisma';
 import { PaymentListDto, PaymentUpdateDto } from '#/infrastructure/adapters/dto/payment.dto';
 import { PrismaOrderRepository } from '#/infrastructure/persistence/prisma/prisma-order.repository';
+import { PrismaPaymentRepository } from '#/infrastructure/persistence/prisma/prisma-payment.repository';
 
 export class PaymentController {
-    constructor(private readonly paymentRepository: PaymentRepository) {}
+    private readonly paymentRepository: PrismaPaymentRepository;
+    private readonly orderRepository: PrismaOrderRepository;
+
+    constructor() {
+        this.paymentRepository = new PrismaPaymentRepository(globalPrismaClient);
+        this.orderRepository = new PrismaOrderRepository(globalPrismaClient);
+    }
 
     async list(request: FastifyRequest<{ Querystring: PaymentListDto }>, reply: FastifyReply) {
         const useCase = new ListPaymentUseCase(this.paymentRepository);
@@ -18,7 +24,7 @@ export class PaymentController {
     }
 
     async update(request: FastifyRequest<{ Params: { id: string }; Body: PaymentUpdateDto }>, reply: FastifyReply) {
-        const useCase = new UpdatePaymentUseCase(this.paymentRepository, new PrismaOrderRepository(globalPrismaClient));
+        const useCase = new UpdatePaymentUseCase(this.paymentRepository, this.orderRepository);
         const payment = await useCase.execute(request.params.id, request.body);
         return reply.send(payment);
     }

@@ -7,7 +7,7 @@ import {
     orderGetSchema,
     orderListSchema,
     orderUpdateSchema,
-} from '#/interfaces/http/routes/schema/order.schema';
+} from '#/interfaces/http/docs/order.docs';
 
 export const orderRoute = (app: FastifyInstance) => {
     const controller = new OrderController();

@@ -2,18 +2,18 @@ import { FastifyInstance } from 'fastify';
 
 import { ClientController } from '#/infrastructure/adapters/controller/client.controller';
 import {
-    createClientSchema,
-    deleteClientSchema,
-    getClientSchema,
-    getClientWithOrdersSchema,
-    updateClientSchema,
-} from '#/interfaces/http/routes/schema/client.schema';
+    clientCreateDocs,
+    clientGetSchema,
+    clientGetWithOrdersSchema,
+    clientUpdateSchema,
+    clientDeleteSchema,
+} from '#/interfaces/http/docs/client.docs';
 
 export const clientRoute = (app: FastifyInstance) => {
     const controller = new ClientController();
-    app.post('/', createClientSchema, controller.create.bind(controller));
-    app.get('/:cpf', getClientSchema, controller.get.bind(controller));
-    app.get('/orders/:cpf', getClientWithOrdersSchema, controller.getWithOrders.bind(controller));
-    app.patch('/:cpf', updateClientSchema, controller.update.bind(controller));
-    app.delete('/:cpf', deleteClientSchema, controller.delete.bind(controller));
+    app.post('/', clientCreateDocs, controller.create.bind(controller));
+    app.get('/:cpf', clientGetSchema, controller.get.bind(controller));
+    app.get('/orders/:cpf', clientGetWithOrdersSchema, controller.getWithOrders.bind(controller));
+    app.patch('/:cpf', clientUpdateSchema, controller.update.bind(controller));
+    app.delete('/:cpf', clientDeleteSchema, controller.delete.bind(controller));
 };

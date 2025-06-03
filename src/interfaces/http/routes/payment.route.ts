@@ -1,12 +1,11 @@
 import { FastifyInstance } from 'fastify';
 
-import { globalPrismaClient } from '#/database/prisma';
 import { PaymentController } from '#/infrastructure/adapters/controller/payment.controller';
-import { PrismaPaymentRepository } from '#/infrastructure/persistence/prisma/prisma-payment.repository';
+import { paymentGetSchema, paymentListSchema, paymentUpdateSchema } from '#/interfaces/http/docs/payment.docs';
 
 export const paymentRoute = (app: FastifyInstance) => {
-    const controller = new PaymentController(new PrismaPaymentRepository(globalPrismaClient));
-    app.get('/', controller.list.bind(controller));
-    app.patch('/:id', controller.update.bind(controller));
-    app.get('/:id', controller.findById.bind(controller));
+    const controller = new PaymentController();
+    app.get('/:id', paymentGetSchema, controller.findById.bind(controller));
+    app.get('/', paymentListSchema, controller.list.bind(controller));
+    app.patch('/:id', paymentUpdateSchema, controller.update.bind(controller));
 };

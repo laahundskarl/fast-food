@@ -1,10 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
 import { ProductCategoryController } from '#/infrastructure/adapters/controller/product-category.controller';
-import {
-    productCategoryGetSchema,
-    productCategoryListSchema,
-} from '#/interfaces/http/routes/schema/product-category.schema';
+import { productCategoryGetSchema, productCategoryListSchema } from '#/interfaces/http/docs/product-category.docs';
 
 export function productCategoryRoutes(app: FastifyInstance) {
     const controller = new ProductCategoryController();

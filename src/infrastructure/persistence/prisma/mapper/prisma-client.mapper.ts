@@ -18,15 +18,17 @@ export class PrismaClientMapper {
                 item =>
                     new Order(
                         item.value,
-                        item.orderNumber,
                         item.status,
+                        item.orderNumber,
                         item.id,
+                        undefined,
                         undefined,
                         item.orderProducts.map(
                             orderProduct =>
                                 new OrderProduct(
                                     orderProduct.amount,
                                     orderProduct.value,
+                                    undefined,
                                     orderProduct.id,
                                     new Product(
                                         orderProduct.product.name,
@@ -38,7 +40,7 @@ export class PrismaClientMapper {
                         ),
                         item.payments.map(
                             payment =>
-                                new Payment(payment.status, payment.externalReference, payment.qrCode, payment.id),
+                                new Payment(payment.externalReference, payment.qrCode, payment.status, payment.id),
                         ),
                     ),
             ),
