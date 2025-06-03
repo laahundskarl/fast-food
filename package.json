@@ -29,7 +29,7 @@
     },
     "prisma": {
         "schema": "src/database/prisma/schema.prisma",
-        "seed": "tsx src/database/prisma/seeds/seed.ts"
+        "seed": "node dist/database/prisma/seeds/seed.js"
     },
     "dependencies": {
         "@fastify/cors": "^11.0.1",

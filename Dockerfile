@@ -32,4 +32,4 @@ RUN chmod +x /wait-for.sh
 
 ENV NODE_PATH=./dist
 
-CMD ["sh", "-c", "/wait-for.sh $DATABASE_HOST:$DATABASE_PORT -- npx prisma migrate deploy && node dist/index.js"]
+CMD ["sh", "-c", "/wait-for.sh $DATABASE_HOST:$DATABASE_PORT -- npx prisma migrate deploy && npm run prisma:seed && node dist/index.js"]
