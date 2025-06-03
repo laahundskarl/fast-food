@@ -1,0 +1,2343 @@
+{
+	"info": {
+		"_postman_id": "b56b5baa-da94-4f9c-8efd-5c90dfa65db9",
+		"name": "Fast-Food",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "447711"
+	},
+	"item": [
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cpf\": \"86373710009\",\n    \"name\": \"Teste\",\n    \"email\": \"teste@mail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/client",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get ",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/client/12345678902",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"client",
+								"12345678902"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Client Orders",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/client/orders/86373710009",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"client",
+								"orders",
+								"86373710009"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Teste\",\n    \"email\": \"teste@mail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/client/86373710009",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"client",
+								"86373710009"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/client/86373710009",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"client",
+								"86373710009"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product Category",
+			"item": [
+				{
+					"name": "Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/product-category/5df9f74a-7746-4dd5-9490-49718bf82e52",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product-category",
+								"5df9f74a-7746-4dd5-9490-49718bf82e52"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "175",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 14:54:02 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c\",\n  \"name\": \"Hambúrguer\",\n  \"createdAt\": \"2025-05-29T05:34:44.000Z\",\n  \"updatedAt\": \"2025-05-29T05:34:44.000Z\",\n  \"deletedAt\": null,\n  \"products\": []\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "175",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 14:54:02 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c\",\n  \"name\": \"Hambúrguer\",\n  \"createdAt\": \"2025-05-29T05:34:44.000Z\",\n  \"updatedAt\": \"2025-05-29T05:34:44.000Z\",\n  \"deletedAt\": null,\n  \"products\": []\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:13:51 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:13:51 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:13:51 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:13:51 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:13:51 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "188",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:14:01 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"name\": \"Sobremesa\",\n  \"id\": \"5b6c05d2-f120-4795-b46a-c4df2773ce7f\",\n  \"products\": [\n    {\n      \"name\": \"Sorvete\",\n      \"value\": 20,\n      \"description\": \"Sorvete de chocolate\",\n      \"id\": \"074f0c03-433f-49ae-825e-94745a92babb\"\n    }\n  ]\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "188",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:14:01 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"name\": \"Sobremesa\",\n  \"id\": \"5b6c05d2-f120-4795-b46a-c4df2773ce7f\",\n  \"products\": [\n    {\n      \"name\": \"Sorvete\",\n      \"value\": 20,\n      \"description\": \"Sorvete de chocolate\",\n      \"id\": \"074f0c03-433f-49ae-825e-94745a92babb\"\n    }\n  ]\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "188",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:14:01 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"name\": \"Sobremesa\",\n  \"id\": \"5b6c05d2-f120-4795-b46a-c4df2773ce7f\",\n  \"products\": [\n    {\n      \"name\": \"Sorvete\",\n      \"value\": 20,\n      \"description\": \"Sorvete de chocolate\",\n      \"id\": \"074f0c03-433f-49ae-825e-94745a92babb\"\n    }\n  ]\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "188",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:14:01 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"name\": \"Sobremesa\",\n  \"id\": \"5b6c05d2-f120-4795-b46a-c4df2773ce7f\",\n  \"products\": [\n    {\n      \"name\": \"Sorvete\",\n      \"value\": 20,\n      \"description\": \"Sorvete de chocolate\",\n      \"id\": \"074f0c03-433f-49ae-825e-94745a92babb\"\n    }\n  ]\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:35 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:35 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:35 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "52",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:35 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"Not Found\",\n  \"message\": \"Category not found\"\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "188",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:45 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"name\": \"Sobremesa\",\n  \"id\": \"0e1ef55d-2b65-46e5-af6c-e9b5fde06a02\",\n  \"products\": [\n    {\n      \"name\": \"Sorvete\",\n      \"value\": 20,\n      \"description\": \"Sorvete de chocolate\",\n      \"id\": \"07a9a617-7c3a-4828-ba3a-97c86ab216e9\"\n    }\n  ]\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "188",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:45 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"name\": \"Sobremesa\",\n  \"id\": \"0e1ef55d-2b65-46e5-af6c-e9b5fde06a02\",\n  \"products\": [\n    {\n      \"name\": \"Sorvete\",\n      \"value\": 20,\n      \"description\": \"Sorvete de chocolate\",\n      \"id\": \"07a9a617-7c3a-4828-ba3a-97c86ab216e9\"\n    }\n  ]\n}"
+						},
+						{
+							"name": "get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category/7b58a3de-3c35-11f0-8420-3ad7df3d5b9c",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category",
+										"7b58a3de-3c35-11f0-8420-3ad7df3d5b9c"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "188",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:45 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"name\": \"Sobremesa\",\n  \"id\": \"0e1ef55d-2b65-46e5-af6c-e9b5fde06a02\",\n  \"products\": [\n    {\n      \"name\": \"Sorvete\",\n      \"value\": 20,\n      \"description\": \"Sorvete de chocolate\",\n      \"id\": \"07a9a617-7c3a-4828-ba3a-97c86ab216e9\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/product-category?name=Sobremesa",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product-category"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Sobremesa"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "find",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "1668",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 15:34:31 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"32e23dd6-3ca2-11f0-881c-8a3c77e72eca\",\n    \"name\": \"Hambúrguer\",\n    \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n    \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n    \"deletedAt\": null,\n    \"products\": [\n      {\n        \"id\": \"32e2c1bc-3ca2-11f0-881c-8a3c77e72eca\",\n        \"name\": \"McChicken\",\n        \"value\": \"10\",\n        \"description\": null,\n        \"categoryId\": \"32e23dd6-3ca2-11f0-881c-8a3c77e72eca\",\n        \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n        \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n        \"deletedAt\": null\n      }\n    ]\n  },\n  {\n    \"id\": \"32e253e2-3ca2-11f0-881c-8a3c77e72eca\",\n    \"name\": \"Pizza\",\n    \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n    \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n    \"deletedAt\": null,\n    \"products\": [\n      {\n        \"id\": \"32e2db27-3ca2-11f0-881c-8a3c77e72eca\",\n        \"name\": \"Pizza calabresa\",\n        \"value\": \"10\",\n        \"description\": null,\n        \"categoryId\": \"32e253e2-3ca2-11f0-881c-8a3c77e72eca\",\n        \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n        \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n        \"deletedAt\": null\n      }\n    ]\n  },\n  {\n    \"id\": \"32e265f3-3ca2-11f0-881c-8a3c77e72eca\",\n    \"name\": \"Bebida\",\n    \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n    \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n    \"deletedAt\": null,\n    \"products\": [\n      {\n        \"id\": \"32e2f372-3ca2-11f0-881c-8a3c77e72eca\",\n        \"name\": \"Coca-cola\",\n        \"value\": \"10\",\n        \"description\": null,\n        \"categoryId\": \"32e265f3-3ca2-11f0-881c-8a3c77e72eca\",\n        \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n        \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n        \"deletedAt\": null\n      }\n    ]\n  },\n  {\n    \"id\": \"32e27960-3ca2-11f0-881c-8a3c77e72eca\",\n    \"name\": \"Sobremesa\",\n    \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n    \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n    \"deletedAt\": null,\n    \"products\": [\n      {\n        \"id\": \"32e30b92-3ca2-11f0-881c-8a3c77e72eca\",\n        \"name\": \"Sorvete\",\n        \"value\": \"10\",\n        \"description\": null,\n        \"categoryId\": \"32e27960-3ca2-11f0-881c-8a3c77e72eca\",\n        \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n        \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n        \"deletedAt\": null\n      }\n    ]\n  }\n]"
+						},
+						{
+							"name": "find",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "1668",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 May 2025 15:34:31 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"id\": \"32e23dd6-3ca2-11f0-881c-8a3c77e72eca\",\n    \"name\": \"Hambúrguer\",\n    \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n    \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n    \"deletedAt\": null,\n    \"products\": [\n      {\n        \"id\": \"32e2c1bc-3ca2-11f0-881c-8a3c77e72eca\",\n        \"name\": \"McChicken\",\n        \"value\": \"10\",\n        \"description\": null,\n        \"categoryId\": \"32e23dd6-3ca2-11f0-881c-8a3c77e72eca\",\n        \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n        \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n        \"deletedAt\": null\n      }\n    ]\n  },\n  {\n    \"id\": \"32e253e2-3ca2-11f0-881c-8a3c77e72eca\",\n    \"name\": \"Pizza\",\n    \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n    \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n    \"deletedAt\": null,\n    \"products\": [\n      {\n        \"id\": \"32e2db27-3ca2-11f0-881c-8a3c77e72eca\",\n        \"name\": \"Pizza calabresa\",\n        \"value\": \"10\",\n        \"description\": null,\n        \"categoryId\": \"32e253e2-3ca2-11f0-881c-8a3c77e72eca\",\n        \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n        \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n        \"deletedAt\": null\n      }\n    ]\n  },\n  {\n    \"id\": \"32e265f3-3ca2-11f0-881c-8a3c77e72eca\",\n    \"name\": \"Bebida\",\n    \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n    \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n    \"deletedAt\": null,\n    \"products\": [\n      {\n        \"id\": \"32e2f372-3ca2-11f0-881c-8a3c77e72eca\",\n        \"name\": \"Coca-cola\",\n        \"value\": \"10\",\n        \"description\": null,\n        \"categoryId\": \"32e265f3-3ca2-11f0-881c-8a3c77e72eca\",\n        \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n        \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n        \"deletedAt\": null\n      }\n    ]\n  },\n  {\n    \"id\": \"32e27960-3ca2-11f0-881c-8a3c77e72eca\",\n    \"name\": \"Sobremesa\",\n    \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n    \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n    \"deletedAt\": null,\n    \"products\": [\n      {\n        \"id\": \"32e30b92-3ca2-11f0-881c-8a3c77e72eca\",\n        \"name\": \"Sorvete\",\n        \"value\": \"10\",\n        \"description\": null,\n        \"categoryId\": \"32e27960-3ca2-11f0-881c-8a3c77e72eca\",\n        \"createdAt\": \"2025-05-29T18:32:58.000Z\",\n        \"updatedAt\": \"2025-05-29T18:32:58.000Z\",\n        \"deletedAt\": null\n      }\n    ]\n  }\n]"
+						},
+						{
+							"name": "find",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "1107",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:13:53 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"name\": \"Sobremesa\",\n    \"id\": \"5b6c05d2-f120-4795-b46a-c4df2773ce7f\",\n    \"products\": [\n      {\n        \"name\": \"Sorvete\",\n        \"value\": 20,\n        \"description\": \"Sorvete de chocolate\",\n        \"id\": \"074f0c03-433f-49ae-825e-94745a92babb\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Hambúrguer\",\n    \"id\": \"7d05bf40-a687-4acf-ac1a-987f2ddd5ed1\",\n    \"products\": [\n      {\n        \"name\": \"Hamburguer\",\n        \"value\": 20,\n        \"description\": \"Hamburguer de carne\",\n        \"id\": \"4214d57d-e773-4a6b-a57d-dad37d30fece\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Bebida\",\n    \"id\": \"85a6e01c-064b-496b-992f-bd55bd794b6f\",\n    \"products\": [\n      {\n        \"name\": \"Refrigerante\",\n        \"value\": 10,\n        \"description\": \"Refrigerante de cola\",\n        \"id\": \"1265d77c-7d22-4900-bf49-2aef4c045260\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Pizza\",\n    \"id\": \"a8678c54-241d-4155-b707-58848f365db8\",\n    \"products\": [\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 20,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"1e6319ca-af2d-44a6-87f6-b45dae98a264\"\n      },\n      {\n        \"name\": \"Pizza de Mussarela\",\n        \"value\": 25,\n        \"description\": \"Pizza de mussarela com cebola, azeitona e mussarela\",\n        \"id\": \"463bbb8a-f871-4af7-a631-31092a69c571\"\n      },\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 30,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"78a8d674-083d-4c0b-8bf5-e4af91a98d7e\"\n      }\n    ]\n  }\n]"
+						},
+						{
+							"name": "find",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "1107",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:13:53 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"name\": \"Sobremesa\",\n    \"id\": \"5b6c05d2-f120-4795-b46a-c4df2773ce7f\",\n    \"products\": [\n      {\n        \"name\": \"Sorvete\",\n        \"value\": 20,\n        \"description\": \"Sorvete de chocolate\",\n        \"id\": \"074f0c03-433f-49ae-825e-94745a92babb\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Hambúrguer\",\n    \"id\": \"7d05bf40-a687-4acf-ac1a-987f2ddd5ed1\",\n    \"products\": [\n      {\n        \"name\": \"Hamburguer\",\n        \"value\": 20,\n        \"description\": \"Hamburguer de carne\",\n        \"id\": \"4214d57d-e773-4a6b-a57d-dad37d30fece\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Bebida\",\n    \"id\": \"85a6e01c-064b-496b-992f-bd55bd794b6f\",\n    \"products\": [\n      {\n        \"name\": \"Refrigerante\",\n        \"value\": 10,\n        \"description\": \"Refrigerante de cola\",\n        \"id\": \"1265d77c-7d22-4900-bf49-2aef4c045260\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Pizza\",\n    \"id\": \"a8678c54-241d-4155-b707-58848f365db8\",\n    \"products\": [\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 20,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"1e6319ca-af2d-44a6-87f6-b45dae98a264\"\n      },\n      {\n        \"name\": \"Pizza de Mussarela\",\n        \"value\": 25,\n        \"description\": \"Pizza de mussarela com cebola, azeitona e mussarela\",\n        \"id\": \"463bbb8a-f871-4af7-a631-31092a69c571\"\n      },\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 30,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"78a8d674-083d-4c0b-8bf5-e4af91a98d7e\"\n      }\n    ]\n  }\n]"
+						},
+						{
+							"name": "find",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "1107",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:13:53 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"name\": \"Sobremesa\",\n    \"id\": \"5b6c05d2-f120-4795-b46a-c4df2773ce7f\",\n    \"products\": [\n      {\n        \"name\": \"Sorvete\",\n        \"value\": 20,\n        \"description\": \"Sorvete de chocolate\",\n        \"id\": \"074f0c03-433f-49ae-825e-94745a92babb\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Hambúrguer\",\n    \"id\": \"7d05bf40-a687-4acf-ac1a-987f2ddd5ed1\",\n    \"products\": [\n      {\n        \"name\": \"Hamburguer\",\n        \"value\": 20,\n        \"description\": \"Hamburguer de carne\",\n        \"id\": \"4214d57d-e773-4a6b-a57d-dad37d30fece\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Bebida\",\n    \"id\": \"85a6e01c-064b-496b-992f-bd55bd794b6f\",\n    \"products\": [\n      {\n        \"name\": \"Refrigerante\",\n        \"value\": 10,\n        \"description\": \"Refrigerante de cola\",\n        \"id\": \"1265d77c-7d22-4900-bf49-2aef4c045260\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Pizza\",\n    \"id\": \"a8678c54-241d-4155-b707-58848f365db8\",\n    \"products\": [\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 20,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"1e6319ca-af2d-44a6-87f6-b45dae98a264\"\n      },\n      {\n        \"name\": \"Pizza de Mussarela\",\n        \"value\": 25,\n        \"description\": \"Pizza de mussarela com cebola, azeitona e mussarela\",\n        \"id\": \"463bbb8a-f871-4af7-a631-31092a69c571\"\n      },\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 30,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"78a8d674-083d-4c0b-8bf5-e4af91a98d7e\"\n      }\n    ]\n  }\n]"
+						},
+						{
+							"name": "find",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "1107",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:38 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"name\": \"Sobremesa\",\n    \"id\": \"0e1ef55d-2b65-46e5-af6c-e9b5fde06a02\",\n    \"products\": [\n      {\n        \"name\": \"Sorvete\",\n        \"value\": 20,\n        \"description\": \"Sorvete de chocolate\",\n        \"id\": \"07a9a617-7c3a-4828-ba3a-97c86ab216e9\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Pizza\",\n    \"id\": \"7d1bf94d-1956-421e-9e8c-090b101528c9\",\n    \"products\": [\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 20,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"01e54a27-97ae-4029-824a-e81b5b6b03a0\"\n      },\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 30,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"5cff414d-e9e9-4141-88e3-1caeee4b1218\"\n      },\n      {\n        \"name\": \"Pizza de Mussarela\",\n        \"value\": 25,\n        \"description\": \"Pizza de mussarela com cebola, azeitona e mussarela\",\n        \"id\": \"b830c469-6ac3-486c-9823-48dba87d9416\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Hambúrguer\",\n    \"id\": \"b60e43da-3ca1-4e0c-aa79-79245673a0f5\",\n    \"products\": [\n      {\n        \"name\": \"Hamburguer\",\n        \"value\": 20,\n        \"description\": \"Hamburguer de carne\",\n        \"id\": \"9df75de4-3431-48f7-b7ef-3af144fafec4\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Bebida\",\n    \"id\": \"cfaa2837-9b30-4edd-877d-eaf7331d0a9b\",\n    \"products\": [\n      {\n        \"name\": \"Refrigerante\",\n        \"value\": 10,\n        \"description\": \"Refrigerante de cola\",\n        \"id\": \"65ac6bc6-5a47-4c33-88b9-78750cf0c8c4\"\n      }\n    ]\n  }\n]"
+						},
+						{
+							"name": "find",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/11.1.0"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/product-category",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"product-category"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "access-control-allow-origin",
+									"value": "*",
+									"description": ""
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8",
+									"description": ""
+								},
+								{
+									"key": "content-length",
+									"value": "1107",
+									"description": ""
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 02 Jun 2025 13:25:38 GMT",
+									"description": ""
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"description": ""
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=72",
+									"description": ""
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"name\": \"Sobremesa\",\n    \"id\": \"0e1ef55d-2b65-46e5-af6c-e9b5fde06a02\",\n    \"products\": [\n      {\n        \"name\": \"Sorvete\",\n        \"value\": 20,\n        \"description\": \"Sorvete de chocolate\",\n        \"id\": \"07a9a617-7c3a-4828-ba3a-97c86ab216e9\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Pizza\",\n    \"id\": \"7d1bf94d-1956-421e-9e8c-090b101528c9\",\n    \"products\": [\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 20,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"01e54a27-97ae-4029-824a-e81b5b6b03a0\"\n      },\n      {\n        \"name\": \"Pizza de Calabresa\",\n        \"value\": 30,\n        \"description\": \"Pizza de calabresa com cebola, azeitona e mussarela\",\n        \"id\": \"5cff414d-e9e9-4141-88e3-1caeee4b1218\"\n      },\n      {\n        \"name\": \"Pizza de Mussarela\",\n        \"value\": 25,\n        \"description\": \"Pizza de mussarela com cebola, azeitona e mussarela\",\n        \"id\": \"b830c469-6ac3-486c-9823-48dba87d9416\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Hambúrguer\",\n    \"id\": \"b60e43da-3ca1-4e0c-aa79-79245673a0f5\",\n    \"products\": [\n      {\n        \"name\": \"Hamburguer\",\n        \"value\": 20,\n        \"description\": \"Hamburguer de carne\",\n        \"id\": \"9df75de4-3431-48f7-b7ef-3af144fafec4\"\n      }\n    ]\n  },\n  {\n    \"name\": \"Bebida\",\n    \"id\": \"cfaa2837-9b30-4edd-877d-eaf7331d0a9b\",\n    \"products\": [\n      {\n        \"name\": \"Refrigerante\",\n        \"value\": 10,\n        \"description\": \"Refrigerante de cola\",\n        \"id\": \"65ac6bc6-5a47-4c33-88b9-78750cf0c8c4\"\n      }\n    ]\n  }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Pizza de 4 Queijos\",\n\t\"value\": 1350,\n\t\"description\": \"Mussarela, Gorgonzola, Parmesão e Catupiry\",\n    \"categoryId\": \"5df9f74a-7746-4dd5-9490-49718bf82e52\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/product",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/product/f5288362-2aed-4ebc-9cad-cdd312a24926",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product",
+								"f5288362-2aed-4ebc-9cad-cdd312a24926"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/product?name=Pizza de 4 Queijos",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"product"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Pizza de 4 Queijos"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Pizza de 4 Queijos\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/product/f5288362-2aed-4ebc-9cad-cdd312a24926",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"product",
+								"f5288362-2aed-4ebc-9cad-cdd312a24926"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/product/bade999a-32ea-41a6-8f7a-e7c01056c4bd",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"product",
+								"bade999a-32ea-41a6-8f7a-e7c01056c4bd"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderProducts\": [\n        {\n            \"productId\": \"b2359291-9249-4bb8-9020-04496b392223\",\n            \"quantity\": 2\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/order",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/order/50d4fde9-7152-4274-b7f4-2ae6f798764c",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"order",
+								"50d4fde9-7152-4274-b7f4-2ae6f798764c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/order?clientId=340c2839-af48-4e23-a21a-8ca6b08accc9",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"order"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "340c2839-af48-4e23-a21a-8ca6b08accc9"
+								},
+								{
+									"key": "status",
+									"value": "READY",
+									"disabled": true
+								},
+								{
+									"key": "paymentStatus",
+									"value": "APPROVED",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"orderProducts\": [\n        {\n            \"productId\": \"cdd836c3-0001-4226-a786-eeaa09472869\",\n            \"quantity\": 2\n        },\n        {\n            \"productId\": \"eca7c74e-e145-4417-bcf6-c83e82c782f2\",\n            \"quantity\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/order/50d4fde9-7152-4274-b7f4-2ae6f798764c",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"order",
+								"50d4fde9-7152-4274-b7f4-2ae6f798764c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": []
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/order/7b5e5a95-3c35-11f0-8420-3ad7df3d5b9c?=&=",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"order",
+								"7b5e5a95-3c35-11f0-8420-3ad7df3d5b9c"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": ""
+								},
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/payment/175ec79b-4bf6-4767-a25f-d4e41a678c35",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"payment",
+								"175ec79b-4bf6-4767-a25f-d4e41a678c35"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/payment",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"APPROVED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/payment/175ec79b-4bf6-4767-a25f-d4e41a678c35",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"payment",
+								"175ec79b-4bf6-4767-a25f-d4e41a678c35"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
