@@ -71,11 +71,13 @@ export class PrismaOrderMapper {
         return {
             value: data.value,
             status: data.status,
-            client: {
-                connect: {
-                    id: data.clientId,
+            ...(data.clientId && {
+                client: {
+                    connect: {
+                        id: data.clientId,
+                    },
                 },
-            },
+            }),
             orderProducts: {
                 deleteMany: {},
                 create: data.orderProducts?.map(item => ({
@@ -84,13 +86,6 @@ export class PrismaOrderMapper {
                     product: {
                         connect: { id: item.products?.id },
                     },
-                })),
-            },
-            payments: {
-                create: data.payments?.map(item => ({
-                    status: item.status,
-                    externalReference: item.externalReference,
-                    qrCode: item.qrCode,
                 })),
             },
         };

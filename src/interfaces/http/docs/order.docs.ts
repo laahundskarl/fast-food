@@ -55,7 +55,7 @@ export const orderUpdateSchema = {
         summary: 'Atualiza pedido',
         body: validatorUpdateOrder,
         response: {
-            200: z.array(orderResponseSchema),
+            200: orderResponseSchema,
             400: errorResponseValidationSchema,
             404: errorNotFoundSchema,
         },

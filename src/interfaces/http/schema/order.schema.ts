@@ -47,7 +47,7 @@ export const orderResponseSchema = z.object({
     value: z.number(),
     orderNumber: z.number(),
     status: z.string(),
-    clientId: z.string().uuid(),
+    clientId: z.string().uuid().optional(),
     orderProducts: z.array(orderProductSchema),
     payments: z.array(paymentResponseSchema),
 });
