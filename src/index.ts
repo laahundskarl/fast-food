@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import 'dotenv/config';
 
-import { startServer } from '#/interfaces/server';
+import { startServer } from '#/server';
 
 startServer();

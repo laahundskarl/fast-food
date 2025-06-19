@@ -38,7 +38,7 @@ export async function seedPayment(prismaClient: PrismaClient) {
         prismaClient.payment.create({
             data: {
                 orderId: order[5].id,
-                status: StatusPayment.PROCESSING,
+                status: StatusPayment.APPROVED,
             },
         }),
     ]);
