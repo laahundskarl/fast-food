@@ -1,8 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { globalPrismaClient } from '#/database/prisma';
 import { ProductCreateDto, ProductListDto, ProductUpdateDto } from '#/dto/product.dto';
-import { PrismaProductRepository } from '#/repositories/prisma/prisma-product.repository';
+import { ProductRepository } from '#/repositories/product.repository';
 import { CreateProductUseCase } from '#/usecases/product/create-product.usecase';
 import { DeleteProductUseCase } from '#/usecases/product/delete-product.usecase';
 import { GetProductUseCase } from '#/usecases/product/get-product.usecase';
@@ -10,10 +9,10 @@ import { ListProductUseCase } from '#/usecases/product/list-product-usecase';
 import { UpdateProductUseCase } from '#/usecases/product/update-product.usecase';
 
 export class ProductController {
-    private readonly repository: PrismaProductRepository;
+    private readonly repository: ProductRepository;
 
-    constructor() {
-        this.repository = new PrismaProductRepository(globalPrismaClient);
+    constructor(repository: ProductRepository) {
+        this.repository = repository;
     }
 
     async create(request: FastifyRequest<{ Body: ProductCreateDto }>, reply: FastifyReply) {

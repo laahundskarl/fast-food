@@ -1,20 +1,19 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { globalPrismaClient } from '#/database/prisma';
 import { PaymentListDto, PaymentUpdateDto } from '#/dto/payment.dto';
-import { PrismaOrderRepository } from '#/repositories/prisma/prisma-order.repository';
-import { PrismaPaymentRepository } from '#/repositories/prisma/prisma-payment.repository';
+import { OrderRepository } from '#/repositories/order.repository';
+import { PaymentRepository } from '#/repositories/payment.repository';
 import { FindPaymentByIdUseCase } from '#/usecases/payment/find-payment.usecase';
 import { ListPaymentUseCase } from '#/usecases/payment/list-payment.usecase';
 import { UpdatePaymentUseCase } from '#/usecases/payment/update-payment-usecase';
 
 export class PaymentController {
-    private readonly paymentRepository: PrismaPaymentRepository;
-    private readonly orderRepository: PrismaOrderRepository;
+    private readonly paymentRepository: PaymentRepository;
+    private readonly orderRepository: OrderRepository;
 
-    constructor() {
-        this.paymentRepository = new PrismaPaymentRepository(globalPrismaClient);
-        this.orderRepository = new PrismaOrderRepository(globalPrismaClient);
+    constructor(paymentRepository: PaymentRepository, orderRepository: OrderRepository) {
+        this.paymentRepository = paymentRepository;
+        this.orderRepository = orderRepository;
     }
 
     async list(request: FastifyRequest<{ Querystring: PaymentListDto }>, reply: FastifyReply) {

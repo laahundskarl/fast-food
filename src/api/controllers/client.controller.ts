@@ -1,8 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { globalPrismaClient } from '#/database/prisma';
 import { ClientCreateDto, ClientUpdateDto } from '#/dto/client.dto';
-import { PrismaClientRepository } from '#/repositories/prisma/prisma-client.repository';
+import { ClientRepository } from '#/repositories/client.repository';
 import { CreateClientUseCase } from '#/usecases/client/create-client.usecase';
 import { DeleteClientUseCase } from '#/usecases/client/delete-client-usecase';
 import { GetClientWithOrders } from '#/usecases/client/get-client-with-orders.usecase';
@@ -10,10 +9,10 @@ import { GetClientUseCase } from '#/usecases/client/get-client.usecase';
 import { UpdateClientUseCase } from '#/usecases/client/update-client.usecase';
 
 export class ClientController {
-    private readonly repository: PrismaClientRepository;
+    private readonly repository: ClientRepository;
 
-    constructor() {
-        this.repository = new PrismaClientRepository(globalPrismaClient);
+    constructor(db: ClientRepository) {
+        this.repository = db;
     }
 
     async create(request: FastifyRequest<{ Body: ClientCreateDto }>, reply: FastifyReply) {

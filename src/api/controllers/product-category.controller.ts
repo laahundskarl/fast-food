@@ -1,16 +1,15 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { globalPrismaClient } from '#/database/prisma';
 import { ProductCategoryListDto } from '#/dto/product-category.dto';
-import { PrismaProductCategoryRepository } from '#/repositories/prisma/prisma-product-category.repository';
+import { ProductCategoryRepository } from '#/repositories/product-category.repository';
 import { GetProductCategoryUseCase } from '#/usecases/product-category/get-product-category.usecase';
 import { ListProductCategoryUseCase } from '#/usecases/product-category/list-product-category.usecase';
 
 export class ProductCategoryController {
-    private readonly repository: PrismaProductCategoryRepository;
+    private readonly repository: ProductCategoryRepository;
 
-    constructor() {
-        this.repository = new PrismaProductCategoryRepository(globalPrismaClient);
+    constructor(repository: ProductCategoryRepository) {
+        this.repository = repository;
     }
 
     async get(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
