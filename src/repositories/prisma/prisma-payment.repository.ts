@@ -4,9 +4,9 @@ import { PaymentListDto } from '#/dto/payment.dto';
 import { Payment } from '#/entities/payment.entity';
 import { NotFoundError } from '#/errors/app-error';
 import { PrismaPaymentMapper } from '#/mappers/prisma/prisma-payment.mapper';
-import { PaymentRepository } from '#/repositories/payment.repository';
+import { IPaymentRepository } from '#/repositories/payment.repository';
 
-export class PrismaPaymentRepository implements PaymentRepository {
+export class PrismaPaymentRepository implements IPaymentRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     async update(id: string, payment: Payment): Promise<Payment> {

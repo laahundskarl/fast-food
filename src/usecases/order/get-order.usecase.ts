@@ -1,9 +1,9 @@
 import { Order } from '#/entities/order.entity';
 import { NotFoundError } from '#/errors/app-error';
-import { OrderRepository } from '#/repositories/order.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
 
 export class GetOrderUseCase {
-    constructor(private readonly orderRepository: OrderRepository) {}
+    constructor(private readonly orderRepository: IOrderRepository) {}
 
     async execute(id: string): Promise<Order> {
         const order = await this.orderRepository.findById(id);

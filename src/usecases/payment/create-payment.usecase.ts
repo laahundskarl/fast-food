@@ -1,8 +1,8 @@
 // import { PaymentCreateDTO } from '#/dto/payment.dto';
-import { PaymentRepository } from '#/repositories/payment.repository';
+import { IPaymentRepository } from '#/repositories/payment.repository';
 
 export class CreatePaymentUseCase {
-    constructor(private readonly paymentRepository: PaymentRepository) {}
+    constructor(private readonly paymentRepository: IPaymentRepository) {}
 
     /**
      * TODO: ERRO AO IMPORTAR O PaymentCreateDTO

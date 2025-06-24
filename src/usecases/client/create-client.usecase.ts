@@ -1,10 +1,10 @@
 import { ClientCreateDto } from '#/dto/client.dto';
 import { Client } from '#/entities/client.entity';
 import { ConflictError } from '#/errors/app-error';
-import { ClientRepository } from '#/repositories/client.repository';
+import { IClientRepository } from '#/repositories/client.repository';
 
 export class CreateClientUseCase {
-    constructor(private readonly clientRepository: ClientRepository) {}
+    constructor(private readonly clientRepository: IClientRepository) {}
 
     async execute(request: ClientCreateDto): Promise<Client> {
         const alreadyExists = await this.clientRepository.findByCpfOrEmail(request.cpf, request.email);

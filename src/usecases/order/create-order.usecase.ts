@@ -3,13 +3,13 @@ import { OrderProduct } from '#/entities/order-product.entity';
 import { Order } from '#/entities/order.entity';
 import { Payment } from '#/entities/payment.entity';
 import { NotFoundError } from '#/errors/app-error';
-import { OrderRepository } from '#/repositories/order.repository';
-import { ProductRepository } from '#/repositories/product.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
+import { IProductRepository } from '#/repositories/product.repository';
 
 export class CreateOrderUseCase {
     constructor(
-        private readonly orderRepository: OrderRepository,
-        private readonly productRepository: ProductRepository,
+        private readonly orderRepository: IOrderRepository,
+        private readonly productRepository: IProductRepository,
     ) {}
 
     async execute(request: OrderCreateDto): Promise<Order> {

@@ -3,9 +3,9 @@ import { PrismaClient } from '@prisma/client';
 import { OrderListDto } from '#/dto/order.dto';
 import { Order } from '#/entities/order.entity';
 import { PrismaOrderMapper } from '#/mappers/prisma/prisma-order.mapper';
-import { OrderRepository } from '#/repositories/order.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
 
-export class PrismaOrderRepository implements OrderRepository {
+export class PrismaOrderRepository implements IOrderRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     async create(order: Order): Promise<Order> {

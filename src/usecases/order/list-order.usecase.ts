@@ -2,10 +2,10 @@ import { OrderStatus, StatusPayment } from '@prisma/client';
 
 import { OrderListDto, OrderListRequestDto } from '#/dto/order.dto';
 import { Order } from '#/entities/order.entity';
-import { OrderRepository } from '#/repositories/order.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
 
 export class ListOrderUseCase {
-    constructor(private readonly orderRepository: OrderRepository) {}
+    constructor(private readonly orderRepository: IOrderRepository) {}
 
     execute(request: OrderListRequestDto): Promise<Order[]> {
         const query: OrderListDto = {

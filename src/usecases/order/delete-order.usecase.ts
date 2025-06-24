@@ -1,8 +1,8 @@
 import { NotFoundError } from '#/errors/app-error';
-import { OrderRepository } from '#/repositories/order.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
 
 export class DeleteOrderUseCase {
-    constructor(private readonly orderRepository: OrderRepository) {}
+    constructor(private readonly orderRepository: IOrderRepository) {}
 
     async execute(id: string): Promise<any> {
         const order = await this.orderRepository.findById(id);

@@ -1,8 +1,8 @@
 import { NotFoundError } from '#/errors/app-error';
-import { ClientRepository } from '#/repositories/client.repository';
+import { IClientRepository } from '#/repositories/client.repository';
 
 export class DeleteClientUseCase {
-    constructor(private readonly clientRepository: ClientRepository) {}
+    constructor(private readonly clientRepository: IClientRepository) {}
 
     async execute(cpf: string): Promise<void> {
         const client = await this.clientRepository.findByCpf(cpf);

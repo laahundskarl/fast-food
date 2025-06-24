@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ClientCreateDto, ClientUpdateDto } from '#/dto/client.dto';
-import { ClientRepository } from '#/repositories/client.repository';
+import { IClientRepository } from '#/repositories/client.repository';
 import { CreateClientUseCase } from '#/usecases/client/create-client.usecase';
 import { DeleteClientUseCase } from '#/usecases/client/delete-client-usecase';
 import { GetClientWithOrders } from '#/usecases/client/get-client-with-orders.usecase';
@@ -9,9 +9,9 @@ import { GetClientUseCase } from '#/usecases/client/get-client.usecase';
 import { UpdateClientUseCase } from '#/usecases/client/update-client.usecase';
 
 export class ClientController {
-    private readonly repository: ClientRepository;
+    private readonly repository: IClientRepository;
 
-    constructor(db: ClientRepository) {
+    constructor(db: IClientRepository) {
         this.repository = db;
     }
 

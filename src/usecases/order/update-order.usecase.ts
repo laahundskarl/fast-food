@@ -6,13 +6,13 @@ import { Order } from '#/entities/order.entity';
 import { Payment } from '#/entities/payment.entity';
 import { Product } from '#/entities/product.entity';
 import { BusinessError, NotFoundError } from '#/errors/app-error';
-import { OrderRepository } from '#/repositories/order.repository';
-import { ProductRepository } from '#/repositories/product.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
+import { IProductRepository } from '#/repositories/product.repository';
 
 export class UpdateOrderUseCase {
     constructor(
-        private readonly orderRepository: OrderRepository,
-        private readonly productRepository: ProductRepository,
+        private readonly orderRepository: IOrderRepository,
+        private readonly productRepository: IProductRepository,
     ) {}
 
     async execute(id: string, request: OrderUpdateDto): Promise<any> {

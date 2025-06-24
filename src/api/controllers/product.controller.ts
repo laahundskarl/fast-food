@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ProductCreateDto, ProductListDto, ProductUpdateDto } from '#/dto/product.dto';
-import { ProductRepository } from '#/repositories/product.repository';
+import { IProductRepository } from '#/repositories/product.repository';
 import { CreateProductUseCase } from '#/usecases/product/create-product.usecase';
 import { DeleteProductUseCase } from '#/usecases/product/delete-product.usecase';
 import { GetProductUseCase } from '#/usecases/product/get-product.usecase';
@@ -9,9 +9,9 @@ import { ListProductUseCase } from '#/usecases/product/list-product-usecase';
 import { UpdateProductUseCase } from '#/usecases/product/update-product.usecase';
 
 export class ProductController {
-    private readonly repository: ProductRepository;
+    private readonly repository: IProductRepository;
 
-    constructor(repository: ProductRepository) {
+    constructor(repository: IProductRepository) {
         this.repository = repository;
     }
 

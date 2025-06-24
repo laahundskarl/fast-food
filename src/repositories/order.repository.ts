@@ -1,7 +1,7 @@
 import { OrderListDto } from '#/dto/order.dto';
 import { Order } from '#/entities/order.entity';
 
-export interface OrderRepository {
+export interface IOrderRepository {
     create(order: Order): Promise<Order>;
     findById(id: string): Promise<Order | null>;
     list(query?: OrderListDto): Promise<Order[]>;

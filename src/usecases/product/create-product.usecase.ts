@@ -1,9 +1,9 @@
 import { ProductCreateDto } from '#/dto/product.dto';
 import { Product } from '#/entities/product.entity';
-import { ProductRepository } from '#/repositories/product.repository';
+import { IProductRepository } from '#/repositories/product.repository';
 
 export class CreateProductUseCase {
-    constructor(private readonly productRepository: ProductRepository) {}
+    constructor(private readonly productRepository: IProductRepository) {}
 
     async execute(request: ProductCreateDto): Promise<Product> {
         const product = new Product({

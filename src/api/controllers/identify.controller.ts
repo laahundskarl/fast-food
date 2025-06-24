@@ -1,12 +1,12 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { ClientRepository } from '#/repositories/client.repository';
+import { IClientRepository } from '#/repositories/client.repository';
 import { IdentifyUseCase } from '#/usecases/identify/identify.usecase';
 
 export class IdentifyController {
-    private readonly repository: ClientRepository;
+    private readonly repository: IClientRepository;
 
-    constructor(db: ClientRepository) {
+    constructor(db: IClientRepository) {
         this.repository = db;
     }
 

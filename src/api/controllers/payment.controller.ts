@@ -1,17 +1,17 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { PaymentListDto, PaymentUpdateDto } from '#/dto/payment.dto';
-import { OrderRepository } from '#/repositories/order.repository';
-import { PaymentRepository } from '#/repositories/payment.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
+import { IPaymentRepository } from '#/repositories/payment.repository';
 import { FindPaymentByIdUseCase } from '#/usecases/payment/find-payment.usecase';
 import { ListPaymentUseCase } from '#/usecases/payment/list-payment.usecase';
 import { UpdatePaymentUseCase } from '#/usecases/payment/update-payment-usecase';
 
 export class PaymentController {
-    private readonly paymentRepository: PaymentRepository;
-    private readonly orderRepository: OrderRepository;
+    private readonly paymentRepository: IPaymentRepository;
+    private readonly orderRepository: IOrderRepository;
 
-    constructor(paymentRepository: PaymentRepository, orderRepository: OrderRepository) {
+    constructor(paymentRepository: IPaymentRepository, orderRepository: IOrderRepository) {
         this.paymentRepository = paymentRepository;
         this.orderRepository = orderRepository;
     }

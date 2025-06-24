@@ -2,9 +2,9 @@ import { PrismaClient } from '@prisma/client';
 
 import { Client } from '#/entities/client.entity';
 import { PrismaClientMapper } from '#/mappers/prisma/prisma-client.mapper';
-import { ClientRepository } from '#/repositories/client.repository';
+import { IClientRepository } from '#/repositories/client.repository';
 
-export class PrismaClientRepository implements ClientRepository {
+export class PrismaClientRepository implements IClientRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     async create(client: Client): Promise<Client> {

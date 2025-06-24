@@ -3,13 +3,13 @@ import { OrderStatus, StatusPayment } from '@prisma/client';
 import { PaymentUpdateDto } from '#/dto/payment.dto';
 import { Payment } from '#/entities/payment.entity';
 import { NotFoundError } from '#/errors/app-error';
-import { OrderRepository } from '#/repositories/order.repository';
-import { PaymentRepository } from '#/repositories/payment.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
+import { IPaymentRepository } from '#/repositories/payment.repository';
 
 export class UpdatePaymentUseCase {
     constructor(
-        private readonly paymentRepository: PaymentRepository,
-        private readonly orderRepository: OrderRepository,
+        private readonly paymentRepository: IPaymentRepository,
+        private readonly orderRepository: IOrderRepository,
     ) {}
 
     async execute(id: string, payment: PaymentUpdateDto): Promise<Payment> {

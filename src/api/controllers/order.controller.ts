@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { OrderCreateDto, OrderListRequestDto, OrderUpdateDto } from '#/dto/order.dto';
-import { OrderRepository } from '#/repositories/order.repository';
-import { ProductRepository } from '#/repositories/product.repository';
+import { IOrderRepository } from '#/repositories/order.repository';
+import { IProductRepository } from '#/repositories/product.repository';
 import { CreateOrderUseCase } from '#/usecases/order/create-order.usecase';
 import { DeleteOrderUseCase } from '#/usecases/order/delete-order.usecase';
 import { GetOrderUseCase } from '#/usecases/order/get-order.usecase';
@@ -10,10 +10,10 @@ import { ListOrderUseCase } from '#/usecases/order/list-order.usecase';
 import { UpdateOrderUseCase } from '#/usecases/order/update-order.usecase';
 
 export class OrderController {
-    private readonly orderRepository: OrderRepository;
-    private readonly productRepository: ProductRepository;
+    private readonly orderRepository: IOrderRepository;
+    private readonly productRepository: IProductRepository;
 
-    constructor(orderRepository: OrderRepository, productRepository: ProductRepository) {
+    constructor(orderRepository: IOrderRepository, productRepository: IProductRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
     }

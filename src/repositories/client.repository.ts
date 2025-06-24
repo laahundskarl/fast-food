@@ -1,6 +1,6 @@
 import { Client } from '#/entities/client.entity';
 
-export interface ClientRepository {
+export interface IClientRepository {
     create(client: Client): Promise<Client>;
     findWithOrders(id: string): Promise<Client | null>;
     findByCpf(cpf: string): Promise<Client | null>;

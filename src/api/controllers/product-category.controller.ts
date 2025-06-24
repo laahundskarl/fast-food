@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ProductCategoryListDto } from '#/dto/product-category.dto';
-import { ProductCategoryRepository } from '#/repositories/product-category.repository';
+import { IProductCategoryRepository } from '#/repositories/product-category.repository';
 import { GetProductCategoryUseCase } from '#/usecases/product-category/get-product-category.usecase';
 import { ListProductCategoryUseCase } from '#/usecases/product-category/list-product-category.usecase';
 
 export class ProductCategoryController {
-    private readonly repository: ProductCategoryRepository;
+    private readonly repository: IProductCategoryRepository;
 
-    constructor(repository: ProductCategoryRepository) {
+    constructor(repository: IProductCategoryRepository) {
         this.repository = repository;
     }
 

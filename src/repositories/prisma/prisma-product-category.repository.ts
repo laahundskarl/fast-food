@@ -3,9 +3,9 @@ import { PrismaClient } from '@prisma/client';
 import { ProductCategoryListDto } from '#/dto/product-category.dto';
 import { ProductCategory } from '#/entities/product-category.entity';
 import { PrismaProductCategoryMapper } from '#/mappers/prisma/prisma-product-category.mapper';
-import { ProductCategoryRepository } from '#/repositories/product-category.repository';
+import { IProductCategoryRepository } from '#/repositories/product-category.repository';
 
-export class PrismaProductCategoryRepository implements ProductCategoryRepository {
+export class PrismaProductCategoryRepository implements IProductCategoryRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     async get(id: string): Promise<ProductCategory | null> {

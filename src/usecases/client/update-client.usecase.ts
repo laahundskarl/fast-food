@@ -1,10 +1,10 @@
 import { ClientUpdateDto } from '#/dto/client.dto';
 import { Client } from '#/entities/client.entity';
 import { ConflictError, NotFoundError } from '#/errors/app-error';
-import { ClientRepository } from '#/repositories/client.repository';
+import { IClientRepository } from '#/repositories/client.repository';
 
 export class UpdateClientUseCase {
-    constructor(private readonly clientRepository: ClientRepository) {}
+    constructor(private readonly clientRepository: IClientRepository) {}
 
     async execute(cpf: string, request: ClientUpdateDto): Promise<Client> {
         const client = await this.clientRepository.findByCpf(cpf);
