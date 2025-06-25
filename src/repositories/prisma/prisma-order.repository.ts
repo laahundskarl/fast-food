@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { OrderStatus, PrismaClient } from '@prisma/client';
 
 import { OrderListDto } from '#/dto/order.dto';
 import { Order } from '#/entities/order.entity';
@@ -103,11 +103,11 @@ export class PrismaOrderRepository implements IOrderRepository {
         return PrismaOrderMapper.toDomain(data);
     }
 
-    async updateStatus(id: string, order: Order): Promise<Order> {
+    async updateStatus(id: string, status: OrderStatus): Promise<Order> {
         const data = await this.prisma.order.update({
             where: { id },
             data: {
-                status: order.status,
+                status,
             },
             include: {
                 client: true,
