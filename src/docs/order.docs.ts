@@ -40,7 +40,7 @@ export const orderListSchema = {
             paymentStatus: z.string().optional(),
         }),
         response: {
-            200: z.array(orderResponseSchema),
+            // 200: z.array(orderResponseSchema),
         },
     },
 };

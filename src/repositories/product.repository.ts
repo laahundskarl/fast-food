@@ -1,8 +1,8 @@
 import { ProductListDto } from '#/dto/product.dto';
-import { Product } from '#/entities/product.entity';
+import { CreateProduct, Product } from '#/entities/product.entity';
 
 export interface IProductRepository {
-    create(product: Product): Promise<Product>;
+    create(product: CreateProduct): Promise<Product>;
     findById(id: string): Promise<Product | null>;
     findMany(ids: string[]): Promise<Product[]>;
     list(query?: ProductListDto): Promise<Product[]>;

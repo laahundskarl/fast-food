@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { ProductCategory } from '#/entities/product-category.entity';
-import { Product } from '#/entities/product.entity';
+import { CreateProduct, Product } from '#/entities/product.entity';
 import { ProductWithCategory } from '#/types/product.type';
 
 export class PrismaProductMapper {
@@ -18,7 +18,7 @@ export class PrismaProductMapper {
         });
     }
 
-    static toCreate(data: Product): Prisma.ProductCreateInput {
+    static toCreate(data: CreateProduct): Prisma.ProductCreateInput {
         return {
             name: data.name,
             value: data.value,

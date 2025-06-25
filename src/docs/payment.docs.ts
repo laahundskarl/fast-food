@@ -24,7 +24,7 @@ export const paymentListSchema = {
     schema: {
         tags: ['Pagamentos'],
         summary: 'Lista pagamentos',
-        params: z.object({
+        query: z.object({
             orderId: z.string().optional(),
             status: z.string().optional(),
         }),

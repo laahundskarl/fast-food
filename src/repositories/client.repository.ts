@@ -1,7 +1,7 @@
-import { Client } from '#/entities/client.entity';
+import { Client, CreateClient } from '#/entities/client.entity';
 
 export interface IClientRepository {
-    create(client: Client): Promise<Client>;
+    create(client: CreateClient): Promise<Client>;
     findWithOrders(id: string): Promise<Client | null>;
     findByCpf(cpf: string): Promise<Client | null>;
     findByCpfOrEmail(cpf: string, email: string): Promise<Client | null>;

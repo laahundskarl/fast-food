@@ -19,7 +19,7 @@ export interface OrderCreateDto {
     orderProducts: [
         {
             productId: string;
-            quantity: number;
+            amount: number;
         },
     ];
 }

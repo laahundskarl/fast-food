@@ -1,14 +1,14 @@
 import { OrderStatus, PrismaClient } from '@prisma/client';
 
 import { OrderListDto } from '#/dto/order.dto';
-import { Order } from '#/entities/order.entity';
+import { CreateOrder, Order } from '#/entities/order.entity';
 import { PrismaOrderMapper } from '#/mappers/prisma/prisma-order.mapper';
 import { IOrderRepository } from '#/repositories/order.repository';
 
 export class PrismaOrderRepository implements IOrderRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
-    async create(order: Order): Promise<Order> {
+    async create(order: CreateOrder): Promise<Order> {
         const data = await this.prisma.order.create({
             data: PrismaOrderMapper.toCreate(order),
             include: {
@@ -94,10 +94,7 @@ export class PrismaOrderRepository implements IOrderRepository {
                         product: true,
                     },
                 },
-                payments: {
-                    orderBy: { createdAt: 'desc' },
-                    take: 1,
-                },
+                payments: true,
             },
         });
         return PrismaOrderMapper.toDomain(data);

@@ -12,6 +12,7 @@ export class UpdateProductUseCase {
             throw new NotFoundError('Product not found');
         }
         const updateProduct = new Product({
+            id: product.id,
             name: request.name ?? product.name,
             value: request.value ?? product.value,
             description: request.description ?? product.description,

@@ -1,11 +1,10 @@
 import { OrderStatus, StatusPayment } from '@prisma/client';
 
 import { OrderUpdateDto } from '#/dto/order.dto';
-import { Order } from '#/entities/order.entity';
-import { Payment } from '#/entities/payment.entity';
+import { CreateOrderProduct } from '#/entities/order-product.entity';
+import { Order, UpdateOrder } from '#/entities/order.entity';
 import { Product } from '#/entities/product.entity';
 import { BusinessError, NotFoundError } from '#/errors/app-error';
-import { OrderProductMapper } from '#/mappers/order-products/OrderProductMapper';
 import { IOrderRepository } from '#/repositories/order.repository';
 import { IPaymentRepository } from '#/repositories/payment.repository';
 import { IProductRepository } from '#/repositories/product.repository';
@@ -46,21 +45,19 @@ export class UpdateOrderUseCase {
                     throw new NotFoundError('Product not found');
                 }
                 totalValue += product.value * item.quantity;
-                return OrderProductMapper.mapOrderProduct({
-                    productId: product.id!,
+                return new CreateOrderProduct({
+                    productId: product.id,
                     amount: item.quantity,
                     value: product.value,
                 });
             });
-            const payment = new Payment({ externalReference: null, qrCode: null });
-            const updateOrder = new Order({
+            const updateOrder = new UpdateOrder({
                 value: totalValue,
                 status: order.status,
                 orderNumber: order.orderNumber,
                 clientId: order.clientId,
                 id,
                 orderProducts,
-                payments: [payment],
             });
             return await this.orderRepository.updateOrderProducts(id, updateOrder);
         }
@@ -68,7 +65,7 @@ export class UpdateOrderUseCase {
         const pendingPayment = order.payments?.find(payment => payment.status === StatusPayment.PENDING);
 
         if (pendingPayment) {
-            await this.paymentRepository.cancelPayment(pendingPayment.id!);
+            await this.paymentRepository.cancelPayment(pendingPayment.id);
         }
 
         const updateOrder = new Order({

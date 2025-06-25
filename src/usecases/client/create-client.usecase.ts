@@ -1,5 +1,5 @@
 import { ClientCreateDto } from '#/dto/client.dto';
-import { Client } from '#/entities/client.entity';
+import { Client, CreateClient } from '#/entities/client.entity';
 import { ConflictError } from '#/errors/app-error';
 import { IClientRepository } from '#/repositories/client.repository';
 
@@ -12,7 +12,7 @@ export class CreateClientUseCase {
         if (alreadyExists) {
             throw new ConflictError(`Client already exists with this ${conflictingField}.`);
         }
-        const client = new Client({ name: request.name, cpf: request.cpf, email: request.email });
+        const client = new CreateClient({ name: request.name, cpf: request.cpf, email: request.email });
         return await this.clientRepository.create(client);
     }
 }

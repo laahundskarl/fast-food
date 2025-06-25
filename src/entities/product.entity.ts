@@ -5,12 +5,12 @@ type ProductPayload = {
     value: number;
     description: string | null;
     categoryId?: string;
-    id?: string;
+    id: string;
     category?: ProductCategory;
 };
 
 export class Product {
-    public id?: string;
+    public id: string;
     public name: string;
     public value: number;
     public description: string | null;
@@ -18,11 +18,35 @@ export class Product {
     public category?: ProductCategory;
 
     constructor({ name, value, description, categoryId, id, category }: ProductPayload) {
-        if (id) this.id = id;
+        this.id = id;
         this.name = name;
         this.value = value;
         this.description = description;
         if (categoryId) this.categoryId = categoryId;
         if (category) this.category = category;
+    }
+}
+
+export class CreateProduct {
+    name: string;
+    value: number;
+    description: string | null;
+    categoryId: string;
+
+    constructor({
+        name,
+        value,
+        description,
+        categoryId,
+    }: {
+        name: string;
+        value: number;
+        description: string | null;
+        categoryId: string;
+    }) {
+        this.name = name;
+        this.value = value;
+        this.description = description;
+        this.categoryId = categoryId;
     }
 }

@@ -1,14 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 
 import { ProductListDto } from '#/dto/product.dto';
-import { Product } from '#/entities/product.entity';
+import { CreateProduct, Product } from '#/entities/product.entity';
 import { PrismaProductMapper } from '#/mappers/prisma/prisma-product.mapper';
 import { IProductRepository } from '#/repositories/product.repository';
 
 export class PrismaProductRepository implements IProductRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
-    async create(product: Product): Promise<Product> {
+    async create(product: CreateProduct): Promise<Product> {
         const data = await this.prisma.product.create({
             data: PrismaProductMapper.toCreate(product),
             include: {

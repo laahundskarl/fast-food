@@ -1,7 +1,7 @@
-import { Prisma, Order as PrismaOrder } from '@prisma/client';
+import { OrderStatus, Prisma, Order as PrismaOrder } from '@prisma/client';
 
 import { OrderProduct } from '#/entities/order-product.entity';
-import { Order } from '#/entities/order.entity';
+import { CreateOrder, Order } from '#/entities/order.entity';
 import { Payment } from '#/entities/payment.entity';
 import { Product } from '#/entities/product.entity';
 import { OrderWithRelations } from '#/types/order.type';
@@ -18,9 +18,10 @@ export class PrismaOrderMapper {
                 orderProduct =>
                     new OrderProduct({
                         amount: orderProduct.amount,
-                        value: orderProduct.value,
+                        value: orderProduct.value.toNumber(),
                         id: orderProduct.id,
-                        products: new Product({
+                        productId: orderProduct.productId,
+                        product: new Product({
                             name: orderProduct.product.name,
                             value: orderProduct.product.value,
                             description: orderProduct.product.description,
@@ -44,35 +45,21 @@ export class PrismaOrderMapper {
         return new Order({
             value: data.value,
             status: data.status,
+            payments: [],
+            orderProducts: [],
             orderNumber: data.orderNumber,
             clientId: data.clientId!,
             id: data.id,
         });
     }
 
-    static toCreate(data: Order): Prisma.OrderCreateInput {
+    static toCreate(data: CreateOrder): Prisma.OrderCreateInput {
         return {
-            value: data.value,
-            ...(data.clientId && {
-                client: {
-                    connect: { id: data.clientId },
-                },
-            }),
-            orderProducts: {
-                create: data.orderProducts?.map(item => ({
-                    amount: item.amount,
-                    value: item.value,
-                    product: {
-                        connect: { id: item.productId },
-                    },
-                })),
+            value: data.total,
+            client: {
+                connect: { id: data.clientId! },
             },
-            payments: {
-                create: data.payments?.map(item => ({
-                    qrCode: item.qrCode,
-                    externalReference: item.externalReference,
-                })),
-            },
+            status: OrderStatus.WAITING,
         };
     }
 
@@ -93,7 +80,7 @@ export class PrismaOrderMapper {
                     amount: item.amount,
                     value: item.value,
                     product: {
-                        connect: { id: item.products?.id },
+                        connect: { id: item.product?.id },
                     },
                 })),
             },

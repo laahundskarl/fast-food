@@ -15,12 +15,18 @@ export class UpdatePaymentUseCase {
     async execute(id: string, payment: PaymentUpdateDto): Promise<Payment> {
         const paymentFound = await this.paymentRepository.findById(id);
         const updatedPayment = await this.paymentRepository.update(id, payment);
-        const order = await this.orderRepository.findById(paymentFound.order!.id!);
+        if (!paymentFound) {
+            throw new NotFoundError('Payment not found');
+        }
+        if (!paymentFound.order) {
+            throw new NotFoundError('Order not found');
+        }
+        const order = await this.orderRepository.findById(paymentFound.order.id);
         if (!order) {
             throw new NotFoundError('Order not found');
         }
         order.status = payment.status === StatusPayment.APPROVED ? OrderStatus.IN_PROGRESS : OrderStatus.CANCELED;
-        await this.orderRepository.updateStatus(order.id!, order);
+        await this.orderRepository.updateStatus(order.id, order.status);
 
         return updatedPayment;
     }

@@ -26,7 +26,7 @@ export class OrderController {
     }
 
     async create(request: FastifyRequest<{ Body: OrderCreateDto }>, reply: FastifyReply) {
-        const useCase = new CreateOrderUseCase(this.orderRepository, this.productRepository);
+        const useCase = new CreateOrderUseCase(this.orderRepository, this.productRepository, this.paymentRepository);
         const result = await useCase.execute(request.body);
         return reply.status(201).send(result);
     }

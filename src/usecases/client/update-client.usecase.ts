@@ -17,10 +17,11 @@ export class UpdateClientUseCase {
             throw new ConflictError(`Client already exists with this ${conflictingField}.`);
         }
         const updateClient = new Client({
+            id: client.id,
             name: request.name ?? client.name,
             cpf: request.cpf ?? client.cpf,
             email: request.email ?? client.email,
         });
-        return await this.clientRepository.update(client.id!, updateClient);
+        return await this.clientRepository.update(client.id, updateClient);
     }
 }
