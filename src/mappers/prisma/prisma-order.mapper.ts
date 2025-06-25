@@ -12,7 +12,7 @@ export class PrismaOrderMapper {
             value: data.value,
             status: data.status,
             orderNumber: data.orderNumber,
-            clientId: data.clientId!,
+            clientId: data.clientId,
             id: data.id,
             orderProducts: data.orderProducts.map(
                 orderProduct =>
@@ -48,7 +48,7 @@ export class PrismaOrderMapper {
             payments: [],
             orderProducts: [],
             orderNumber: data.orderNumber,
-            clientId: data.clientId!,
+            clientId: data.clientId,
             id: data.id,
         });
     }
@@ -56,9 +56,11 @@ export class PrismaOrderMapper {
     static toCreate(data: CreateOrder): Prisma.OrderCreateInput {
         return {
             value: data.total,
-            client: {
-                connect: { id: data.clientId! },
-            },
+            ...(data.clientId && {
+                client: {
+                    connect: { id: data.clientId },
+                },
+            }),
             status: OrderStatus.WAITING,
         };
     }
