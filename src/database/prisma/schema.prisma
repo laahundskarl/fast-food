@@ -40,11 +40,12 @@ model Order {
 }
 
 model OrderProduct {
-    id        String @id @default(uuid())
-    orderId   String @map("order_id") @db.Char(36)
-    productId String @map("product_id") @db.Char(36)
+    id        String  @id @default(uuid())
+    orderId   String  @map("order_id") @db.Char(36)
+    productId String  @map("product_id") @db.Char(36)
     amount    Int
-    value     Int
+    value     Decimal @map("value")
+    total     Decimal @default(0) @map("total")
 
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt @map("updated_at")
@@ -109,4 +110,5 @@ enum StatusPayment {
     PENDING
     APPROVED
     REJECTED
+    CANCELED
 }

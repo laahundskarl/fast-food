@@ -31,7 +31,7 @@ export const validatorUpdateOrder = z.object({
                 quantity: z.number().gt(0, { message: messages.quantity_zero }).optional(),
             }),
         )
-        .min(1, { message: messages.minimum_products })
+        .min(0, { message: messages.minimum_products })
         .optional(),
 });
 
@@ -39,7 +39,7 @@ export const orderProductSchema = z.object({
     id: z.string().uuid(),
     amount: z.number(),
     value: z.number(),
-    products: productResponseSchema,
+    product: productResponseSchema,
 });
 
 export const orderResponseSchema = z.object({

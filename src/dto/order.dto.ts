@@ -15,7 +15,7 @@ export interface OrderListDto {
 }
 
 export interface OrderCreateDto {
-    clientId: string;
+    clientId: string | null;
     orderProducts: [
         {
             productId: string;

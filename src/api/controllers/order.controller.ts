@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { OrderCreateDto, OrderListRequestDto, OrderUpdateDto } from '#/dto/order.dto';
 import { IOrderRepository } from '#/repositories/order.repository';
+import { IPaymentRepository } from '#/repositories/payment.repository';
 import { IProductRepository } from '#/repositories/product.repository';
 import { CreateOrderUseCase } from '#/usecases/order/create-order.usecase';
 import { DeleteOrderUseCase } from '#/usecases/order/delete-order.usecase';
@@ -12,10 +13,16 @@ import { UpdateOrderUseCase } from '#/usecases/order/update-order.usecase';
 export class OrderController {
     private readonly orderRepository: IOrderRepository;
     private readonly productRepository: IProductRepository;
+    private readonly paymentRepository: IPaymentRepository;
 
-    constructor(orderRepository: IOrderRepository, productRepository: IProductRepository) {
+    constructor(
+        orderRepository: IOrderRepository,
+        productRepository: IProductRepository,
+        paymentRepository: IPaymentRepository,
+    ) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     async create(request: FastifyRequest<{ Body: OrderCreateDto }>, reply: FastifyReply) {
@@ -37,7 +44,7 @@ export class OrderController {
     }
 
     async update(request: FastifyRequest<{ Params: { id: string }; Body: OrderUpdateDto }>, reply: FastifyReply) {
-        const useCase = new UpdateOrderUseCase(this.orderRepository, this.productRepository);
+        const useCase = new UpdateOrderUseCase(this.orderRepository, this.productRepository, this.paymentRepository);
         const result = await useCase.execute(request.params.id, request.body);
         return reply.send(result);
     }

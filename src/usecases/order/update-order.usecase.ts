@@ -1,18 +1,20 @@
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus, StatusPayment } from '@prisma/client';
 
 import { OrderUpdateDto } from '#/dto/order.dto';
-import { OrderProduct } from '#/entities/order-product.entity';
 import { Order } from '#/entities/order.entity';
 import { Payment } from '#/entities/payment.entity';
 import { Product } from '#/entities/product.entity';
 import { BusinessError, NotFoundError } from '#/errors/app-error';
+import { OrderProductMapper } from '#/mappers/order-products/OrderProductMapper';
 import { IOrderRepository } from '#/repositories/order.repository';
+import { IPaymentRepository } from '#/repositories/payment.repository';
 import { IProductRepository } from '#/repositories/product.repository';
 
 export class UpdateOrderUseCase {
     constructor(
         private readonly orderRepository: IOrderRepository,
         private readonly productRepository: IProductRepository,
+        private readonly paymentRepository: IPaymentRepository,
     ) {}
 
     async execute(id: string, request: OrderUpdateDto): Promise<any> {
@@ -24,21 +26,30 @@ export class UpdateOrderUseCase {
             throw new BusinessError(400, `The order is ${order.status.toLowerCase()} already`);
         }
 
-        let products: Product[];
+        let products: Product[] = [];
+
         if (request.orderProducts) {
-            products = await this.productRepository.findMany(request.orderProducts.map(item => item.productId));
-            if (products.length < 1) {
-                throw new NotFoundError('No products found');
-            }
+            const promises = request.orderProducts.map(async item => {
+                const product = await this.productRepository.findById(item.productId);
+                if (!product) {
+                    throw new NotFoundError('Product not found');
+                }
+                return product;
+            });
+
+            products = await Promise.all(promises);
+
             let totalValue = 0;
             const orderProducts = request.orderProducts.map(item => {
                 const product = products.find(p => p.id === item.productId);
-                totalValue += product!.value * item.quantity;
-                return new OrderProduct({
+                if (!product) {
+                    throw new NotFoundError('Product not found');
+                }
+                totalValue += product.value * item.quantity;
+                return OrderProductMapper.mapOrderProduct({
+                    productId: product.id!,
                     amount: item.quantity,
-                    value: product!.value,
-                    productId: product!.id,
-                    products: product,
+                    value: product.value,
                 });
             });
             const payment = new Payment({ externalReference: null, qrCode: null });
@@ -54,6 +65,12 @@ export class UpdateOrderUseCase {
             return await this.orderRepository.updateOrderProducts(id, updateOrder);
         }
 
+        const pendingPayment = order.payments?.find(payment => payment.status === StatusPayment.PENDING);
+
+        if (pendingPayment) {
+            await this.paymentRepository.cancelPayment(pendingPayment.id!);
+        }
+
         const updateOrder = new Order({
             value: order.value,
             status: request.status ? OrderStatus[request.status as OrderStatus] : order.status,
@@ -61,8 +78,8 @@ export class UpdateOrderUseCase {
             clientId: order.clientId,
             id,
             orderProducts: order.orderProducts,
-            payments: order.payments,
+            payments: order.payments ?? [],
         });
-        return await this.orderRepository.updateStatus(id, updateOrder);
+        return await this.orderRepository.updateStatus(id, updateOrder.status);
     }
 }

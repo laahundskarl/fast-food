@@ -1,7 +1,7 @@
 import z from 'zod';
 
 export const errorResponseValidationSchema = z.object({
-    error: z.literal('Bad Request').describe('Tipo de erro HTTP'),
+    error: z.string().describe('Tipo de erro HTTP'),
     message: z.string().describe('Mensagem geral do erro'),
     details: z
         .array(
@@ -10,6 +10,7 @@ export const errorResponseValidationSchema = z.object({
                 message: z.string().describe('Mensagem de erro para o campo'),
             }),
         )
+        .optional()
         .describe('Lista de detalhes dos erros de validação'),
 });
 

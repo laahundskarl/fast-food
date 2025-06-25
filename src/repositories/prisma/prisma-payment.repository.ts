@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, StatusPayment } from '@prisma/client';
 
 import { PaymentListDto } from '#/dto/payment.dto';
 import { Payment } from '#/entities/payment.entity';
@@ -32,6 +32,13 @@ export class PrismaPaymentRepository implements IPaymentRepository {
     async list(query?: PaymentListDto): Promise<Payment[]> {
         return this.prisma.payment.findMany({
             where: query,
+        });
+    }
+
+    async cancelPayment(id: string): Promise<void> {
+        await this.prisma.payment.update({
+            where: { id },
+            data: { status: StatusPayment.CANCELED },
         });
     }
 }
