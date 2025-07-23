@@ -3,9 +3,13 @@ variable "aws_region" {
 }
 
 variable "cluster_name" {
-  default = "fastfood-cluster"
+  default = "fast-food-cluster-prd"
+}
+
+variable "cluster_version" {
+  default = "1.33"
 }
 
 variable "node_instance_type" {
-  default = "t3.medium"
+  default = "t3.small"  # Mudança para mais recursos
 }

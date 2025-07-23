@@ -1,16 +1,51 @@
 module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  cluster_name    = var.cluster_name
-  cluster_version = "1.29"
-  subnets         = module.vpc.private_subnets
-  vpc_id          = module.vpc.vpc_id
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 18.0"
 
-  node_groups = {
-    default = {
-      desired_capacity = 2
-      max_capacity     = 3
-      min_capacity     = 1
-      instance_type    = var.node_instance_type
+  cluster_name    = var.cluster_name
+  cluster_version = var.cluster_version
+
+  vpc_id                         = data.aws_vpc.existing.id
+  subnet_ids                     = data.aws_subnets.default.ids
+  cluster_endpoint_public_access = true
+
+  # IAM roles
+  create_iam_role = false
+  iam_role_arn    = data.aws_iam_role.eks_cluster_role.arn
+
+  # Desabilitar OIDC Provider (não permitido no voclabs)
+  enable_irsa = false
+
+  # EKS Addons para storage
+  cluster_addons = {
+    aws-ebs-csi-driver = {
+      version = "v1.14.1-eksbuild.1"  # Versão mais estável
+      resolve_conflicts = "OVERWRITE"
     }
+  }
+
+  # EKS Managed Node Group(s)
+  eks_managed_node_group_defaults = {
+    instance_types = [var.node_instance_type]
+  }
+
+  eks_managed_node_groups = {
+    default = {
+      min_size     = 1
+      max_size     = 3
+      desired_size = 2
+
+      instance_types = [var.node_instance_type]
+      capacity_type  = "ON_DEMAND"
+
+      # Use existing IAM role
+      create_iam_role = false
+      iam_role_arn    = data.aws_iam_role.eks_node_role.arn
+    }
+  }
+
+  tags = {
+    Environment = "production"
+    Terraform   = "true"
   }
 }

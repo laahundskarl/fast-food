@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-test
+  template:
+    metadata:
+      labels:
+        app: mysql-test
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_DATABASE
+          value: "fast-food"
+        - name: MYSQL_USER
+          value: "admin"
+        - name: MYSQL_PASSWORD
+          value: "admin123"
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root123"
+        - name: MYSQL_ALLOW_EMPTY_PASSWORD
+          value: "no"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        # Volume temporário - dados serão perdidos se pod reiniciar
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-storage
+        emptyDir: {}

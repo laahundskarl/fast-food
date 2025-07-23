@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc-gp2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: gp2  # Storage class padrão do EKS
+  resources:
+    requests:
+      storage: 1Gi  # Reduzir tamanho para economizar

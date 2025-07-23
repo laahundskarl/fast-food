@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastfood-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastfood-api
+  template:
+    metadata:
+      labels:
+        app: fastfood-api
+        tier: backend
+        component: api
+        version: v1.0
+    spec:
+      initContainers:
+      - name: prisma-migrate
+        image: 601273246696.dkr.ecr.us-east-1.amazonaws.com/fastfood-api:latest
+        command:
+        - sh
+        - -c
+        - |
+          echo "Waiting for MySQL to be ready..."
+          until timeout 10 npx prisma db push --accept-data-loss --skip-generate 2>/dev/null; do
+            echo "MySQL not ready, waiting 10 seconds..."
+            sleep 10
+          done
+          echo "MySQL is ready! Running migrations..."
+          npx prisma migrate deploy
+        env:
+        - name: DATABASE_URL
+          value: "mysql://admin:admin123@mysql-service:3306/fast-food?allowPublicKeyRetrieval=true"
+        envFrom:
+        - configMapRef:
+            name: fastfood-config
+        - secretRef:
+            name: fastfood-secrets
+      containers:
+      - name: fastfood-api
+        image: 601273246696.dkr.ecr.us-east-1.amazonaws.com/fastfood-api:latest
+        command: ["node", "dist/index.js"]  # Pular o wait-for.sh, usar só o node
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: "mysql://admin:admin123@mysql-service:3306/fast-food?allowPublicKeyRetrieval=true"
+        envFrom:
+        - configMapRef:
+            name: fastfood-config
+        - secretRef:
+            name: fastfood-secrets
+        readinessProbe:
+          httpGet:
+            path: /docs  # Swagger sempre funciona
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /docs  # Swagger sempre funciona
+            port: 3000
+          initialDelaySeconds: 60
+          periodSeconds: 30
