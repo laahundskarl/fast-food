@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { logger } from '#/config/logger';
+import { logger } from '#/infrastructure/config/logger';
 import { seedClient } from '#/database/prisma/seeds/seed-client';
 import { seedOrder } from '#/database/prisma/seeds/seed-order';
 import { seedOrderProduct } from '#/database/prisma/seeds/seed-order-product';
