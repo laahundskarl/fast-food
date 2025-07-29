@@ -11,7 +11,7 @@ export class GetClientOrders implements IGetClientOrdersUseCase {
     constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
     async execute(cpf: string): Promise<Client> {
-        const client = await this.clientRepository.findOrders(cpf);
+        const client = await this.clientRepository.findByCpf(cpf, true);
         if (!client) {
             throw new NotFoundError('Client not found');
         }

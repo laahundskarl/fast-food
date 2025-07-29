@@ -12,12 +12,12 @@ export class UpdateClient implements IUpdateClientUseCase {
     constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
     async execute(cpf: string, request: UpdateClientDto): Promise<Client> {
-        const client = await this.clientRepository.findByCpf(cpf);
+        const client = await this.clientRepository.findByCpf(cpf, false);
         if (!client) {
             throw new NotFoundError('Client not found');
         }
         if (request.cpf && request.cpf !== client.cpf) {
-            const existingClientByCpf = await this.clientRepository.findByCpf(request.cpf);
+            const existingClientByCpf = await this.clientRepository.findByCpf(request.cpf, false);
             if (existingClientByCpf) {
                 throw new ConflictError('Client already exists with this cpf.');
             }

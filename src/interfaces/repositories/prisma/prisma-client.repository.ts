@@ -17,12 +17,17 @@ export class PrismaClientRepository implements IClientRepository {
         return PrismaClientMapper.toDomainSimple(data);
     }
 
-    async findByCpf(cpf: string): Promise<Client | null> {
+    async findByCpf(cpf: string, withOrders: boolean): Promise<Client | null> {
+        const include = withOrders
+            ? { orders: { include: { payments: true, orderProducts: { include: { product: true } } } } }
+            : {};
+
         const data = await this.prisma.client.findFirst({
             where: { cpf },
+            include,
         });
         if (!data) return null;
-        return PrismaClientMapper.toDomainSimple(data);
+        return withOrders ? PrismaClientMapper.toDomain(data) : PrismaClientMapper.toDomainSimple(data);
     }
 
     async findByEmail(email: string): Promise<Client | null> {
@@ -41,15 +46,6 @@ export class PrismaClientRepository implements IClientRepository {
         });
         if (!data) return null;
         return PrismaClientMapper.toDomainSimple(data);
-    }
-
-    async findOrders(cpf: string): Promise<Client | null> {
-        const data = await this.prisma.client.findUnique({
-            where: { cpf },
-            include: { orders: { include: { payments: true, orderProducts: { include: { product: true } } } } },
-        });
-        if (!data) return null;
-        return PrismaClientMapper.toDomain(data);
     }
 
     async update(client: Client): Promise<Client> {
