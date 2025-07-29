@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-import { ProductCategory } from '#/core/domain/entities/product-category.entity';
-import { ProductCategoryRepository } from '#/core/domain/repositories/product-category.repository';
-import { ProductCategoryListDto } from '#/infrastructure/adapters/dto/product-category.dto';
-import { PrismaProductCategoryMapper } from '#/infrastructure/persistence/prisma/mapper/prisma-product-category.mapper';
+import { ListProductCategoryDto } from '#/application/use-cases/product-category/list-product-category/list-product-category.dto';
+import { ProductCategory } from '#/domain/entities/product-category.entity';
+import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
+import { PrismaProductCategoryMapper } from '#/interfaces/repositories/prisma/mappers/prisma-product-category.mapper';
 
-export class PrismaProductCategoryRepository implements ProductCategoryRepository {
+export class PrismaProductCategoryRepository implements IProductCategoryRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     async get(id: string): Promise<ProductCategory | null> {
@@ -19,7 +19,7 @@ export class PrismaProductCategoryRepository implements ProductCategoryRepositor
         return PrismaProductCategoryMapper.toDomain(data);
     }
 
-    async list(query?: ProductCategoryListDto): Promise<ProductCategory[]> {
+    async list(query?: ListProductCategoryDto): Promise<ProductCategory[]> {
         const data = await this.prisma.productCategory.findMany({
             where: {
                 ...(query?.name && { name: { contains: query.name } }),

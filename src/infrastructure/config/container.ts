@@ -11,6 +11,12 @@ import { GetClientOrders } from '#/application/use-cases/client/get-client-order
 import { IGetClientOrdersUseCase } from '#/application/use-cases/client/get-client-orders/get-client-orders.use-case';
 import { UpdateClient } from '#/application/use-cases/client/update-client/update-client';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
+import { Identify } from '#/application/use-cases/identify/identify';
+import { IIdentifyUseCase } from '#/application/use-cases/identify/identify.use-case';
+import { GetProductCategory } from '#/application/use-cases/product-category/get-product-category/get-product-category';
+import { IGetProductCategoryUseCase } from '#/application/use-cases/product-category/get-product-category/get-product-category.use-case';
+import { ListProductCategory } from '#/application/use-cases/product-category/list-product-category/list-product-category';
+import { IListProductCategoryUseCase } from '#/application/use-cases/product-category/list-product-category/list-product-category.use-case';
 import { IClientRepository } from '#/domain/repositories/client.repository';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
@@ -50,6 +56,14 @@ container.bind<IDeleteClientUseCase>(TYPES.DeleteClientUseCase).to(DeleteClient)
 container.bind<IGetClientUseCase>(TYPES.GetClientUseCase).to(GetClient).inTransientScope();
 container.bind<IGetClientOrdersUseCase>(TYPES.GetClientOrdersUseCase).to(GetClientOrders).inTransientScope();
 container.bind<IUpdateClientUseCase>(TYPES.UpdateClientUseCase).to(UpdateClient).inTransientScope();
+
+container.bind<IIdentifyUseCase>(TYPES.IdentifyUseCase).to(Identify).inTransientScope();
+
+container.bind<IGetProductCategoryUseCase>(TYPES.GetProductCategoryUseCase).to(GetProductCategory).inTransientScope();
+container
+    .bind<IListProductCategoryUseCase>(TYPES.ListProductCategoryUseCase)
+    .to(ListProductCategory)
+    .inTransientScope();
 
 // Controllers
 container.bind<ClientController>(TYPES.ClientController).to(ClientController).inTransientScope();

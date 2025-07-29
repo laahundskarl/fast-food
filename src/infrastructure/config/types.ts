@@ -16,6 +16,11 @@ export const TYPES = {
     GetClientOrdersUseCase: Symbol.for('GetClientOrdersUseCase'),
     UpdateClientUseCase: Symbol.for('UpdateClientUseCase'),
 
+    IdentifyUseCase: Symbol.for('IdentifyUseCase'),
+
+    GetProductCategoryUseCase: Symbol.for('GetProductCategoryUseCase'),
+    ListProductCategoryUseCase: Symbol.for('ListProductCategoryUseCase'),
+
     // Controllers
     ClientController: Symbol.for('ClientController'),
     IdentifyController: Symbol.for('IdentifyController'),
