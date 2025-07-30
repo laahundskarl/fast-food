@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { Client } from '#/domain/entities/client.entity';
-import { PrismaOrderMapper } from '#/interfaces/repositories/prisma/mappers/prisma-order.mapper';
+import { PrismaOrderMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-order.mapper';
 
 export class PrismaClientMapper {
     static toDomain(data: any): Client {

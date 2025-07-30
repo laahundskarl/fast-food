@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { Payment } from '#/domain/entities/payment.entity';
-import { PrismaOrderMapper } from '#/interfaces/repositories/prisma/mappers/prisma-order.mapper';
+import { PrismaOrderMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-order.mapper';
 
 export class PrismaPaymentMapper {
     static toDomain(data: any): Payment {

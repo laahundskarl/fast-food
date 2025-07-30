@@ -5,7 +5,7 @@ import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/lis
 import { Payment } from '#/domain/entities/payment.entity';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
 import { TYPES } from '#/infrastructure/config/types';
-import { PrismaPaymentMapper } from '#/interfaces/repositories/prisma/mappers/prisma-payment.mapper';
+import { PrismaPaymentMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-payment.mapper';
 
 @injectable()
 export class PrismaPaymentRepository implements IPaymentRepository {

@@ -5,7 +5,7 @@ import { ListProductDto } from '#/application/use-cases/product/list-product/lis
 import { Product } from '#/domain/entities/product.entity';
 import { IProductRepository } from '#/domain/repositories/product.repository';
 import { TYPES } from '#/infrastructure/config/types';
-import { PrismaProductMapper } from '#/interfaces/repositories/prisma/mappers/prisma-product.mapper';
+import { PrismaProductMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product.mapper';
 
 @injectable()
 export class PrismaProductRepository implements IProductRepository {

@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import { Client } from '#/domain/entities/client.entity';
 import { IClientRepository } from '#/domain/repositories/client.repository';
 import { TYPES } from '#/infrastructure/config/types';
-import { PrismaClientMapper } from '#/interfaces/repositories/prisma/mappers/prisma-client.mapper';
+import { PrismaClientMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-client.mapper';
 
 @injectable()
 export class PrismaClientRepository implements IClientRepository {

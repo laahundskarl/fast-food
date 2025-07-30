@@ -55,11 +55,11 @@ import { OrderController } from '#/interfaces/controller/order.controller';
 import { PaymentController } from '#/interfaces/controller/payment.controller';
 import { ProductCategoryController } from '#/interfaces/controller/product-category.controller';
 import { ProductController } from '#/interfaces/controller/product.controller';
-import { PrismaClientRepository } from '#/interfaces/repositories/prisma/prisma-client.repository';
-import { PrismaOrderRepository } from '#/interfaces/repositories/prisma/prisma-order.repository';
-import { PrismaPaymentRepository } from '#/interfaces/repositories/prisma/prisma-payment.repository';
-import { PrismaProductCategoryRepository } from '#/interfaces/repositories/prisma/prisma-product-category.repository';
-import { PrismaProductRepository } from '#/interfaces/repositories/prisma/prisma-product.repository';
+import { PrismaClientRepository } from '#/infrastructure/repositories/prisma/prisma-client.repository';
+import { PrismaOrderRepository } from '#/infrastructure/repositories/prisma/prisma-order.repository';
+import { PrismaPaymentRepository } from '#/infrastructure/repositories/prisma/prisma-payment.repository';
+import { PrismaProductCategoryRepository } from '#/infrastructure/repositories/prisma/prisma-product-category.repository';
+import { PrismaProductRepository } from '#/infrastructure/repositories/prisma/prisma-product.repository';
 
 const container = new Container();
 

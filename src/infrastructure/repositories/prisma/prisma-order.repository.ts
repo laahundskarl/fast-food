@@ -5,7 +5,7 @@ import { OrderListDto } from '#/application/dtos/order.dto';
 import { Order } from '#/domain/entities/order.entity';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { TYPES } from '#/infrastructure/config/types';
-import { PrismaOrderMapper } from '#/interfaces/repositories/prisma/mappers/prisma-order.mapper';
+import { PrismaOrderMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-order.mapper';
 
 @injectable()
 export class PrismaOrderRepository implements IOrderRepository {

@@ -1,5 +1,5 @@
 import { OrderProduct } from '#/domain/entities/order-product.entity';
-import { PrismaProductMapper } from '#/interfaces/repositories/prisma/mappers/prisma-product.mapper';
+import { PrismaProductMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product.mapper';
 
 export class PrismaOrderProductMapper {
     static toDomain(data: any): OrderProduct {

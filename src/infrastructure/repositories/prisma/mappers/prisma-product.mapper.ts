@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { Product } from '#/domain/entities/product.entity';
-import { PrismaProductCategoryMapper } from '#/interfaces/repositories/prisma/mappers/prisma-product-category.mapper';
+import { PrismaProductCategoryMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product-category.mapper';
 
 export class PrismaProductMapper {
     static toDomain(data: any): Product {

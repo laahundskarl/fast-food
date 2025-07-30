@@ -1,9 +1,9 @@
 import { Prisma } from '@prisma/client';
 
 import { Order } from '#/domain/entities/order.entity';
-import { PrismaClientMapper } from '#/interfaces/repositories/prisma/mappers/prisma-client.mapper';
-import { PrismaOrderProductMapper } from '#/interfaces/repositories/prisma/mappers/prisma-order-product.mapper';
-import { PrismaPaymentMapper } from '#/interfaces/repositories/prisma/mappers/prisma-payment.mapper';
+import { PrismaClientMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-client.mapper';
+import { PrismaOrderProductMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-order-product.mapper';
+import { PrismaPaymentMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-payment.mapper';
 
 export class PrismaOrderMapper {
     static toDomain(data: any): Order {

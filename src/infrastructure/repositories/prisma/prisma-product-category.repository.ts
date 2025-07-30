@@ -5,7 +5,7 @@ import { ListProductCategoryDto } from '#/application/use-cases/product-category
 import { ProductCategory } from '#/domain/entities/product-category.entity';
 import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
 import { TYPES } from '#/infrastructure/config/types';
-import { PrismaProductCategoryMapper } from '#/interfaces/repositories/prisma/mappers/prisma-product-category.mapper';
+import { PrismaProductCategoryMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product-category.mapper';
 
 @injectable()
 export class PrismaProductCategoryRepository implements IProductCategoryRepository {
