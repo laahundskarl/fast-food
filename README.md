@@ -234,6 +234,10 @@ terraform apply
 
 # 6. Obter informações do cluster
 terraform output
+
+# 7. Se não houver outputs, execute um refresh
+terraform refresh
+terraform output
 ```
 
 ### Passo 3: Configurar kubectl
@@ -249,27 +253,34 @@ kubectl get nodes
 ### Passo 4: Build e Push da Imagem Docker
 
 ```bash
-# 1. Obter URL do ECR repository
-ECR_URI=$(terraform output -raw ecr_repository_url)
+# Usando terraform output
+ECR_URI=$(terraform output -raw ecr_repository_url 2>/dev/null)
 
-# 2. Login no ECR
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URI
+# Extrair hostname do registry
+ECR_REGISTRY=$(echo "$ECR_URI" | cut -d'/' -f1)
+echo "ECR_REGISTRY: $ECR_REGISTRY"
 
-# 3. Build da imagem
+# Login no ECR
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ECR_REGISTRY"
+
+# volte para a pasta raíz
+cd ..
+
+# Build da imagem
 docker build -t fastfood-api .
 
-# 4. Tag da imagem
-docker tag fastfood-api:latest $ECR_URI:latest
+# Tag da imagem
+docker tag fastfood-api:latest "$ECR_URI:latest"
 
-# 5. Push para ECR
-docker push $ECR_URI:latest
+# Push para ECR
+docker push "$ECR_URI:latest"
 ```
 
 ### Passo 5: Deploy da Aplicação no Kubernetes
 
 ```bash
 # 1. Navegar para diretório k8s
-cd ../k8s/
+cd k8s/
 
 # 2. Aplicar configurações e secrets
 kubectl apply -f 01-config.yaml
@@ -281,15 +292,26 @@ kubectl apply -f 02-mysql-pvc.yaml
 kubectl apply -f 03-mysql-deployment.yaml
 kubectl apply -f 04-mysql-service.yaml
 
-# 5. Aguardar MySQL estar pronto
+# 5. Aguardar MySQL estar pronto (Aguarde a mensagem "condition met" aparecer)
 kubectl wait --for=condition=Ready pod -l app=mysql --timeout=300s
 
-# 6. Deploy da API
+# 6. Deploy da API (migration automática no initContainer, idempotente)
 kubectl apply -f 05-api-deployment.yaml
+
+# 7. Instalar Metrics Server (necessário para HPA)
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# 8. Aguardar Metrics Server estar pronto
+kubectl wait --for=condition=Ready pod -l k8s-app=metrics-server -n kube-system --timeout=300s
+
+# 9. Deploy serviço da API
 kubectl apply -f 06-api-service.yaml
 
-# 7. Aplicar LoadBalancer (acesso externo)
+# 10. Aplicar LoadBalancer (acesso externo)
 kubectl apply -f 07-loadbalancer.yaml
+
+# 11. Aplicar HPA (Horizontal Pod Autoscaler)
+kubectl apply -f 08-hpa.yaml
 ```
 
 ### Passo 6: Verificar Deploy
@@ -304,6 +326,15 @@ kubectl get svc
 # Obter URL externa do LoadBalancer
 kubectl get svc fastfood-loadbalancer
 
+# Verificar HPA (pode demorar alguns minutos para mostrar métricas)
+kubectl get hpa
+
+# Verificar métricas dos pods
+kubectl top pods
+
+# Verificar métricas dos nodes
+kubectl top nodes
+
 # Ver logs da aplicação
 kubectl logs -l app=fastfood-api -f
 
@@ -311,7 +342,23 @@ kubectl logs -l app=fastfood-api -f
 kubectl logs -l app=mysql
 ```
 
-### Passo 7: Testar a Aplicação
+### Passo 7: Testar HPA (Horizontal Pod Autoscaler)
+
+```bash
+# Verificar HPA em tempo real
+kubectl get hpa -w
+
+# Gerar carga para testar scaling (em outro terminal)
+for ($i=1; $i -le 1000; $i++) { 
+  curl "http://<EXTERNAL-IP>/docs" -UseBasicParsing
+  Start-Sleep -Milliseconds 100 
+}
+
+# Monitorar pods durante o teste
+kubectl get pods -w
+```
+
+### Passo 8: Testar a Aplicação
 
 ```bash
 # Port-forward para teste local (opcional)
@@ -320,11 +367,6 @@ kubectl port-forward svc/fastfood-api-service 8080:3000
 # Acessar Swagger (se usando port-forward)
 # http://localhost:8080/docs
 
-# Ou usar o LoadBalancer External IP
-EXTERNAL_IP=$(kubectl get svc fastfood-loadbalancer -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-echo "API disponível em: http://$EXTERNAL_IP/docs"
-```
-
 ### Troubleshooting
 
 #### Verificar status dos pods:
@@ -332,6 +374,27 @@ echo "API disponível em: http://$EXTERNAL_IP/docs"
 kubectl get pods -o wide
 kubectl describe pod <pod-name>
 kubectl logs <pod-name> -c <container-name>
+```
+
+#### ⚠️ Problema comum: Metrics Server timeout (HPA não funciona)
+Se `kubectl top nodes` mostrar `<unknown>` ou logs do Metrics Server mostrarem "context deadline exceeded":
+
+```bash
+# 1. Verificar se o security group permite comunicação na porta 10250
+kubectl logs -n kube-system -l k8s-app=metrics-server --tail=20
+
+# 2. Se houver erros de timeout, corrigir security group:
+NODE_SG=$(aws ec2 describe-instances --filters "Name=tag:kubernetes.io/cluster/fast-food-cluster-prd,Values=owned" --query "Reservations[0].Instances[0].SecurityGroups[?GroupName=='fast-food-cluster-prd-node*'].GroupId" --output text | head -1)
+
+# 3. Adicionar regra de saída para kubelet metrics
+aws ec2 authorize-security-group-egress \
+  --group-id "$NODE_SG" \
+  --protocol tcp \
+  --port 10250 \
+  --source-group "$NODE_SG"
+
+# 4. Aguardar 2-3 minutos e testar
+kubectl top nodes
 ```
 
 #### Verificar conectividade MySQL:
@@ -385,3 +448,61 @@ terraform show
 - **IAM Roles**: Permissões de acesso
 - **Security Groups**: Firewall
 - **Load Balancer**: Acesso externo
+
+---
+
+## Deploy Kubernetes (padrão)
+
+O deploy do cluster pode ser feito de forma automatizada com o script abaixo (recomendado):
+
+```bash
+cd k8s
+chmod +x deploy.sh
+./deploy.sh
+```
+
+O script executa todos os passos de criação dos recursos Kubernetes na ordem correta.
+
+---
+
+## Deploy Kubernetes (manual - opcional)
+
+Se preferir, você pode executar cada comando manualmente, conforme descrito abaixo:
+
+```bash
+# 1. Navegar para diretório k8s
+cd k8s/
+
+# 2. Aplicar configurações e secrets
+kubectl apply -f 01-config.yaml
+
+# 3. Aplicar PVC para MySQL
+kubectl apply -f 02-mysql-pvc.yaml
+
+# 4. Deploy MySQL
+kubectl apply -f 03-mysql-deployment.yaml
+kubectl apply -f 04-mysql-service.yaml
+
+# 5. Aguardar MySQL estar pronto (Aguarde a mensagem "condition met" aparecer)
+kubectl wait --for=condition=Ready pod -l app=mysql --timeout=300s
+
+# 6. Deploy da API
+kubectl apply -f 05-api-deployment.yaml
+
+# 7. Instalar Metrics Server (necessário para HPA)
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+# 8. Aguardar Metrics Server estar pronto
+kubectl wait --for=condition=Ready pod -l k8s-app=metrics-server -n kube-system --timeout=300s
+
+# 9. Deploy serviço da API
+kubectl apply -f 06-api-service.yaml
+
+# 10. Aplicar LoadBalancer (acesso externo)
+kubectl apply -f 07-loadbalancer.yaml
+
+# 11. Aplicar HPA (Horizontal Pod Autoscaler)
+kubectl apply -f 08-hpa.yaml
+```
+
+> **Recomendação:** Use o `deploy.sh` para evitar erros de ordem ou comandos esquecidos.
