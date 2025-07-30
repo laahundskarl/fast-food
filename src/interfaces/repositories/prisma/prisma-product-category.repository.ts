@@ -1,12 +1,15 @@
 import { PrismaClient } from '@prisma/client';
+import { inject, injectable } from 'inversify';
 
 import { ListProductCategoryDto } from '#/application/use-cases/product-category/list-product-category/list-product-category.dto';
 import { ProductCategory } from '#/domain/entities/product-category.entity';
 import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
+import { TYPES } from '#/infrastructure/config/types';
 import { PrismaProductCategoryMapper } from '#/interfaces/repositories/prisma/mappers/prisma-product-category.mapper';
 
+@injectable()
 export class PrismaProductCategoryRepository implements IProductCategoryRepository {
-    constructor(private readonly prisma: PrismaClient) {}
+    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
 
     async findById(id: string, withProducts: boolean): Promise<ProductCategory | null> {
         const include = withProducts ? { products: true } : {};

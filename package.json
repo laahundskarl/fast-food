@@ -28,8 +28,8 @@
         "node": ">=22"
     },
     "prisma": {
-        "schema": "src/database/prisma/schema.prisma",
-        "seed": "node dist/database/prisma/seeds/seed.js"
+        "schema": "src/infrastructure/database/prisma/schema.prisma",
+        "seed": "node dist/infrastructure/database/prisma/seeds/seed.js"
     },
     "dependencies": {
         "@fastify/cors": "^11.0.1",

@@ -11,8 +11,8 @@ type OrderPayload = {
     value: number;
     orderNumber: number;
     status: OrderStatus;
-    orderProducts: OrderProduct[];
-    payments: Payment[];
+    orderProducts?: OrderProduct[];
+    payments?: Payment[];
     client?: Client;
 };
 
@@ -21,17 +21,23 @@ export class Order {
     public value: number;
     public orderNumber: number;
     public status: OrderStatus;
-    public orderProducts: OrderProduct[];
-    public payments: Payment[];
-    public client?: Client | null;
+    public orderProducts?: OrderProduct[];
+    public payments?: Payment[];
+    public client?: Client;
 
     constructor(payload: OrderPayload) {
         this.id = payload.id || randomUUID();
         this.value = payload.value;
         this.orderNumber = payload.orderNumber;
         this.status = payload.status;
-        this.orderProducts = payload.orderProducts;
-        this.payments = payload.payments;
-        this.client = payload.client || null;
+        if (payload.orderProducts) {
+            this.orderProducts = payload.orderProducts;
+        }
+        if (payload.payments) {
+            this.payments = payload.payments;
+        }
+        if (payload.client) {
+            this.client = payload.client;
+        }
     }
 }

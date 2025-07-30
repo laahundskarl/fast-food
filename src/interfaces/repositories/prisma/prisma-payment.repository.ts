@@ -1,12 +1,15 @@
 import { PrismaClient } from '@prisma/client';
+import { inject, injectable } from 'inversify';
 
 import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/list-payment.dto';
 import { Payment } from '#/domain/entities/payment.entity';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
+import { TYPES } from '#/infrastructure/config/types';
 import { PrismaPaymentMapper } from '#/interfaces/repositories/prisma/mappers/prisma-payment.mapper';
 
+@injectable()
 export class PrismaPaymentRepository implements IPaymentRepository {
-    constructor(private readonly prisma: PrismaClient) {}
+    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
 
     async findById(id: string): Promise<Payment | null> {
         const data = await this.prisma.payment.findUnique({
@@ -27,9 +30,13 @@ export class PrismaPaymentRepository implements IPaymentRepository {
     }
 
     async update(id: string, payment: Payment): Promise<Payment> {
-        return this.prisma.payment.update({
+        const data = await this.prisma.payment.update({
             where: { id },
             data: PrismaPaymentMapper.toUpdate(payment),
+            include: {
+                order: true,
+            },
         });
+        return PrismaPaymentMapper.toDomain(data);
     }
 }

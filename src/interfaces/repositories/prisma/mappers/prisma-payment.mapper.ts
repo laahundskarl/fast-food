@@ -8,9 +8,9 @@ export class PrismaPaymentMapper {
         return new Payment({
             id: data.id,
             status: data.status,
-            order: PrismaOrderMapper.toDomainSimple(data.order),
-            externalReference: data.externalReference,
-            qrCode: data.qrCode,
+            externalReference: data.externalReference || undefined,
+            qrCode: data.qrCode || undefined,
+            order: data.order ? PrismaOrderMapper.toDomainSimple(data.order) : undefined,
         });
     }
 
@@ -18,16 +18,30 @@ export class PrismaPaymentMapper {
         return new Payment({
             id: data.id,
             status: data.status,
-            externalReference: data.externalReference,
-            qrCode: data.qrCode,
+            externalReference: data.externalReference || undefined,
+            qrCode: data.qrCode || undefined,
         });
     }
 
-    static toUpdate(data: Payment): Prisma.PaymentUpdateInput {
+    static toCreate(payment: Payment): Prisma.PaymentCreateInput {
+        if (!payment.order?.id) {
+            throw new Error('Payment must be associated with an order');
+        }
         return {
-            externalReference: data.externalReference,
-            qrCode: data.qrCode,
-            status: data.status,
+            status: payment.status,
+            externalReference: payment.externalReference,
+            qrCode: payment.qrCode,
+            order: {
+                connect: { id: payment.order.id },
+            },
+        };
+    }
+
+    static toUpdate(payment: Payment): Prisma.PaymentUpdateInput {
+        return {
+            status: payment.status,
+            externalReference: payment.externalReference,
+            qrCode: payment.qrCode,
         };
     }
 }

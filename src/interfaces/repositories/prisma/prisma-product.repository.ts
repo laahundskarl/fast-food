@@ -1,12 +1,15 @@
 import { PrismaClient } from '@prisma/client';
+import { inject, injectable } from 'inversify';
 
 import { ListProductDto } from '#/application/use-cases/product/list-product/list-product.dto';
 import { Product } from '#/domain/entities/product.entity';
 import { IProductRepository } from '#/domain/repositories/product.repository';
+import { TYPES } from '#/infrastructure/config/types';
 import { PrismaProductMapper } from '#/interfaces/repositories/prisma/mappers/prisma-product.mapper';
 
+@injectable()
 export class PrismaProductRepository implements IProductRepository {
-    constructor(private readonly prisma: PrismaClient) {}
+    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
 
     async create(product: Product): Promise<Product> {
         const data = await this.prisma.product.create({

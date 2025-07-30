@@ -13,6 +13,16 @@ import { UpdateClient } from '#/application/use-cases/client/update-client/updat
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
 import { Identify } from '#/application/use-cases/identify/identify';
 import { IIdentifyUseCase } from '#/application/use-cases/identify/identify.use-case';
+import { CreateOrder } from '#/application/use-cases/order/create-order/create-order';
+import { ICreateOrderUseCase } from '#/application/use-cases/order/create-order/create-order.use-case';
+import { DeleteOrder } from '#/application/use-cases/order/delete-order/delete-order';
+import { IDeleteOrderUseCase } from '#/application/use-cases/order/delete-order/delete-order.use-case';
+import { GetOrder } from '#/application/use-cases/order/get-order/get-order';
+import { IGetOrderUseCase } from '#/application/use-cases/order/get-order/get-order.use-case';
+import { ListOrder } from '#/application/use-cases/order/list-order/list-order';
+import { IListOrderUseCase } from '#/application/use-cases/order/list-order/list-order.use-case';
+import { UpdateOrder } from '#/application/use-cases/order/update-order/update-order';
+import { IUpdateOrderUseCase } from '#/application/use-cases/order/update-order/update-order.use-case';
 import { GetPayment } from '#/application/use-cases/payment/get-payment/get-payment';
 import { IGetPaymentUseCase } from '#/application/use-cases/payment/get-payment/get-payment.use-case';
 import { ListPayment } from '#/application/use-cases/payment/list-payment/list-payment';
@@ -54,7 +64,12 @@ import { PrismaProductRepository } from '#/interfaces/repositories/prisma/prisma
 const container = new Container();
 
 // PrismaClient
-container.bind<PrismaClient>(TYPES.PrismaClient).to(PrismaClient).inSingletonScope();
+container
+    .bind<PrismaClient>(TYPES.PrismaClient)
+    .toDynamicValue(() => {
+        return new PrismaClient();
+    })
+    .inSingletonScope();
 
 // Repositories
 container.bind<IClientRepository>(TYPES.ClientRepository).to(PrismaClientRepository).inSingletonScope();
@@ -74,6 +89,12 @@ container.bind<IGetClientOrdersUseCase>(TYPES.GetClientOrdersUseCase).to(GetClie
 container.bind<IUpdateClientUseCase>(TYPES.UpdateClientUseCase).to(UpdateClient).inTransientScope();
 
 container.bind<IIdentifyUseCase>(TYPES.IdentifyUseCase).to(Identify).inTransientScope();
+
+container.bind<ICreateOrderUseCase>(TYPES.CreateOrderUseCase).to(CreateOrder).inTransientScope();
+container.bind<IDeleteOrderUseCase>(TYPES.DeleteOrderUseCase).to(DeleteOrder).inTransientScope();
+container.bind<IGetOrderUseCase>(TYPES.GetOrderUseCase).to(GetOrder).inTransientScope();
+container.bind<IListOrderUseCase>(TYPES.ListOrderUseCase).to(ListOrder).inTransientScope();
+container.bind<IUpdateOrderUseCase>(TYPES.UpdateOrderUseCase).to(UpdateOrder).inTransientScope();
 
 container.bind<IGetPaymentUseCase>(TYPES.GetPaymentUseCase).to(GetPayment).inTransientScope();
 container.bind<IListPaymentUseCase>(TYPES.ListPaymentUseCase).to(ListPayment).inTransientScope();

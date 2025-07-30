@@ -13,7 +13,7 @@ export class GetProductCategory implements IGetProductCategoryUseCase {
     ) {}
 
     async execute(id: string): Promise<ProductCategory> {
-        const category = await this.productCategoryRepository.get(id);
+        const category = await this.productCategoryRepository.findById(id, true);
         if (!category) {
             throw new NotFoundError('Category not found');
         }
