@@ -39,7 +39,7 @@ export const orderProductSchema = z.object({
     id: z.string().uuid(),
     amount: z.number(),
     value: z.number(),
-    products: productResponseSchema,
+    product: productResponseSchema,
 });
 
 export const orderResponseSchema = z.object({
@@ -47,7 +47,14 @@ export const orderResponseSchema = z.object({
     value: z.number(),
     orderNumber: z.number(),
     status: z.string(),
-    clientId: z.string().uuid().optional(),
     orderProducts: z.array(orderProductSchema),
     payments: z.array(paymentResponseSchema),
+    client: z
+        .object({
+            id: z.string().uuid(),
+            name: z.string(),
+            cpf: z.string().length(11),
+            email: z.string().email(),
+        })
+        .optional(),
 });

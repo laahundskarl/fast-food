@@ -6,7 +6,7 @@ export class PrismaProductCategoryMapper {
         return new ProductCategory({
             id: data.id,
             name: data.name,
-            products: data.products.map((product: any) => PrismaProductMapper.toDomain(product)) || [],
+            products: data.products.map((product: any) => PrismaProductMapper.toDomainSimple(product)) || [],
         });
     }
 

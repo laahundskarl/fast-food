@@ -14,10 +14,11 @@ export class PrismaProductCategoryRepository implements IProductCategoryReposito
     async findById(id: string, withProducts: boolean): Promise<ProductCategory | null> {
         const include = withProducts ? { products: true } : {};
 
-        const data = await this.prisma.productCategory.findUnique({
+        const data = await this.prisma.productCategory.findFirst({
             where: { id },
             include,
         });
+        console.log(data);
         if (!data) return null;
         return withProducts
             ? PrismaProductCategoryMapper.toDomain(data)

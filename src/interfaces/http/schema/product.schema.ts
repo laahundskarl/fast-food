@@ -5,7 +5,6 @@ export const productResponseSchema = z.object({
     name: z.string(),
     value: z.number(),
     description: z.string(),
-    categoryId: z.string().optional(),
     category: z
         .object({
             id: z.string().uuid(),
