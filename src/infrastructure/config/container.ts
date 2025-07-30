@@ -49,17 +49,17 @@ import { IPaymentRepository } from '#/domain/repositories/payment.repository';
 import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
 import { IProductRepository } from '#/domain/repositories/product.repository';
 import { TYPES } from '#/infrastructure/config/types';
+import { PrismaClientRepository } from '#/infrastructure/repositories/prisma/prisma-client.repository';
+import { PrismaOrderRepository } from '#/infrastructure/repositories/prisma/prisma-order.repository';
+import { PrismaPaymentRepository } from '#/infrastructure/repositories/prisma/prisma-payment.repository';
+import { PrismaProductCategoryRepository } from '#/infrastructure/repositories/prisma/prisma-product-category.repository';
+import { PrismaProductRepository } from '#/infrastructure/repositories/prisma/prisma-product.repository';
 import { ClientController } from '#/interfaces/controller/client.controller';
 import { IdentifyController } from '#/interfaces/controller/identify.controller';
 import { OrderController } from '#/interfaces/controller/order.controller';
 import { PaymentController } from '#/interfaces/controller/payment.controller';
 import { ProductCategoryController } from '#/interfaces/controller/product-category.controller';
 import { ProductController } from '#/interfaces/controller/product.controller';
-import { PrismaClientRepository } from '#/infrastructure/repositories/prisma/prisma-client.repository';
-import { PrismaOrderRepository } from '#/infrastructure/repositories/prisma/prisma-order.repository';
-import { PrismaPaymentRepository } from '#/infrastructure/repositories/prisma/prisma-payment.repository';
-import { PrismaProductCategoryRepository } from '#/infrastructure/repositories/prisma/prisma-product-category.repository';
-import { PrismaProductRepository } from '#/infrastructure/repositories/prisma/prisma-product.repository';
 
 const container = new Container();
 
