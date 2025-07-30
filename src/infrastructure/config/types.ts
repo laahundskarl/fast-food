@@ -18,6 +18,16 @@ export const TYPES = {
 
     IdentifyUseCase: Symbol.for('IdentifyUseCase'),
 
+    CreateOrderUseCase: Symbol.for('CreateOrderUseCase'),
+    DeleteOrderUseCase: Symbol.for('DeleteOrderUseCase'),
+    GetOrderUseCase: Symbol.for('GetOrderUseCase'),
+    ListOrderUseCase: Symbol.for('ListOrderUseCase'),
+    UpdateOrderUseCase: Symbol.for('UpdateOrderUseCase'),
+
+    GetPaymentUseCase: Symbol.for('GetPaymentUseCase'),
+    ListPaymentUseCase: Symbol.for('ListPaymentUseCase'),
+    UpdatePaymentUseCase: Symbol.for('UpdatePaymentUseCase'),
+
     CreateProductUseCase: Symbol.for('CreateProductUseCase'),
     DeleteProductUseCase: Symbol.for('DeleteProductUseCase'),
     GetProductUseCase: Symbol.for('GetProductUseCase'),
