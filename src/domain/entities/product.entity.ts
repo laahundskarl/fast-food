@@ -6,22 +6,24 @@ type ProductPayload = {
     id?: string;
     name: string;
     value: number;
-    description: string;
-    category: ProductCategory;
+    description: string | null;
+    category?: ProductCategory;
 };
 
 export class Product {
     public readonly id: string;
     public name: string;
     public value: number;
-    public description: string;
-    public category: ProductCategory;
+    public description: string | null;
+    public category?: ProductCategory;
 
     constructor(payload: ProductPayload) {
         this.id = payload.id || randomUUID();
         this.name = payload.name;
         this.value = payload.value;
-        this.description = payload.description;
-        this.category = payload.category;
+        this.description = payload.description || null;
+        if (payload.category) {
+            this.category = payload.category;
+        }
     }
 }

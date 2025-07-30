@@ -9,4 +9,11 @@ export class PrismaProductCategoryMapper {
             products: data.products.map((product: any) => PrismaProductMapper.toDomain(product)) || [],
         });
     }
+
+    static toDomainSimple(data: any): ProductCategory {
+        return new ProductCategory({
+            id: data.id,
+            name: data.name,
+        });
+    }
 }

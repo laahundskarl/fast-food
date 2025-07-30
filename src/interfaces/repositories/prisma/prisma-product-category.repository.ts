@@ -8,15 +8,17 @@ import { PrismaProductCategoryMapper } from '#/interfaces/repositories/prisma/ma
 export class PrismaProductCategoryRepository implements IProductCategoryRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
-    async get(id: string): Promise<ProductCategory | null> {
+    async findById(id: string, withProducts: boolean): Promise<ProductCategory | null> {
+        const include = withProducts ? { products: true } : {};
+
         const data = await this.prisma.productCategory.findUnique({
             where: { id },
-            include: {
-                products: true,
-            },
+            include,
         });
         if (!data) return null;
-        return PrismaProductCategoryMapper.toDomain(data);
+        return withProducts
+            ? PrismaProductCategoryMapper.toDomain(data)
+            : PrismaProductCategoryMapper.toDomainSimple(data);
     }
 
     async list(query?: ListProductCategoryDto): Promise<ProductCategory[]> {

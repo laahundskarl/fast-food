@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-import { Product } from '#/core/domain/entities/product.entity';
-import { ProductRepository } from '#/core/domain/repositories/product.repository';
-import { ProductListDto } from '#/infrastructure/adapters/dto/product.dto';
-import { PrismaProductMapper } from '#/infrastructure/persistence/prisma/mapper/prisma-product.mapper';
+import { ListProductDto } from '#/application/use-cases/product/list-product/list-product.dto';
+import { Product } from '#/domain/entities/product.entity';
+import { IProductRepository } from '#/domain/repositories/product.repository';
+import { PrismaProductMapper } from '#/interfaces/repositories/prisma/mappers/prisma-product.mapper';
 
-export class PrismaProductRepository implements ProductRepository {
+export class PrismaProductRepository implements IProductRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
     async create(product: Product): Promise<Product> {
@@ -41,7 +41,7 @@ export class PrismaProductRepository implements ProductRepository {
         return data.map(item => PrismaProductMapper.toDomain(item));
     }
 
-    async list(query?: ProductListDto): Promise<Product[]> {
+    async list(query?: ListProductDto): Promise<Product[]> {
         const data = await this.prisma.product.findMany({
             where: {
                 ...(query?.name && { name: { contains: query.name } }),

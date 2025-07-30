@@ -1,7 +1,7 @@
-import { Product } from '#/core/domain/entities/product.entity';
-import { ProductListDto } from '#/infrastructure/adapters/dto/product.dto';
+import { Product } from '#/domain/entities/product.entity';
+import { ProductListDto } from '#/application/dtos/product.dto';
 
-export interface ProductRepository {
+export interface IProductRepository {
     create(product: Product): Promise<Product>;
     findById(id: string): Promise<Product | null>;
     findMany(ids: string[]): Promise<Product[]>;

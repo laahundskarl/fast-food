@@ -11,7 +11,7 @@ export class GetClient implements IGetClientUseCase {
     constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
     async execute(cpf: string): Promise<Client> {
-        const client = await this.clientRepository.findByCpf(cpf);
+        const client = await this.clientRepository.findByCpf(cpf, false);
         if (!client) {
             throw new NotFoundError('Client not found');
         }

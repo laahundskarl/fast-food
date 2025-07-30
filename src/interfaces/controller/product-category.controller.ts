@@ -19,8 +19,9 @@ export class ProductCategoryController {
         return reply.send(result);
     }
 
-    async list(request: FastifyRequest<{ Querystring: ListProductCategoryDto }>, reply: FastifyReply) {
-        const result = await this.listProductCategoryUseCase.execute(request.query);
+    async list(request: FastifyRequest, reply: FastifyReply) {
+        const query = request.query as ListProductCategoryDto;
+        const result = await this.listProductCategoryUseCase.execute(query);
         return reply.send(result);
     }
 }
