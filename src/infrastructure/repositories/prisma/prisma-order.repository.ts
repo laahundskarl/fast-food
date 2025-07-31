@@ -1,7 +1,7 @@
 import { PrismaClient, Order as PrismaOrder } from '@prisma/client';
 import { injectable, inject } from 'inversify';
 
-import { OrderListDto } from '#/application/dtos/order.dto';
+import { ListOrderDto } from '#/application/use-cases/order/list-order/list-order.dto';
 import { Order } from '#/domain/entities/order.entity';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { TYPES } from '#/infrastructure/config/types';
@@ -30,7 +30,7 @@ export class PrismaOrderRepository implements IOrderRepository {
         return PrismaOrderMapper.toDomain(data);
     }
 
-    async list(query?: OrderListDto): Promise<Order[]> {
+    async list(query?: ListOrderDto): Promise<Order[]> {
         const { page = 1, limit = 10 } = query || {};
         const offset = (page - 1) * limit;
 
