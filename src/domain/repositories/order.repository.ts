@@ -1,5 +1,5 @@
-import { Order } from '#/domain/entities/order.entity';
 import { OrderListDto } from '#/application/dtos/order.dto';
+import { Order } from '#/domain/entities/order.entity';
 
 export interface IOrderRepository {
     create(order: Order): Promise<Order>;

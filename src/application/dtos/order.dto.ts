@@ -12,6 +12,8 @@ export interface OrderListDto {
     clientId?: string;
     productId?: string;
     paymentStatus?: StatusPayment[];
+    page?: number;
+    limit?: number;
 }
 
 export interface OrderCreateDto {

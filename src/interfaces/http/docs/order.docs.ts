@@ -42,6 +42,8 @@ export const orderListSchema = {
             clientId: z.string().optional(),
             productId: z.string().optional(),
             paymentStatus: z.string().optional(),
+            page: z.string().optional().default('1'),
+            limit: z.string().optional().default('10'),
         }),
         response: {
             200: z.array(orderResponseSchema),

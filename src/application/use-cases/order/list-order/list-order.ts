@@ -16,6 +16,8 @@ export class ListOrder implements IListOrderUseCase {
             status: request.status ? (request.status.split(',') as OrderStatus[]) : undefined,
             clientId: request.clientId,
             productId: request.productId,
+            page: Number(request.page),
+            limit: Number(request.limit),
             paymentStatus: request.paymentStatus ? (request.paymentStatus.split(',') as StatusPayment[]) : undefined,
         };
         return this.orderRepository.list(query);

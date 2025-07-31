@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Order as PrismaOrder } from '@prisma/client';
 import { injectable, inject } from 'inversify';
 
 import { OrderListDto } from '#/application/dtos/order.dto';
@@ -31,13 +31,70 @@ export class PrismaOrderRepository implements IOrderRepository {
     }
 
     async list(query?: OrderListDto): Promise<Order[]> {
+        const { page = 1, limit = 10 } = query || {};
+        const offset = (page - 1) * limit;
+
+        const conditions: string[] = ['1 = 1'];
+        const parameters: (string | number)[] = [];
+
+        if (query?.status && query.status.length > 0) {
+            const statusPlaceholders = query.status.map(() => '?').join(',');
+            conditions.push(`o.status IN (${statusPlaceholders})`);
+            parameters.push(...query.status);
+        }
+
+        if (query?.clientId) {
+            conditions.push('o.client_id = ?');
+            parameters.push(query.clientId);
+        }
+
+        if (query?.paymentStatus && query.paymentStatus.length > 0) {
+            const paymentStatusPlaceholders = query.paymentStatus.map(() => '?').join(',');
+            conditions.push(`p.status IN (${paymentStatusPlaceholders})`);
+            parameters.push(...query.paymentStatus);
+        }
+
+        if (query?.productId) {
+            conditions.push('op.product_id = ?');
+            parameters.push(query.productId);
+        }
+
+        parameters.push(limit, offset);
+
+        const whereClause = conditions.join(' AND ');
+
+        const rawQuery: { id: string }[] = await this.prisma.$queryRawUnsafe(
+            `
+            SELECT o.id FROM \`order\` o
+            JOIN order_product op ON o.id = op.order_id
+            JOIN payment p ON o.id = p.order_id
+            WHERE ${whereClause}
+            GROUP BY o.id
+            ORDER BY
+                CASE
+                    WHEN o.status = 'DONE' THEN 1
+                    WHEN o.status = 'IN_PROGRESS' THEN 2
+                    WHEN o.status = 'RECEIVED' THEN 3
+                    WHEN o.status = 'WAITING' THEN 4
+                    WHEN o.status = 'FINISHED' THEN 5
+                    WHEN o.status = 'DELIVERED' THEN 6
+                END ASC,
+                o.created_at ASC
+            LIMIT ? OFFSET ?
+        `,
+            ...parameters,
+        );
+
+        // IN não retorna dados na ordem que foi passado, então precisamos ordenar manualmente
+        // isso não deve afetar performance, pois estamos ordenando 10 itens, não milhares
         const data = await this.prisma.order.findMany({
-            where: this.buildWhereClause(query),
-            orderBy: { createdAt: 'desc' },
+            where: { id: { in: rawQuery.map((item: { id: string }) => item.id) } },
             include: this.getIncludeOptions(),
         });
 
-        return data.map(item => PrismaOrderMapper.toDomain(item));
+        const sortedData = this.sortOrders(data);
+
+        return sortedData.map(item => PrismaOrderMapper.toDomain(item));
     }
 
     async updateOrderProducts(orderId: string, order: Order): Promise<Order> {
@@ -88,26 +145,20 @@ export class PrismaOrderRepository implements IOrderRepository {
         };
     }
 
-    private buildWhereClause(query?: OrderListDto) {
-        if (!query) return {};
-
-        return {
-            ...(query.status && { status: { in: query.status } }),
-            ...(query.productId && {
-                orderProducts: {
-                    some: {
-                        productId: query.productId,
-                    },
-                },
-            }),
-            ...(query.clientId && { clientId: query.clientId }),
-            ...(query.paymentStatus && {
-                payments: {
-                    some: {
-                        status: { in: query.paymentStatus },
-                    },
-                },
-            }),
+    private sortOrders(orders: PrismaOrder[]) {
+        const statusMappingOrder = {
+            DONE: 1,
+            IN_PROGRESS: 2,
+            RECEIVED: 3,
+            WAITING: 4,
+            FINISHED: 5,
+            DELIVERED: 6,
         };
+        return orders.sort((a, b) => {
+            const statusA = statusMappingOrder[a.status];
+            const statusB = statusMappingOrder[b.status];
+            if (statusA === statusB) return a.createdAt.getTime() - b.createdAt.getTime();
+            return statusA - statusB;
+        });
     }
 }
