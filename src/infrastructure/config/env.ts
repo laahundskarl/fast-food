@@ -13,6 +13,12 @@ const envSchema = z.object({
     DATABASE_USER: z.string(),
     DATABASE_PASS: z.string(),
     DATABASE_NAME: z.string(),
+
+    // Mercado Pago
+    MERCADO_PAGO_BASE_URL: z.string(),
+    MERCADO_PAGO_USER_ID: z.string(),
+    MERCADO_PAGO_POS_ID: z.string(),
+    MERCADO_PAGO_TOKEN: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

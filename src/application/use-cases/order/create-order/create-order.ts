@@ -7,6 +7,7 @@ import { OrderProduct } from '#/domain/entities/order-product.entity';
 import { Order } from '#/domain/entities/order.entity';
 import { Payment } from '#/domain/entities/payment.entity';
 import { NotFoundError } from '#/domain/errors';
+import { IPaymentGateway } from '#/domain/gateways/payment-gateway';
 import { IClientRepository } from '#/domain/repositories/client.repository';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { IProductRepository } from '#/domain/repositories/product.repository';
@@ -18,6 +19,7 @@ export class CreateOrder implements ICreateOrderUseCase {
         @inject(TYPES.OrderRepository) private readonly orderRepository: IOrderRepository,
         @inject(TYPES.ProductRepository) private readonly productRepository: IProductRepository,
         @inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository,
+        @inject(TYPES.PaymentGateway) private readonly paymentGateway: IPaymentGateway,
     ) {}
 
     async execute(request: CreateOrderDto): Promise<Order> {
@@ -49,17 +51,26 @@ export class CreateOrder implements ICreateOrderUseCase {
             });
         });
 
-        const payment = new Payment({
-            status: StatusPayment.PENDING,
-        });
-
         const order = new Order({
             value: totalValue,
             orderNumber: 0,
             status: OrderStatus.WAITING,
             orderProducts: orderProducts,
-            payments: [payment],
         });
+
+        const gatewayResponse = await this.paymentGateway.execute({
+            orderId: order.id,
+            items: order.orderProducts!,
+            amount: totalValue,
+        });
+
+        const payment = new Payment({
+            status: StatusPayment.PENDING,
+            order: order,
+            externalReference: gatewayResponse.externalReference,
+            qrCode: gatewayResponse.qrCode,
+        });
+        order.payments = [payment];
 
         if (request.clientId) {
             const client = await this.clientRepository.findById(request.clientId);

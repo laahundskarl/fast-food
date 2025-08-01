@@ -25,3 +25,13 @@ export class ConflictError extends AppError {
         super(message, 409, 'ConflictException');
     }
 }
+
+export class PaymentExternalError extends Error {
+    constructor(
+        message: string,
+        public readonly cause?: unknown,
+    ) {
+        super(message);
+        this.name = 'PaymentExternalError';
+    }
+}

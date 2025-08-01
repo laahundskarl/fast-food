@@ -43,12 +43,14 @@ import { GetProductCategory } from '#/application/use-cases/product-category/get
 import { IGetProductCategoryUseCase } from '#/application/use-cases/product-category/get-product-category/get-product-category.use-case';
 import { ListProductCategory } from '#/application/use-cases/product-category/list-product-category/list-product-category';
 import { IListProductCategoryUseCase } from '#/application/use-cases/product-category/list-product-category/list-product-category.use-case';
+import { IPaymentGateway } from '#/domain/gateways/payment-gateway';
 import { IClientRepository } from '#/domain/repositories/client.repository';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
 import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
 import { IProductRepository } from '#/domain/repositories/product.repository';
 import { TYPES } from '#/infrastructure/config/types';
+import { MercadoPagoPaymentGateway } from '#/infrastructure/gateways/mercado-pago/mercado-pago-payment-gateway';
 import { PrismaClientRepository } from '#/infrastructure/repositories/prisma/prisma-client.repository';
 import { PrismaOrderRepository } from '#/infrastructure/repositories/prisma/prisma-order.repository';
 import { PrismaPaymentRepository } from '#/infrastructure/repositories/prisma/prisma-payment.repository';
@@ -122,5 +124,8 @@ container
     .to(ProductCategoryController)
     .inTransientScope();
 container.bind<ProductController>(TYPES.ProductController).to(ProductController).inTransientScope();
+
+// Gateways
+container.bind<IPaymentGateway>(TYPES.PaymentGateway).to(MercadoPagoPaymentGateway).inSingletonScope();
 
 export { container };
