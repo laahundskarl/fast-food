@@ -2,13 +2,13 @@ import axios, { AxiosInstance } from 'axios';
 import { injectable } from 'inversify';
 
 import { PaymentExternalError } from '#/domain/errors';
+import { ICreatePayment } from '#/domain/gateways/create-payment';
 import { CreateQrCodeInput } from '#/domain/gateways/dto/create-qr-code-input';
 import { QrCodeOutput } from '#/domain/gateways/dto/qr-code-output';
-import { IPaymentGateway } from '#/domain/gateways/payment-gateway';
 import { env } from '#/infrastructure/config/env';
 
 @injectable()
-export class MercadoPagoPaymentGateway implements IPaymentGateway {
+export class MercadoPagoCreatePayment implements ICreatePayment {
     private httpClient: AxiosInstance;
 
     constructor() {
@@ -29,7 +29,7 @@ export class MercadoPagoPaymentGateway implements IPaymentGateway {
                 `/instore/orders/qr/seller/collectors/${userId}/pos/${externalPosId}/qrs`,
                 {
                     external_reference: request.orderId,
-                    // notification_url: 'https://www.yourdomain.com/ipn', WEBHOOK
+                    notification_url: 'https://webhook.site/1fd0dbde-f1fc-482c-9bfa-0ead8293801a', // Alterar para nosso WEBHOOK
                     total_amount: request.amount,
                     items: request.items.map(item => ({
                         sku_number: item.product.id,

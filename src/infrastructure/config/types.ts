@@ -46,5 +46,6 @@ export const TYPES = {
     ProductController: Symbol.for('ProductController'),
 
     // Gateways
-    PaymentGateway: Symbol.for('PaymentGateway'),
+    CreatePaymentGateway: Symbol.for('CreatePaymentGateway'),
+    GetPaymentGateway: Symbol.for('GetPaymentGateway'),
 } as const;
