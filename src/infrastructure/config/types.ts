@@ -48,4 +48,9 @@ export const TYPES = {
     // Gateways
     CreatePaymentGateway: Symbol.for('CreatePaymentGateway'),
     GetPaymentGateway: Symbol.for('GetPaymentGateway'),
+
+    // Application Services
+    ProductOrchestrationService: Symbol.for('ProductOrchestrationService'),
+    ClientOrchestrationService: Symbol.for('ClientOrchestrationService'),
+    PaymentOrchestrationService: Symbol.for('PaymentOrchestrationService'),
 } as const;

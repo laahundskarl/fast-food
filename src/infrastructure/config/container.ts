@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { Container } from 'inversify';
 
+import { ClientOrchestrationService } from '#/application/services/client-orchestration.service';
+import { PaymentOrchestrationService } from '#/application/services/payment-orchestration.service';
+import { ProductOrchestrationService } from '#/application/services/product-orchestration.service';
 import { CreateClient } from '#/application/use-cases/client/create-client/create-client';
 import { ICreateClientUseCase } from '#/application/use-cases/client/create-client/create-client.use-case';
 import { DeleteClient } from '#/application/use-cases/client/delete-client/delete-client';
@@ -130,5 +133,10 @@ container.bind<ProductController>(TYPES.ProductController).to(ProductController)
 // Gateways
 container.bind<ICreatePayment>(TYPES.CreatePaymentGateway).to(MercadoPagoCreatePayment).inSingletonScope();
 container.bind<IGetPayment>(TYPES.GetPaymentGateway).to(MercadoPagoGetPayment).inSingletonScope();
+
+// Application Services
+container.bind<ProductOrchestrationService>(TYPES.ProductOrchestrationService).to(ProductOrchestrationService);
+container.bind<ClientOrchestrationService>(TYPES.ClientOrchestrationService).to(ClientOrchestrationService);
+container.bind<PaymentOrchestrationService>(TYPES.PaymentOrchestrationService).to(PaymentOrchestrationService);
 
 export { container };
