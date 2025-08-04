@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { injectable } from 'inversify';
 
 import { PaymentExternalError } from '#/domain/errors';
+import { GetPaymentOutput } from '#/domain/gateways/dto/get-payment-output';
 import { IGetPayment } from '#/domain/gateways/get-payment';
 import { env } from '#/infrastructure/config/env';
 
@@ -18,11 +19,14 @@ export class MercadoPagoGetPayment implements IGetPayment {
         });
     }
 
-    async execute(paymentId: string): Promise<string> {
+    async execute(paymentId: string): Promise<GetPaymentOutput> {
         try {
             const response = await this.httpClient.get(`/v1/payments/${paymentId}`);
 
-            return response.data.status as string;
+            return {
+                externalReference: response.data.external_reference,
+                status: response.data.status,
+            };
         } catch (error) {
             throw new PaymentExternalError('Failed to get payment in Mercado Pago', error);
         }

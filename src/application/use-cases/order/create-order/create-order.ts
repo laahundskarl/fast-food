@@ -10,6 +10,7 @@ import { NotFoundError } from '#/domain/errors';
 import { ICreatePayment } from '#/domain/gateways/create-payment';
 import { IClientRepository } from '#/domain/repositories/client.repository';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
+import { IPaymentRepository } from '#/domain/repositories/payment.repository';
 import { IProductRepository } from '#/domain/repositories/product.repository';
 import { TYPES } from '#/infrastructure/config/types';
 
@@ -20,6 +21,7 @@ export class CreateOrder implements ICreateOrderUseCase {
         @inject(TYPES.ProductRepository) private readonly productRepository: IProductRepository,
         @inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository,
         @inject(TYPES.CreatePaymentGateway) private readonly paymentGateway: ICreatePayment,
+        @inject(TYPES.PaymentRepository) private readonly paymentRepository: IPaymentRepository,
     ) {}
 
     async execute(request: CreateOrderDto): Promise<Order> {
@@ -51,12 +53,22 @@ export class CreateOrder implements ICreateOrderUseCase {
             });
         });
 
-        const order = new Order({
+        const newOrder = new Order({
             value: totalValue,
             orderNumber: 0,
             status: OrderStatus.WAITING,
             orderProducts: orderProducts,
         });
+
+        if (request.clientId) {
+            const client = await this.clientRepository.findById(request.clientId);
+            if (!client) {
+                throw new NotFoundError(`Client with id ${request.clientId} not found`);
+            }
+            newOrder.client = client;
+        }
+
+        const order = await this.orderRepository.create(newOrder);
 
         const gatewayResponse = await this.paymentGateway.execute({
             orderId: order.id,
@@ -64,22 +76,15 @@ export class CreateOrder implements ICreateOrderUseCase {
             amount: totalValue,
         });
 
-        const payment = new Payment({
+        const newPayment = new Payment({
             status: StatusPayment.PENDING,
             order: order,
             externalReference: gatewayResponse.externalReference,
             qrCode: gatewayResponse.qrCode,
         });
+        const payment = await this.paymentRepository.create(newPayment);
         order.payments = [payment];
 
-        if (request.clientId) {
-            const client = await this.clientRepository.findById(request.clientId);
-            if (!client) {
-                throw new NotFoundError(`Client with id ${request.clientId} not found`);
-            }
-            order.client = client;
-        }
-
-        return await this.orderRepository.create(order);
+        return order;
     }
 }

@@ -11,6 +11,14 @@ import { PrismaPaymentMapper } from '#/infrastructure/repositories/prisma/mapper
 export class PrismaPaymentRepository implements IPaymentRepository {
     constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
 
+    async create(payment: Payment): Promise<Payment> {
+        const data = await this.prisma.payment.create({
+            data: PrismaPaymentMapper.toCreate(payment),
+        });
+
+        return PrismaPaymentMapper.toDomainSimple(data);
+    }
+
     async findById(id: string): Promise<Payment | null> {
         const data = await this.prisma.payment.findUnique({
             where: { id },
