@@ -45,6 +45,13 @@ export const TYPES = {
     ProductCategoryController: Symbol.for('ProductCategoryController'),
     ProductController: Symbol.for('ProductController'),
 
+    // Webhook Use Cases
+    ProcessMercadoPagoWebhookUseCase: Symbol.for('ProcessMercadoPagoWebhookUseCase'),
+
+    // Controllers
+    WebhookController: Symbol.for('WebhookController'),
+    WebhookHandler: Symbol.for('WebhookHandler'),
+
     // Gateways
     CreatePaymentGateway: Symbol.for('CreatePaymentGateway'),
     GetPaymentGateway: Symbol.for('GetPaymentGateway'),

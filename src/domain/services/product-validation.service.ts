@@ -2,7 +2,7 @@ import { Product } from '#/domain/entities/product.entity';
 import { NotFoundError } from '#/domain/errors';
 
 export class ProductValidationService {
-    static validateProductsExist(requestProducts: any[], availableProducts: Product[]) {
+    static validateProductsExist(requestProducts: { id: string; quantity: number }[], availableProducts: Product[]) {
         if (availableProducts.length !== requestProducts.length) {
             throw new NotFoundError('One or more products not found');
         }

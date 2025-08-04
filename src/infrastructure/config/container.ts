@@ -14,6 +14,7 @@ import { GetClientOrders } from '#/application/use-cases/client/get-client-order
 import { IGetClientOrdersUseCase } from '#/application/use-cases/client/get-client-orders/get-client-orders.use-case';
 import { UpdateClient } from '#/application/use-cases/client/update-client/update-client';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
+import { IWebhookHandlerUseCase } from '#/application/use-cases/gateway/webhook-handler';
 import { Identify } from '#/application/use-cases/identify/identify';
 import { IIdentifyUseCase } from '#/application/use-cases/identify/identify.use-case';
 import { CreateOrder } from '#/application/use-cases/order/create-order/create-order';
@@ -61,12 +62,14 @@ import { PrismaOrderRepository } from '#/infrastructure/repositories/prisma/pris
 import { PrismaPaymentRepository } from '#/infrastructure/repositories/prisma/prisma-payment.repository';
 import { PrismaProductCategoryRepository } from '#/infrastructure/repositories/prisma/prisma-product-category.repository';
 import { PrismaProductRepository } from '#/infrastructure/repositories/prisma/prisma-product.repository';
+import { MercadoPagoWebhookHandlerUseCase } from '#/infrastructure/webhooks/mercado-pago';
 import { ClientController } from '#/interfaces/controller/client.controller';
 import { IdentifyController } from '#/interfaces/controller/identify.controller';
 import { OrderController } from '#/interfaces/controller/order.controller';
 import { PaymentController } from '#/interfaces/controller/payment.controller';
 import { ProductCategoryController } from '#/interfaces/controller/product-category.controller';
 import { ProductController } from '#/interfaces/controller/product.controller';
+import { WebhookController } from '#/interfaces/controller/webhook.controller';
 
 const container = new Container();
 
@@ -138,5 +141,9 @@ container.bind<IGetPayment>(TYPES.GetPaymentGateway).to(MercadoPagoGetPayment).i
 container.bind<ProductOrchestrationService>(TYPES.ProductOrchestrationService).to(ProductOrchestrationService);
 container.bind<ClientOrchestrationService>(TYPES.ClientOrchestrationService).to(ClientOrchestrationService);
 container.bind<PaymentOrchestrationService>(TYPES.PaymentOrchestrationService).to(PaymentOrchestrationService);
+
+// Webhook
+container.bind<IWebhookHandlerUseCase>(TYPES.WebhookHandler).to(MercadoPagoWebhookHandlerUseCase).inSingletonScope();
+container.bind<WebhookController>(TYPES.WebhookController).to(WebhookController).inSingletonScope();
 
 export { container };
