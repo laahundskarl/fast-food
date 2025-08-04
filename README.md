@@ -4,11 +4,54 @@ Este projeto é a implementação de um sistema backend para uma lanchonete com 
 
 ---
 
+## Arquitetura da Solução
+
+![Arquitetura FastFood](./docs/architecture.png)
+
+### Requisitos de Negócio
+
+A solução resolve os seguintes problemas de negócio:
+
+- **Gerenciamento de filas:** O sistema de autoatendimento reduz o tempo de espera dos clientes
+- **Pedidos customizados:** Permite que clientes montem seus pedidos com facilidade
+- **Rastreamento de pedidos:** Clientes podem acompanhar o status de preparação
+- **Identificação simplificada:** Processo simples de identificação por CPF
+- **Fidelização:** Registro de clientes para programas de fidelidade
+- **Gestão de estoque:** Controle de produtos disponíveis em tempo real
+
+### Requisitos de Infraestrutura
+
+A arquitetura implementa:
+
+- **Escalabilidade horizontal:** Uso de HPA (Horizontal Pod Autoscaler) para lidar com picos de demanda nos horários de maior movimento, garantindo que o totem não fique lento
+- **Alta disponibilidade:** Múltiplas réplicas do serviço em diferentes zonas de disponibilidade
+- **Persistência de dados:** Banco MySQL com volumes persistentes
+- **Balanceamento de carga:** LoadBalancer para distribuir requisições
+- **Segurança:** Configurações de segurança e secrets no Kubernetes
+- **Monitoramento:** Metrics Server para coleta de métricas de utilização
+- **Infraestrutura como código:** Terraform para provisionamento da infraestrutura na AWS
+- **Containerização:** Docker para empacotamento da aplicação
+- **Orquestração:** Kubernetes para gerenciamento de containers e recursos
+
+---
+
 ## Estrutura do Projeto
 
 ```markdown
 api/                        → Coleções Postman para testes dos endpoints
 docs/                       → Informações do Event Storming
+k8s/                        → Configurações Kubernetes para deploy
+│   ├── 01-config.yaml      → Configurações e secrets para K8s
+│   ├── 02-mysql-pvc.yaml   → Volume persistente para MySQL
+│   ├── 03-mysql-deployment.yaml → Deployment do MySQL
+│   ├── 04-mysql-service.yaml → Serviço do MySQL
+│   ├── 05-api-deployment.yaml → Deployment da API
+│   ├── 06-api-service.yaml → Serviço da API
+│   ├── 07-loadbalancer.yaml → LoadBalancer para acesso externo
+│   ├── 08-hpa.yaml         → Horizontal Pod Autoscaler
+│   └── deploy.sh           → Script de deploy automatizado
+│
+terraform/                  → Infraestrutura como código para AWS
 src/
 ├── config/                 → Configurações da aplicação
 │   ├── env.ts              → Configurações de ambiente
@@ -31,9 +74,8 @@ src/
 │       └── errors/         → Tratamento de erros centralizados
 │
 ├── database/               → Configurações e migrações do banco
-│   ├── migrations/         → Scripts de migração para criar tabelas
-│   ├── seeds/              → Scripts para popular o banco com dados iniciais
-│   └── typeorm.config.ts   → Configuração do TypeORM
+│   ├── prisma/             → Esquemas e migrações do Prisma
+│   └── seeds/              → Scripts para popular o banco com dados iniciais
 │
 ├── infrastructure/         → Camada de adaptadores e implementações concretas
 │   ├── adapters/           → Adaptadores para comunicação com o mundo externo
@@ -51,6 +93,22 @@ src/
 │       └── server.ts       → Inicialização do servidor HTTP
 │
 └── index.ts                → Ponto de entrada da aplicação
+
+# Arquivos de Configuração na Raiz:
+.editorconfig               → Configuração do editor
+.env                        → Variáveis de ambiente
+.env.example                → Exemplo de variáveis de ambiente
+.gitignore                  → Arquivos ignorados pelo Git
+.prettierignore             → Arquivos ignorados pelo Prettier
+.prettierrc                 → Configuração do Prettier
+docker-compose.prod.yml     → Configuração Docker para produção
+docker-compose.yml          → Configuração Docker para desenvolvimento
+Dockerfile                  → Instruções para build da imagem Docker
+eslint.config.mjs           → Configuração do ESLint
+package.json                → Dependências e scripts do projeto
+tsconfig.json               → Configuração do TypeScript
+tsup.config.ts              → Configuração do bundler TSup
+wait-for.sh                 → Script para aguardar serviços
 ```
 
 ---
@@ -349,9 +407,9 @@ kubectl logs -l app=mysql
 kubectl get hpa -w
 
 # Gerar carga para testar scaling (em outro terminal)
-for ($i=1; $i -le 1000; $i++) { 
+for ($i=1; $i -le 1000; $i++) {
   curl "http://<EXTERNAL-IP>/docs" -UseBasicParsing
-  Start-Sleep -Milliseconds 100 
+  Start-Sleep -Milliseconds 100
 }
 
 # Monitorar pods durante o teste
