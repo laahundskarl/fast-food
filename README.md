@@ -240,7 +240,7 @@ OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão 
 
 ## 🧑‍💻 Contribuidores
 
-- Grupo 277 — Tech Challenge
+- Grupo 173 — Tech Challenge
     - RM 361923 - Leonardo Andreas - GitHub - laahundskarl - Discord - leooandreas
     - RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1 - Discord - gabrielgsd
     - RM 364043 - Willian Borba - GitHub - WillianBorba - Discord - willianrocha
