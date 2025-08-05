@@ -10,7 +10,8 @@ export const errorResponseValidationSchema = z.object({
                 message: z.string().describe('Mensagem de erro para o campo'),
             }),
         )
-        .describe('Lista de detalhes dos erros de validação'),
+        .describe('Lista de detalhes dos erros de validação')
+        .optional(),
 });
 
 export const errorNotFoundSchema = z.object({

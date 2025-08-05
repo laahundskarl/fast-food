@@ -152,11 +152,11 @@ export class PrismaOrderRepository implements IOrderRepository {
             RECEIVED: 3,
             WAITING: 4,
             FINISHED: 5,
-            DELIVERED: 6,
+            CANCELED: 6,
         };
         return orders.sort((a, b) => {
-            const statusA = statusMappingOrder[a.status];
-            const statusB = statusMappingOrder[b.status];
+            const statusA = statusMappingOrder[a.status as keyof typeof statusMappingOrder] ?? Number.MAX_SAFE_INTEGER;
+            const statusB = statusMappingOrder[b.status as keyof typeof statusMappingOrder] ?? Number.MAX_SAFE_INTEGER;
             if (statusA === statusB) return a.createdAt.getTime() - b.createdAt.getTime();
             return statusA - statusB;
         });

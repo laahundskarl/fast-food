@@ -23,10 +23,6 @@ export class UpdateOrder implements IUpdateOrderUseCase {
             throw new NotFoundError('Order not found');
         }
 
-        if (order.status !== OrderStatus.WAITING) {
-            throw new BusinessError(400, `The order is ${order.status.toLowerCase()} already`);
-        }
-
         if (request.orderProducts) {
             return await this.updateOrderProducts(id, order, request.orderProducts);
         }
