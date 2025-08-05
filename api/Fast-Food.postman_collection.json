@@ -59,13 +59,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/client/12345678902",
+							"raw": "{{baseURL}}/client/86373710009",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"client",
-								"12345678902"
+								"86373710009"
 							]
 						}
 					},
@@ -195,13 +195,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL}}/product-category/5df9f74a-7746-4dd5-9490-49718bf82e52",
+							"raw": "{{baseURL}}/product-category/1e2092eb-0bfd-4df3-8d06-830a8a5931ba",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"product-category",
-								"5df9f74a-7746-4dd5-9490-49718bf82e52"
+								"1e2092eb-0bfd-4df3-8d06-830a8a5931ba"
 							]
 						}
 					},
@@ -1873,18 +1873,18 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:3000/product?name=Pizza de 4 Queijos",
+							"raw": "{{baseURL}}/product",
 							"host": [
-								"localhost"
+								"{{baseURL}}"
 							],
-							"port": "3000",
 							"path": [
 								"product"
 							],
 							"query": [
 								{
 									"key": "name",
-									"value": "Pizza de 4 Queijos"
+									"value": "Pizza de 4 Queijos",
+									"disabled": true
 								}
 							]
 						}
@@ -2023,7 +2023,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderProducts\": [\n        {\n            \"productId\": \"b2359291-9249-4bb8-9020-04496b392223\",\n            \"quantity\": 2\n        }\n    ]\n}",
+							"raw": "{\n    \"orderProducts\": [\n        {\n            \"productId\": \"66c47a6b-f163-474f-9b90-5e72ba21c1bb\",\n            \"quantity\": 2\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2280,15 +2280,23 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Webhook",
+			"item": [
 				{
-					"name": "Update",
+					"name": "Webhook",
 					"request": {
-						"method": "PATCH",
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"status\": \"APPROVED\"\n}",
+							"raw": "{\n    \"action\": \"payment.created\",\n    \"api_version\": \"v1\",\n    \"data\": {\n        \"id\": \"120498946775\"\n    },\n    \"date_created\": \"2025-08-04T21:52:35Z\",\n    \"id\": 123471925561,\n    \"live_mode\": true,\n    \"type\": \"payment\",\n    \"user_id\": \"2597335196\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2296,13 +2304,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/payment/175ec79b-4bf6-4767-a25f-d4e41a678c35",
+							"raw": "{{baseURL}}/webhook",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
-								"payment",
-								"175ec79b-4bf6-4767-a25f-d4e41a678c35"
+								"webhook"
 							]
 						}
 					},
