@@ -30,8 +30,6 @@ import { GetPayment } from '#/application/use-cases/payment/get-payment/get-paym
 import { IGetPaymentUseCase } from '#/application/use-cases/payment/get-payment/get-payment.use-case';
 import { ListPayment } from '#/application/use-cases/payment/list-payment/list-payment';
 import { IListPaymentUseCase } from '#/application/use-cases/payment/list-payment/list-payment.use-case';
-import { UpdatePayment } from '#/application/use-cases/payment/update-payment/update-payment';
-import { IUpdatePaymentUseCase } from '#/application/use-cases/payment/update-payment/update-payment.use-case';
 import { CreateProduct } from '#/application/use-cases/product/create-product/create-product';
 import { ICreateProductUseCase } from '#/application/use-cases/product/create-product/create-product.use-case';
 import { DeleteProduct } from '#/application/use-cases/product/delete-product/delete-product';
@@ -108,7 +106,6 @@ container.bind<IUpdateOrderUseCase>(TYPES.UpdateOrderUseCase).to(UpdateOrder).in
 
 container.bind<IGetPaymentUseCase>(TYPES.GetPaymentUseCase).to(GetPayment).inTransientScope();
 container.bind<IListPaymentUseCase>(TYPES.ListPaymentUseCase).to(ListPayment).inTransientScope();
-container.bind<IUpdatePaymentUseCase>(TYPES.UpdatePaymentUseCase).to(UpdatePayment).inTransientScope();
 
 container.bind<ICreateProductUseCase>(TYPES.CreateProductUseCase).to(CreateProduct).inTransientScope();
 container.bind<IDeleteProductUseCase>(TYPES.DeleteProductUseCase).to(DeleteProduct).inTransientScope();

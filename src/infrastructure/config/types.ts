@@ -26,7 +26,6 @@ export const TYPES = {
 
     GetPaymentUseCase: Symbol.for('GetPaymentUseCase'),
     ListPaymentUseCase: Symbol.for('ListPaymentUseCase'),
-    UpdatePaymentUseCase: Symbol.for('UpdatePaymentUseCase'),
 
     CreateProductUseCase: Symbol.for('CreateProductUseCase'),
     DeleteProductUseCase: Symbol.for('DeleteProductUseCase'),

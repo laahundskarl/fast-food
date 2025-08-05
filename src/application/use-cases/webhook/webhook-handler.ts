@@ -18,7 +18,7 @@ const statusPayment: Record<string, StatusPayment> = {
 const orderStatus: Record<string, OrderStatus> = {
     pending: OrderStatus.WAITING,
     approved: OrderStatus.DONE,
-    cancelled: OrderStatus.CANCELED,
+    rejected: OrderStatus.CANCELED,
 };
 
 @injectable()

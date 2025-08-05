@@ -27,7 +27,7 @@ export class MercadoPagoCreatePayment implements ICreatePayment {
 
             const data = {
                 external_reference: request.paymentId,
-                notification_url: `https://webhook.site/1fd0dbde-f1fc-482c-9bfa-0ead8293801a`, // Alterar para nosso WEBHOOK
+                notification_url: env.MERCADO_PAGO_NOTIFICATION_URL,
                 total_amount: request.amount,
                 items: request.items.map(item => ({
                     sku_number: item.product.id,

@@ -1,7 +1,6 @@
-import { StatusPayment } from '@prisma/client';
 import z from 'zod';
 
-import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/util.docs';
+import { errorNotFoundSchema } from '#/interfaces/http/docs/util.docs';
 import { paymentResponseSchema } from '#/interfaces/http/schema/payment.schema';
 
 export const paymentGetSchema = {
@@ -31,24 +30,6 @@ export const paymentListSchema = {
         response: {
             200: z.array(paymentResponseSchema),
             404: errorNotFoundSchema,
-        },
-    },
-};
-
-export const paymentUpdateSchema = {
-    schema: {
-        tags: ['Pagamentos'],
-        summary: 'Atualiza pagamento',
-        body: z.object({
-            status: z.enum([StatusPayment.PENDING, StatusPayment.APPROVED, StatusPayment.REJECTED]),
-        }),
-        params: z.object({
-            id: z.string().uuid(),
-        }),
-        response: {
-            200: paymentResponseSchema,
-            404: errorNotFoundSchema,
-            400: errorResponseValidationSchema,
         },
     },
 };
