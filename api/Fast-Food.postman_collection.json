@@ -2023,7 +2023,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderProducts\": [\n        {\n            \"productId\": \"66c47a6b-f163-474f-9b90-5e72ba21c1bb\",\n            \"quantity\": 2\n        }\n    ]\n}",
+							"raw": "{\n    \"orderProducts\": [\n        {\n            \"productId\": \"05e41aae-ba8e-4d92-9310-7438cb69c35e\",\n            \"quantity\": 4\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2139,6 +2139,59 @@
 				},
 				{
 					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"orderProducts\": [\n        {\n            \"productId\": \"cdd836c3-0001-4226-a786-eeaa09472869\",\n            \"quantity\": 2\n        },\n        {\n            \"productId\": \"eca7c74e-e145-4417-bcf6-c83e82c782f2\",\n            \"quantity\": 1\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/order/50d4fde9-7152-4274-b7f4-2ae6f798764c",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"order",
+								"50d4fde9-7152-4274-b7f4-2ae6f798764c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Status",
 					"event": [
 						{
 							"listen": "test",
