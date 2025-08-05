@@ -53,44 +53,44 @@ k8s/                        → Configurações Kubernetes para deploy
 │
 terraform/                  → Infraestrutura como código para AWS
 src/
-├── config/                 → Configurações da aplicação
-│   ├── env.ts              → Configurações de ambiente
-│   └── logger.ts           → Configuração de logs
+├── application/            → Camada de aplicação (casos de uso)
+│   ├── services/           → Serviços de orquestração
+│   └── use-cases/          → Implementação dos casos de uso
+│       ├── client/         → Casos de uso para clientes
+│       ├── identify/       → Casos de uso para identificação
+│       ├── order/          → Casos de uso para pedidos
+│       ├── payment/        → Casos de uso para pagamentos
+│       ├── product/        → Casos de uso para produtos
+│       ├── product-category/ → Casos de uso para categorias
+│       └── webhook/        → Casos de uso para webhooks
 │
-├── core/                   → Camada central da aplicação (domínio)
-│   ├── application/        → Casos de uso da aplicação
-│   │   └── usecases/       → Implementação dos casos de uso
-│   │       ├── client/     → Casos de uso para clientes
-│   │       ├── identify/   → Casos de uso para identificação
-│   │       ├── order/      → Casos de uso para pedidos
-│   │       ├── payment/    → Casos de uso para pagamentos
-│   │       └── product/    → Casos de uso para produtos
-│   │
-│   ├── domain/             → Definições de entidades e interfaces do domínio
-│   │   ├── entities/       → Entidades de domínio
-│   │   └── repositories/   → Interfaces dos repositórios
-│   │
-│   └── shared/             → Código compartilhado por toda a aplicação
-│       └── errors/         → Tratamento de erros centralizados
+├── domain/                 → Camada de domínio (entidades e regras de negócio)
+│   ├── entities/           → Entidades de domínio
+│   ├── gateways/           → Interfaces para serviços externos
+│   ├── repositories/       → Interfaces dos repositórios
+│   ├── services/           → Serviços de domínio
+│   └── errors.ts           → Definição de erros de domínio
 │
-├── database/               → Configurações e migrações do banco
-│   ├── prisma/             → Esquemas e migrações do Prisma
-│   └── seeds/              → Scripts para popular o banco com dados iniciais
+├── infrastructure/         → Camada de infraestrutura (implementações concretas)
+│   ├── database/           → Configurações do banco de dados
+│   │   └── prisma/         → Esquemas, migrações e seeds do Prisma
+│   │       ├── migrations/ → Migrações do banco
+│   │       ├── seeds/      → Scripts para popular o banco
+│   ├── gateways/           → Implementações de gateways externos
+│   │   └── mercado-pago/   → Gateway do Mercado Pago
+│   ├── repositories/       → Implementações dos repositórios
+│   │   └── prisma/         → Repositórios usando Prisma
+│   │       └── mappers/    → Mapeadores entre domínio e persistência
+│   └──  server/             → Configuração do servidor
 │
-├── infrastructure/         → Camada de adaptadores e implementações concretas
-│   ├── adapters/           → Adaptadores para comunicação com o mundo externo
-│   │   ├── controller/     → Controladores HTTP
-│   │   └── dto/            → Objetos de Transferência de Dados
-│   │
-│   └── persistence/        → Implementações concretas dos repositórios
-│
-├── interfaces/             → Interface da aplicação com o mundo externo
-│   ├── errors/             → Tratamento de erros HTTP
-│   └── http/               → Configuração e definição da API HTTP
-│       ├── app.ts          → Configuração do Fastify
-│       ├── routes/         → Definição das rotas da API
-│       │   └── schema/     → Esquemas de validação das rotas
-│       └── server.ts       → Inicialização do servidor HTTP
+├── interfaces/             → Camada de interface (controllers e HTTP)
+│   ├── controller/         → Controladores HTTP
+│   └── http/               → Configuração HTTP
+│       ├── docs/           → Documentação Swagger
+│       ├── middlewares/    → Middlewares HTTP
+│       ├── routes/         → Definição das rotas
+│       ├── schema/         → Esquemas de validação
+│       └── validator/      → Validadores customizados
 │
 └── index.ts                → Ponto de entrada da aplicação
 
