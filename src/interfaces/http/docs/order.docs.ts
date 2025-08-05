@@ -58,7 +58,7 @@ export const orderUpdateSchema = {
         body: validatorUpdateOrder,
         response: {
             200: orderResponseSchema,
-            // 400: errorResponseValidationSchema,
+            400: errorResponseValidationSchema,
             404: errorNotFoundSchema,
         },
     },
