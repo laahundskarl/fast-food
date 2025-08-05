@@ -17,7 +17,7 @@ const statusPayment: Record<string, StatusPayment> = {
 
 const orderStatus: Record<string, OrderStatus> = {
     pending: OrderStatus.WAITING,
-    approved: OrderStatus.DONE,
+    approved: OrderStatus.RECEIVED,
     rejected: OrderStatus.CANCELED,
 };
 

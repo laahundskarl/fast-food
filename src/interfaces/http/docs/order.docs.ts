@@ -2,6 +2,7 @@ import z from 'zod';
 
 import {
     deleteResponseSchema,
+    errorBusinessSchema,
     errorNotFoundSchema,
     errorResponseValidationSchema,
 } from '#/interfaces/http/docs/util.docs';
@@ -76,7 +77,7 @@ export const orderUpdateStatusSchema = {
         }),
         response: {
             200: orderResponseSchema,
-            400: errorResponseValidationSchema,
+            400: errorBusinessSchema,
             404: errorNotFoundSchema,
         },
     },

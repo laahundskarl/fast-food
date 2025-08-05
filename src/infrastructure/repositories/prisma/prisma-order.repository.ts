@@ -37,6 +37,8 @@ export class PrismaOrderRepository implements IOrderRepository {
         const conditions: string[] = ['1 = 1'];
         const parameters: (string | number)[] = [];
 
+        // eslint-disable-next-line quotes
+        conditions.push("o.status NOT IN ('FINISHED', 'CANCELLED')"); // Exclude canceled orders
         if (query?.status && query.status.length > 0) {
             const statusPlaceholders = query.status.map(() => '?').join(',');
             conditions.push(`o.status IN (${statusPlaceholders})`);
@@ -76,8 +78,6 @@ export class PrismaOrderRepository implements IOrderRepository {
                     WHEN o.status = 'IN_PROGRESS' THEN 2
                     WHEN o.status = 'RECEIVED' THEN 3
                     WHEN o.status = 'WAITING' THEN 4
-                    WHEN o.status = 'FINISHED' THEN 5
-                    WHEN o.status = 'DELIVERED' THEN 6
                 END ASC,
                 o.created_at ASC
             LIMIT ? OFFSET ?
