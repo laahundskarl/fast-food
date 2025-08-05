@@ -72,6 +72,12 @@ src/
 │   └── errors.ts           → Definição de erros de domínio
 │
 ├── infrastructure/         → Camada de infraestrutura (implementações concretas)
+├── infrastructure/         → Camada de infraestrutura (implementações concretas)
+│   ├── config/             → Configurações da aplicação
+│   │   ├── container.ts    → Container de injeção de dependência
+│   │   ├── env.ts          → Configurações de ambiente
+│   │   ├── logger.ts       → Configuração de logs
+│   │   └── types.ts        → Tipos para DI
 │   ├── database/           → Configurações do banco de dados
 │   │   └── prisma/         → Esquemas, migrações e seeds do Prisma
 │   │       ├── migrations/ → Migrações do banco
