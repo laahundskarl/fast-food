@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fastfood-config
+data:
+  DATABASE_HOST: "mysql-service"
+  DATABASE_PORT: "3306"
+  DATABASE_USER: "admin"
+  DATABASE_NAME: "fast-food"
+  PORT: "3000"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fastfood-secrets
+type: Opaque
+data:
+  # admin123 em base64
+  DATABASE_PASS: YWRtaW4xMjM=
+  # root123 em base64  
+  DATABASE_ROOT_PASS: cm9vdDEyMw==
