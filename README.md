@@ -235,8 +235,11 @@ OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão 
 
 ---
 
-## Vídeo
+## Vídeo Fase 1 - Tech Challenge
 [Disponível no Google Drive](https://drive.google.com/file/d/1g7Sn-VOfrwDRkErXO3EoisZLAg4psrhD/view)
+
+## Vídeo Fase 2 - Tech Challenge
+[Disponível no Google Drive](https://drive.google.com/file/d/1I3kuTuB8rHYfieVRkhryJwcm9AV9dKFI/view?usp=sharing)
 
 ## 🧑‍💻 Contribuidores
 
