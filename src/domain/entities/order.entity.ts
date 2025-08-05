@@ -5,6 +5,7 @@ import { OrderStatus } from '@prisma/client';
 import { Client } from '#/domain/entities/client.entity';
 import { OrderProduct } from '#/domain/entities/order-product.entity';
 import { Payment } from '#/domain/entities/payment.entity';
+import { BusinessError } from '#/domain/errors';
 
 type OrderPayload = {
     id?: string;
@@ -39,5 +40,24 @@ export class Order {
         if (payload.client) {
             this.client = payload.client;
         }
+    }
+
+    updateStatus(newStatus: OrderStatus) {
+        const allowedTransitions: Record<OrderStatus, OrderStatus[]> = {
+            [OrderStatus.WAITING]: [OrderStatus.RECEIVED, OrderStatus.CANCELED],
+            [OrderStatus.RECEIVED]: [OrderStatus.IN_PROGRESS, OrderStatus.CANCELED],
+            [OrderStatus.IN_PROGRESS]: [OrderStatus.DONE],
+            [OrderStatus.DONE]: [OrderStatus.FINISHED],
+            [OrderStatus.FINISHED]: [],
+            [OrderStatus.CANCELED]: [],
+        };
+
+        const next = allowedTransitions[this.status] ?? [];
+
+        if (!next.includes(newStatus)) {
+            throw new BusinessError(400, `Cannot change status from ${this.status} to ${newStatus}`);
+        }
+
+        this.status = newStatus;
     }
 }

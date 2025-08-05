@@ -1,3 +1,4 @@
+import { OrderStatus } from '@prisma/client';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 
@@ -9,6 +10,7 @@ import { ListOrderRequestDto } from '#/application/use-cases/order/list-order/li
 import { IListOrderUseCase } from '#/application/use-cases/order/list-order/list-order.use-case';
 import { UpdateOrderDto } from '#/application/use-cases/order/update-order/update-order.dto';
 import { IUpdateOrderUseCase } from '#/application/use-cases/order/update-order/update-order.use-case';
+import { IUpdateOrderStatusUseCase } from '#/application/use-cases/order/update-order-status/update-order-status.use-case';
 import { TYPES } from '#/infrastructure/config/types';
 
 @injectable()
@@ -19,6 +21,7 @@ export class OrderController {
         @inject(TYPES.GetOrderUseCase) private readonly getOrderUseCase: IGetOrderUseCase,
         @inject(TYPES.ListOrderUseCase) private readonly listOrderUseCase: IListOrderUseCase,
         @inject(TYPES.UpdateOrderUseCase) private readonly updateOrderUseCase: IUpdateOrderUseCase,
+        @inject(TYPES.UpdateOrderStatusUseCase) private readonly updateOrderStatusUseCase: IUpdateOrderStatusUseCase,
     ) {}
 
     async create(request: FastifyRequest, reply: FastifyReply) {
@@ -46,6 +49,12 @@ export class OrderController {
     async update(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const body = request.body as UpdateOrderDto;
         const result = await this.updateOrderUseCase.execute(request.params.id, body);
+        return reply.send(result);
+    }
+
+    async updateStatus(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+        const { status } = request.body as { status: OrderStatus };
+        const result = await this.updateOrderStatusUseCase.execute(request.params.id, status);
         return reply.send(result);
     }
 }

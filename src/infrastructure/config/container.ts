@@ -26,6 +26,8 @@ import { ListOrder } from '#/application/use-cases/order/list-order/list-order';
 import { IListOrderUseCase } from '#/application/use-cases/order/list-order/list-order.use-case';
 import { UpdateOrder } from '#/application/use-cases/order/update-order/update-order';
 import { IUpdateOrderUseCase } from '#/application/use-cases/order/update-order/update-order.use-case';
+import { UpdateOrderStatus } from '#/application/use-cases/order/update-order-status/update-order-status';
+import { IUpdateOrderStatusUseCase } from '#/application/use-cases/order/update-order-status/update-order-status.use-case';
 import { GetPayment } from '#/application/use-cases/payment/get-payment/get-payment';
 import { IGetPaymentUseCase } from '#/application/use-cases/payment/get-payment/get-payment.use-case';
 import { ListPayment } from '#/application/use-cases/payment/list-payment/list-payment';
@@ -103,6 +105,7 @@ container.bind<IDeleteOrderUseCase>(TYPES.DeleteOrderUseCase).to(DeleteOrder).in
 container.bind<IGetOrderUseCase>(TYPES.GetOrderUseCase).to(GetOrder).inTransientScope();
 container.bind<IListOrderUseCase>(TYPES.ListOrderUseCase).to(ListOrder).inTransientScope();
 container.bind<IUpdateOrderUseCase>(TYPES.UpdateOrderUseCase).to(UpdateOrder).inTransientScope();
+container.bind<IUpdateOrderStatusUseCase>(TYPES.UpdateOrderStatusUseCase).to(UpdateOrderStatus).inTransientScope();
 
 container.bind<IGetPaymentUseCase>(TYPES.GetPaymentUseCase).to(GetPayment).inTransientScope();
 container.bind<IListPaymentUseCase>(TYPES.ListPaymentUseCase).to(ListPayment).inTransientScope();

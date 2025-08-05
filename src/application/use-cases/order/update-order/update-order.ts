@@ -1,4 +1,3 @@
-import { OrderStatus } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 
 import { UpdateOrderDto } from '#/application/use-cases/order/update-order/update-order.dto';
@@ -25,10 +24,6 @@ export class UpdateOrder implements IUpdateOrderUseCase {
 
         if (request.orderProducts) {
             return await this.updateOrderProducts(id, order, request.orderProducts);
-        }
-
-        if (request.status) {
-            return await this.updateOrderStatus(id, order, request.status);
         }
 
         return order;
@@ -78,26 +73,5 @@ export class UpdateOrder implements IUpdateOrderUseCase {
         });
 
         return await this.orderRepository.updateOrderProducts(orderId, updatedOrder);
-    }
-
-    private async updateOrderStatus(orderId: string, order: Order, statusString: string): Promise<Order> {
-        const validStatuses = Object.values(OrderStatus);
-        if (!validStatuses.includes(statusString as OrderStatus)) {
-            throw new BusinessError(400, `Invalid status: ${statusString}`);
-        }
-
-        const newStatus = statusString as OrderStatus;
-
-        const updatedOrder = new Order({
-            id: order.id,
-            value: order.value,
-            orderNumber: order.orderNumber,
-            status: newStatus,
-            orderProducts: order.orderProducts,
-            payments: order.payments,
-            client: order.client,
-        });
-
-        return await this.orderRepository.updateStatus(orderId, updatedOrder);
     }
 }

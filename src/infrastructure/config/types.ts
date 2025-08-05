@@ -23,6 +23,7 @@ export const TYPES = {
     GetOrderUseCase: Symbol.for('GetOrderUseCase'),
     ListOrderUseCase: Symbol.for('ListOrderUseCase'),
     UpdateOrderUseCase: Symbol.for('UpdateOrderUseCase'),
+    UpdateOrderStatusUseCase: Symbol.for('UpdateOrderStatusUseCase'),
 
     GetPaymentUseCase: Symbol.for('GetPaymentUseCase'),
     ListPaymentUseCase: Symbol.for('ListPaymentUseCase'),

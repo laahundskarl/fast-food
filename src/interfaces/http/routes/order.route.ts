@@ -8,6 +8,7 @@ import {
     orderGetSchema,
     orderListSchema,
     orderUpdateSchema,
+    orderUpdateStatusSchema,
 } from '#/interfaces/http/docs/order.docs';
 
 export const orderRoute = (app: FastifyInstance) => {
@@ -18,4 +19,5 @@ export const orderRoute = (app: FastifyInstance) => {
     app.get('/:id', orderGetSchema, controller.get.bind(controller));
     app.get('/', orderListSchema, controller.list.bind(controller));
     app.patch('/:id', orderUpdateSchema, controller.update.bind(controller));
+    app.patch('/:id/status', orderUpdateStatusSchema, controller.updateStatus.bind(controller));
 };

@@ -64,6 +64,24 @@ export const orderUpdateSchema = {
     },
 };
 
+export const orderUpdateStatusSchema = {
+    schema: {
+        tags: ['Pedidos'],
+        summary: 'Atualiza status do pedido',
+        params: z.object({
+            id: z.string().uuid(),
+        }),
+        body: z.object({
+            status: z.enum(['WAITING', 'RECEIVED', 'IN_PROGRESS', 'DONE', 'FINISHED', 'CANCELED']),
+        }),
+        response: {
+            200: orderResponseSchema,
+            400: errorResponseValidationSchema,
+            404: errorNotFoundSchema,
+        },
+    },
+};
+
 export const orderDeleteSchema = {
     schema: {
         tags: ['Pedidos'],
