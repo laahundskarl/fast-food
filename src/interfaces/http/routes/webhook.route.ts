@@ -7,5 +7,5 @@ import { mercadoPagoWebhookSchema } from '#/interfaces/http/docs/webhook.docs';
 export const webhookRoute = (app: FastifyInstance) => {
     const controller = app.container.get<WebhookController>(TYPES.WebhookController);
 
-    app.post('/mercadopago', mercadoPagoWebhookSchema, controller.mercadoPago.bind(controller));
+    app.post('/', mercadoPagoWebhookSchema, controller.mercadoPago.bind(controller));
 };

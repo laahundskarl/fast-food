@@ -26,6 +26,7 @@ export class MercadoPagoGetPayment implements IGetPayment {
             return {
                 externalReference: response.data.external_reference,
                 status: response.data.status,
+                id: response.data.id,
             };
         } catch (error) {
             throw new PaymentExternalError('Failed to get payment in Mercado Pago', error);

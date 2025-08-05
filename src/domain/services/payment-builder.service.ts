@@ -5,18 +5,16 @@ import { Payment } from '#/domain/entities/payment.entity';
 import { CreateQrCodeInput } from '#/domain/gateways/dto/create-qr-code-input';
 
 export class PaymentBuilderService {
-    static createPayment(order: Order, externalReference?: string, qrCode?: string): Payment {
+    static createPayment(order: Order): Payment {
         return new Payment({
             status: StatusPayment.PENDING,
             order: order,
-            externalReference: externalReference,
-            qrCode: qrCode,
         });
     }
 
-    static buildGatewayRequest(order: Order): CreateQrCodeInput {
+    static buildGatewayRequest(paymentId: string, order: Order): CreateQrCodeInput {
         return {
-            orderId: order.id,
+            paymentId,
             items: order.orderProducts!,
             amount: order.value,
         };

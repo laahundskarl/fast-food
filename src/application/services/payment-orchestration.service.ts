@@ -15,16 +15,13 @@ export class PaymentOrchestrationService {
     ) {}
 
     async createPaymentForOrder(order: Order): Promise<Payment> {
-        const gatewayRequest = PaymentBuilderService.buildGatewayRequest(order);
+        const payment = PaymentBuilderService.createPayment(order);
+        const savePayment = await this.paymentRepository.create(payment);
 
+        const gatewayRequest = PaymentBuilderService.buildGatewayRequest(savePayment.id, order);
         const gatewayResponse = await this.paymentGateway.execute(gatewayRequest);
 
-        const payment = PaymentBuilderService.createPayment(
-            order,
-            gatewayResponse.externalReference,
-            gatewayResponse.qrCode,
-        );
-
-        return await this.paymentRepository.create(payment);
+        savePayment.qrCode = gatewayResponse;
+        return await this.paymentRepository.update(savePayment.id, savePayment);
     }
 }

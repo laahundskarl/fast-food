@@ -100,10 +100,10 @@ model Product {
 enum OrderStatus {
     WAITING
     RECEIVED
-    DELIVERED
     IN_PROGRESS
     DONE
     FINISHED
+    CANCELED
 }
 
 enum StatusPayment {

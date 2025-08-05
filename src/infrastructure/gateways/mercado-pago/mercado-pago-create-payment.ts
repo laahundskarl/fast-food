@@ -4,7 +4,6 @@ import { injectable } from 'inversify';
 import { PaymentExternalError } from '#/domain/errors';
 import { ICreatePayment } from '#/domain/gateways/create-payment';
 import { CreateQrCodeInput } from '#/domain/gateways/dto/create-qr-code-input';
-import { QrCodeOutput } from '#/domain/gateways/dto/qr-code-output';
 import { env } from '#/infrastructure/config/env';
 import { logger } from '#/infrastructure/config/logger';
 
@@ -21,13 +20,13 @@ export class MercadoPagoCreatePayment implements ICreatePayment {
         });
     }
 
-    async execute(request: CreateQrCodeInput): Promise<QrCodeOutput> {
+    async execute(request: CreateQrCodeInput): Promise<string> {
         try {
             const userId = env.MERCADO_PAGO_USER_ID;
             const externalPosId = env.MERCADO_PAGO_POS_ID;
 
             const data = {
-                external_reference: request.orderId,
+                external_reference: request.paymentId,
                 notification_url: `https://webhook.site/1fd0dbde-f1fc-482c-9bfa-0ead8293801a`, // Alterar para nosso WEBHOOK
                 total_amount: request.amount,
                 items: request.items.map(item => ({
@@ -50,10 +49,7 @@ export class MercadoPagoCreatePayment implements ICreatePayment {
                 data,
             );
 
-            return {
-                externalReference: response.data.in_store_order_id,
-                qrCode: response.data.qr_data,
-            };
+            return response.data.qr_data as string;
         } catch (error) {
             throw new PaymentExternalError('Failed to create payment with Mercado Pago', error);
         }

@@ -1,4 +1,4 @@
-export interface IWebhookMessage {
+export interface WebhookHandlerDto {
     action: string;
     api_version: string;
     data: {

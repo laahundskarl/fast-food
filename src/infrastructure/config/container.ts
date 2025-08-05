@@ -14,7 +14,6 @@ import { GetClientOrders } from '#/application/use-cases/client/get-client-order
 import { IGetClientOrdersUseCase } from '#/application/use-cases/client/get-client-orders/get-client-orders.use-case';
 import { UpdateClient } from '#/application/use-cases/client/update-client/update-client';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
-import { IWebhookHandlerUseCase } from '#/application/use-cases/gateway/webhook-handler';
 import { Identify } from '#/application/use-cases/identify/identify';
 import { IIdentifyUseCase } from '#/application/use-cases/identify/identify.use-case';
 import { CreateOrder } from '#/application/use-cases/order/create-order/create-order';
@@ -47,6 +46,8 @@ import { GetProductCategory } from '#/application/use-cases/product-category/get
 import { IGetProductCategoryUseCase } from '#/application/use-cases/product-category/get-product-category/get-product-category.use-case';
 import { ListProductCategory } from '#/application/use-cases/product-category/list-product-category/list-product-category';
 import { IListProductCategoryUseCase } from '#/application/use-cases/product-category/list-product-category/list-product-category.use-case';
+import { WebhookHandler } from '#/application/use-cases/webhook/webhook-handler';
+import { IWebhookHandlerUseCase } from '#/application/use-cases/webhook/webhook-handler.use-case';
 import { ICreatePayment } from '#/domain/gateways/create-payment';
 import { IGetPayment } from '#/domain/gateways/get-payment';
 import { IClientRepository } from '#/domain/repositories/client.repository';
@@ -62,7 +63,6 @@ import { PrismaOrderRepository } from '#/infrastructure/repositories/prisma/pris
 import { PrismaPaymentRepository } from '#/infrastructure/repositories/prisma/prisma-payment.repository';
 import { PrismaProductCategoryRepository } from '#/infrastructure/repositories/prisma/prisma-product-category.repository';
 import { PrismaProductRepository } from '#/infrastructure/repositories/prisma/prisma-product.repository';
-import { MercadoPagoWebhookHandlerUseCase } from '#/infrastructure/webhooks/mercado-pago';
 import { ClientController } from '#/interfaces/controller/client.controller';
 import { IdentifyController } from '#/interfaces/controller/identify.controller';
 import { OrderController } from '#/interfaces/controller/order.controller';
@@ -143,7 +143,7 @@ container.bind<ClientOrchestrationService>(TYPES.ClientOrchestrationService).to(
 container.bind<PaymentOrchestrationService>(TYPES.PaymentOrchestrationService).to(PaymentOrchestrationService);
 
 // Webhook
-container.bind<IWebhookHandlerUseCase>(TYPES.WebhookHandler).to(MercadoPagoWebhookHandlerUseCase).inSingletonScope();
+container.bind<IWebhookHandlerUseCase>(TYPES.WebhookHandlerUseCase).to(WebhookHandler).inSingletonScope();
 container.bind<WebhookController>(TYPES.WebhookController).to(WebhookController).inSingletonScope();
 
 export { container };

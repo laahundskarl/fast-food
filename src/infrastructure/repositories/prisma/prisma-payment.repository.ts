@@ -41,10 +41,7 @@ export class PrismaPaymentRepository implements IPaymentRepository {
         const data = await this.prisma.payment.update({
             where: { id },
             data: PrismaPaymentMapper.toUpdate(payment),
-            include: {
-                order: true,
-            },
         });
-        return PrismaPaymentMapper.toDomain(data);
+        return PrismaPaymentMapper.toDomainSimple(data);
     }
 }

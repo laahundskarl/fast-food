@@ -15,5 +15,5 @@ export function registerRoutes(app: FastifyInstance) {
     app.register(productRoute, { prefix: '/product' });
     app.register(productCategoryRoutes, { prefix: '/product-category' });
     app.register(paymentRoute, { prefix: '/payment' });
-    app.register(webhookRoute, { prefix: '/mercadopago/webhook' });
+    app.register(webhookRoute, { prefix: '/webhook' });
 }
