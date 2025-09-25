@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 
 import { UpdateProductDto } from '#/application/use-cases/product/update-product/update-product.dto';
 import { IUpdateProductUseCase } from '#/application/use-cases/product/update-product/update-product.use-case';
-import { Product } from '#/domain/entities/product.entity';
+import { IProduct, Product } from '#/domain/entities/product.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
 import { IProductRepository } from '#/domain/repositories/product.repository';
@@ -15,7 +15,7 @@ export class UpdateProduct implements IUpdateProductUseCase {
         @inject(TYPES.ProductCategoryRepository) private readonly productCategoryRepository: IProductCategoryRepository,
     ) {}
 
-    async execute(id: string, request: UpdateProductDto): Promise<any> {
+    async execute(id: string, request: UpdateProductDto): Promise<IProduct> {
         let category = null;
         const product = await this.productRepository.findById(id);
         if (!product) {

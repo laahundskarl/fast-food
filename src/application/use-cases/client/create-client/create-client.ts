@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 
 import { CreateClientDto } from '#/application/use-cases/client/create-client/create-client.dto';
 import { ICreateClientUseCase } from '#/application/use-cases/client/create-client/create-client.use-case';
-import { Client } from '#/domain/entities/client.entity';
+import { Client, IClient } from '#/domain/entities/client.entity';
 import { ConflictError } from '#/domain/errors';
 import { IClientRepository } from '#/domain/repositories/client.repository';
 import { TYPES } from '#/infrastructure/config/types';
@@ -11,7 +11,7 @@ import { TYPES } from '#/infrastructure/config/types';
 export class CreateClient implements ICreateClientUseCase {
     constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
-    async execute(request: CreateClientDto): Promise<Client> {
+    async execute(request: CreateClientDto): Promise<IClient> {
         const alreadyExists = await this.clientRepository.findByCpfOrEmail(request.cpf, request.email);
         const conflictingField = alreadyExists?.cpf === request.cpf ? 'cpf' : 'email';
         if (alreadyExists) {

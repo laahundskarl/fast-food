@@ -1,5 +1,5 @@
-import { Product } from '#/domain/entities/product.entity';
+import { IProduct } from '#/domain/entities/product.entity';
 
 export interface IGetProductUseCase {
-    execute(id: string): Promise<Product>;
+    execute(id: string): Promise<IProduct>;
 }

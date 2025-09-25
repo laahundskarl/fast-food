@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 
 import { IGetOrderUseCase } from '#/application/use-cases/order/get-order/get-order.use-case';
-import { Order } from '#/domain/entities/order.entity';
+import { IOrder } from '#/domain/entities/order.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { TYPES } from '#/infrastructure/config/types';
@@ -10,7 +10,7 @@ import { TYPES } from '#/infrastructure/config/types';
 export class GetOrder implements IGetOrderUseCase {
     constructor(@inject(TYPES.OrderRepository) private readonly orderRepository: IOrderRepository) {}
 
-    async execute(id: string): Promise<Order> {
+    async execute(id: string): Promise<IOrder> {
         const order = await this.orderRepository.findById(id);
         if (!order) {
             throw new NotFoundError('Order not found');
