@@ -5,9 +5,12 @@ import { IGetPaymentUseCase } from '#/application/use-cases/payment/get-payment/
 import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/list-payment.dto';
 import { IListPaymentUseCase } from '#/application/use-cases/payment/list-payment/list-payment.use-case';
 import { TYPES } from '#/infrastructure/config/types';
+import { IPaymentController } from '#/interfaces/controller/types/payment';
+import { PaymentPresenter } from '#/interfaces/presenter/payment.presenter';
+import { httpPresenter } from '#/interfaces/presenter/shared/http.presenter';
 
 @injectable()
-export class PaymentController {
+export class PaymentController implements IPaymentController {
     constructor(
         @inject(TYPES.GetPaymentUseCase) private readonly getPaymentUseCase: IGetPaymentUseCase,
         @inject(TYPES.ListPaymentUseCase) private readonly listPaymentUseCase: IListPaymentUseCase,
@@ -15,12 +18,12 @@ export class PaymentController {
 
     async get(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const payment = await this.getPaymentUseCase.execute(request.params.id);
-        return reply.send(payment);
+        return reply.send(httpPresenter(PaymentPresenter.getPaymentPresenter(payment), 200));
     }
 
     async list(request: FastifyRequest, reply: FastifyReply) {
         const query = request.query as ListPaymentDto;
-        const payment = await this.listPaymentUseCase.execute(query);
-        return reply.send(payment);
+        const payments = await this.listPaymentUseCase.execute(query);
+        return reply.send(httpPresenter(PaymentPresenter.findPaymentsPresenter(payments), 200));
     }
 }

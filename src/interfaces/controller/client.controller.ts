@@ -9,9 +9,12 @@ import { IGetClientOrdersUseCase } from '#/application/use-cases/client/get-clie
 import { UpdateClientDto } from '#/application/use-cases/client/update-client/update-client.dto';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
 import { TYPES } from '#/infrastructure/config/types';
+import { IClientController } from '#/interfaces/controller/types/client';
+import { ClientPresenter } from '#/interfaces/presenter/client.presenter';
+import { httpPresenter } from '#/interfaces/presenter/shared/http.presenter';
 
 @injectable()
-export class ClientController {
+export class ClientController implements IClientController {
     constructor(
         @inject(TYPES.CreateClientUseCase) private readonly createClientUseCase: ICreateClientUseCase,
         @inject(TYPES.DeleteClientUseCase) private readonly deleteClientUseCase: IDeleteClientUseCase,
@@ -23,27 +26,27 @@ export class ClientController {
     async create(request: FastifyRequest, reply: FastifyReply) {
         const body = request.body as CreateClientDto;
         const result = await this.createClientUseCase.execute(body);
-        return reply.status(201).send(result);
+        return reply.status(201).send(httpPresenter(ClientPresenter.createClientPresenter(result), 201));
     }
 
     async delete(request: FastifyRequest<{ Params: { cpf: string } }>, reply: FastifyReply) {
         await this.deleteClientUseCase.execute(request.params.cpf);
-        return reply.send({ message: 'Client deleted successfully' });
+        return reply.send(httpPresenter({ message: 'Client deleted successfully' }, 200));
     }
 
     async get(request: FastifyRequest<{ Params: { cpf: string } }>, reply: FastifyReply) {
         const result = await this.getClientUseCase.execute(request.params.cpf);
-        return reply.send(result);
+        return reply.send(httpPresenter(ClientPresenter.createClientPresenter(result), 200));
     }
 
     async getOrders(request: FastifyRequest<{ Params: { cpf: string } }>, reply: FastifyReply) {
         const result = await this.getClientOrdersUseCase.execute(request.params.cpf);
-        return reply.send(result);
+        return reply.send(httpPresenter(ClientPresenter.getClientPresenter(result), 200));
     }
 
     async update(request: FastifyRequest<{ Params: { cpf: string } }>, reply: FastifyReply) {
         const body = request.body as UpdateClientDto;
         const result = await this.updateClientUseCase.execute(request.params.cpf, body);
-        return reply.send(result);
+        return reply.send(httpPresenter(ClientPresenter.createClientPresenter(result), 200));
     }
 }

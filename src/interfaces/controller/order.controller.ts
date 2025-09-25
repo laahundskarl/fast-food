@@ -12,9 +12,12 @@ import { UpdateOrderDto } from '#/application/use-cases/order/update-order/updat
 import { IUpdateOrderUseCase } from '#/application/use-cases/order/update-order/update-order.use-case';
 import { IUpdateOrderStatusUseCase } from '#/application/use-cases/order/update-order-status/update-order-status.use-case';
 import { TYPES } from '#/infrastructure/config/types';
+import { IOrderController } from '#/interfaces/controller/types/order';
+import { OrderPresenter } from '#/interfaces/presenter/order.presenter';
+import { httpPresenter } from '#/interfaces/presenter/shared/http.presenter';
 
 @injectable()
-export class OrderController {
+export class OrderController implements IOrderController {
     constructor(
         @inject(TYPES.CreateOrderUseCase) private readonly createOrderUseCase: ICreateOrderUseCase,
         @inject(TYPES.DeleteOrderUseCase) private readonly deleteOrderUseCase: IDeleteOrderUseCase,
@@ -27,34 +30,34 @@ export class OrderController {
     async create(request: FastifyRequest, reply: FastifyReply) {
         const body = request.body as CreateOrderDto;
         const result = await this.createOrderUseCase.execute(body);
-        return reply.status(201).send(result);
+        return reply.status(201).send(httpPresenter(OrderPresenter.createOrderPresenter(result), 201));
     }
 
     async delete(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         await this.deleteOrderUseCase.execute(request.params.id);
-        return reply.send({ message: 'Order deleted successfully' });
+        return reply.send(httpPresenter({ message: 'Order deleted successfully' }, 200));
     }
 
     async get(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const result = await this.getOrderUseCase.execute(request.params.id);
-        return reply.send(result);
+        return reply.send(httpPresenter(OrderPresenter.getOrderPresenter(result), 200));
     }
 
     async list(request: FastifyRequest, reply: FastifyReply) {
         const query = request.query as ListOrderRequestDto;
         const result = await this.listOrderUseCase.execute(query);
-        return reply.send(result);
+        return reply.send(httpPresenter(OrderPresenter.findOrdersPresenter(result), 200));
     }
 
     async update(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const body = request.body as UpdateOrderDto;
         const result = await this.updateOrderUseCase.execute(request.params.id, body);
-        return reply.send(result);
+        return reply.send(httpPresenter(OrderPresenter.createOrderPresenter(result), 200));
     }
 
     async updateStatus(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const { status } = request.body as { status: OrderStatus };
         const result = await this.updateOrderStatusUseCase.execute(request.params.id, status);
-        return reply.send(result);
+        return reply.send(httpPresenter(OrderPresenter.createOrderPresenter(result), 200));
     }
 }

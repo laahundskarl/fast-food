@@ -10,9 +10,12 @@ import { IListProductUseCase } from '#/application/use-cases/product/list-produc
 import { UpdateProductDto } from '#/application/use-cases/product/update-product/update-product.dto';
 import { IUpdateProductUseCase } from '#/application/use-cases/product/update-product/update-product.use-case';
 import { TYPES } from '#/infrastructure/config/types';
+import { IProductController } from '#/interfaces/controller/types/product';
+import { ProductPresenter } from '#/interfaces/presenter/product.presenter';
+import { httpPresenter } from '#/interfaces/presenter/shared/http.presenter';
 
 @injectable()
-export class ProductController {
+export class ProductController implements IProductController {
     constructor(
         @inject(TYPES.CreateProductUseCase) private readonly createProductUseCase: ICreateProductUseCase,
         @inject(TYPES.DeleteProductUseCase) private readonly deleteProductUseCase: IDeleteProductUseCase,
@@ -24,28 +27,28 @@ export class ProductController {
     async create(request: FastifyRequest, reply: FastifyReply) {
         const body = request.body as CreateProductDto;
         const result = await this.createProductUseCase.execute(body);
-        return reply.status(201).send(result);
+        return reply.status(201).send(httpPresenter(ProductPresenter.createProductPresenter(result), 201));
     }
 
     async delete(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         await this.deleteProductUseCase.execute(request.params.id);
-        return reply.send({ message: 'Product deleted successfully' });
+        return reply.send(httpPresenter({ message: 'Product deleted successfully' }, 200));
     }
 
     async get(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const result = await this.getProductUseCase.execute(request.params.id);
-        return reply.send(result);
+        return reply.send(httpPresenter(ProductPresenter.getProductPresenter(result), 200));
     }
 
     async list(request: FastifyRequest, reply: FastifyReply) {
         const query = request.query as ListProductDto;
         const result = await this.listProductUseCase.execute(query);
-        return reply.send(result);
+        return reply.send(httpPresenter(ProductPresenter.findProductsPresenter(result), 200));
     }
 
     async update(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
         const body = request.body as UpdateProductDto;
         const result = await this.updateProductUseCase.execute(request.params.id, body);
-        return reply.send(result);
+        return reply.send(httpPresenter(ProductPresenter.createProductPresenter(result), 200));
     }
 }
