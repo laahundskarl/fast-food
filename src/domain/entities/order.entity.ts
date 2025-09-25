@@ -2,44 +2,49 @@ import { randomUUID } from 'crypto';
 
 import { OrderStatus } from '@prisma/client';
 
-import { Client } from '#/domain/entities/client.entity';
-import { OrderProduct } from '#/domain/entities/order-product.entity';
-import { Payment } from '#/domain/entities/payment.entity';
+import { IClient } from '#/domain/entities/client.entity';
+import { IOrderProduct } from '#/domain/entities/order-product.entity';
+import { IPayment } from '#/domain/entities/payment.entity';
 import { BusinessError } from '#/domain/errors';
+
+export interface IOrder {
+    readonly id: string;
+    value: number;
+    orderNumber: number;
+    status: OrderStatus;
+    orderProducts: IOrderProduct[];
+    payments: IPayment[];
+    client?: IClient;
+    updateStatus(newStatus: OrderStatus): void;
+}
 
 type OrderPayload = {
     id?: string;
     value: number;
     orderNumber: number;
     status: OrderStatus;
-    orderProducts?: OrderProduct[];
-    payments?: Payment[];
-    client?: Client;
+    orderProducts?: IOrderProduct[];
+    payments?: IPayment[];
+    client?: IClient;
 };
 
-export class Order {
+export class Order implements IOrder {
     public readonly id: string;
     public value: number;
     public orderNumber: number;
     public status: OrderStatus;
-    public orderProducts?: OrderProduct[];
-    public payments?: Payment[];
-    public client?: Client;
+    public orderProducts: IOrderProduct[];
+    public payments: IPayment[];
+    public client?: IClient;
 
     constructor(payload: OrderPayload) {
         this.id = payload.id || randomUUID();
         this.value = payload.value;
         this.orderNumber = payload.orderNumber;
         this.status = payload.status;
-        if (payload.orderProducts) {
-            this.orderProducts = payload.orderProducts;
-        }
-        if (payload.payments) {
-            this.payments = payload.payments;
-        }
-        if (payload.client) {
-            this.client = payload.client;
-        }
+        this.orderProducts = payload.orderProducts || [];
+        this.payments = payload.payments || [];
+        this.client = payload.client || undefined;
     }
 
     updateStatus(newStatus: OrderStatus) {

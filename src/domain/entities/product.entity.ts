@@ -1,29 +1,35 @@
 import { randomUUID } from 'crypto';
 
-import { ProductCategory } from '#/domain/entities/product-category.entity';
+import { IProductCategory } from '#/domain/entities/product-category.entity';
+
+export interface IProduct {
+    readonly id: string;
+    name: string;
+    value: number;
+    description: string | null;
+    category: IProductCategory;
+}
 
 type ProductPayload = {
     id?: string;
     name: string;
     value: number;
     description: string | null;
-    category?: ProductCategory;
+    category?: IProductCategory;
 };
 
-export class Product {
+export class Product implements IProduct {
     public readonly id: string;
     public name: string;
     public value: number;
     public description: string | null;
-    public category?: ProductCategory;
+    public category: IProductCategory;
 
     constructor(payload: ProductPayload) {
         this.id = payload.id || randomUUID();
         this.name = payload.name;
         this.value = payload.value;
         this.description = payload.description || null;
-        if (payload.category) {
-            this.category = payload.category;
-        }
+        this.category = payload.category!;
     }
 }

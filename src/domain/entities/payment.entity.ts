@@ -2,20 +2,28 @@ import { randomUUID } from 'crypto';
 
 import { StatusPayment } from '@prisma/client';
 
-import { Order } from '#/domain/entities/order.entity';
+import { IOrder } from '#/domain/entities/order.entity';
+
+export interface IPayment {
+    readonly id: string;
+    status: StatusPayment;
+    order?: IOrder;
+    externalReference?: string | null;
+    qrCode?: string | null;
+}
 
 type PaymentPayload = {
     id?: string;
     status: StatusPayment;
-    order?: Order;
+    order?: IOrder;
     externalReference?: string;
     qrCode?: string;
 };
 
-export class Payment {
+export class Payment implements IPayment {
     public readonly id: string;
     public status: StatusPayment;
-    public order?: Order;
+    public order?: IOrder;
     public externalReference?: string | null;
     public qrCode?: string | null;
 
