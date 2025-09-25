@@ -1,21 +1,21 @@
 import { StatusPayment } from '@prisma/client';
 
-import { Order } from '#/domain/entities/order.entity';
+import { IOrder } from '#/domain/entities/order.entity';
 import { Payment } from '#/domain/entities/payment.entity';
 import { CreateQrCodeInput } from '#/domain/gateways/dto/create-qr-code-input';
 
 export class PaymentBuilderService {
-    static createPayment(order: Order): Payment {
+    static createPayment(order: IOrder): Payment {
         return new Payment({
             status: StatusPayment.PENDING,
             order: order,
         });
     }
 
-    static buildGatewayRequest(paymentId: string, order: Order): CreateQrCodeInput {
+    static buildGatewayRequest(paymentId: string, order: IOrder): CreateQrCodeInput {
         return {
             paymentId,
-            items: order.orderProducts!,
+            items: order.orderProducts,
             amount: order.value,
         };
     }
