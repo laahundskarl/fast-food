@@ -1,11 +1,11 @@
-import { Product } from '#/domain/entities/product.entity';
+import { IProduct } from '#/domain/entities/product.entity';
 import { NotFoundError } from '#/domain/errors';
 
 export class ProductValidationService {
     static validateProductsExist(
         requestProducts: { productId: string; quantity: number }[],
-        availableProducts: Product[],
-    ) {
+        availableProducts: IProduct[],
+    ): void {
         if (availableProducts.length !== requestProducts.length) {
             throw new NotFoundError('One or more products not found');
         }
@@ -17,7 +17,7 @@ export class ProductValidationService {
         }
     }
 
-    static findProductById(productId: string, products: Product[]): Product {
+    static findProductById(productId: string, products: IProduct[]): IProduct {
         const product = products.find(p => p.id === productId);
         if (!product) {
             throw new NotFoundError(`Product with id ${productId} not found`);
