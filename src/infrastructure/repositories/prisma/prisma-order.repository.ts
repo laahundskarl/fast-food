@@ -2,16 +2,16 @@ import { PrismaClient, Order as PrismaOrder } from '@prisma/client';
 import { injectable, inject } from 'inversify';
 
 import { ListOrderDto } from '#/application/use-cases/order/list-order/list-order.dto';
-import { Order } from '#/domain/entities/order.entity';
+import { IOrder } from '#/domain/entities/order.entity';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { TYPES } from '#/infrastructure/config/types';
 import { PrismaOrderMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-order.mapper';
 
 @injectable()
 export class PrismaOrderRepository implements IOrderRepository {
-    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
+    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) { }
 
-    async create(order: Order): Promise<Order> {
+    async create(order: IOrder): Promise<IOrder> {
         const data = await this.prisma.order.create({
             data: PrismaOrderMapper.toCreate(order),
             include: this.getIncludeOptions(),
@@ -20,7 +20,7 @@ export class PrismaOrderRepository implements IOrderRepository {
         return PrismaOrderMapper.toDomain(data);
     }
 
-    async findById(id: string): Promise<Order | null> {
+    async findById(id: string): Promise<IOrder | null> {
         const data = await this.prisma.order.findUnique({
             where: { id },
             include: this.getIncludeOptions(),
@@ -30,7 +30,7 @@ export class PrismaOrderRepository implements IOrderRepository {
         return PrismaOrderMapper.toDomain(data);
     }
 
-    async list(query?: ListOrderDto): Promise<Order[]> {
+    async list(query?: ListOrderDto): Promise<IOrder[]> {
         const { page = 1, limit = 10 } = query || {};
         const offset = (page - 1) * limit;
 
@@ -97,7 +97,7 @@ export class PrismaOrderRepository implements IOrderRepository {
         return sortedData.map(item => PrismaOrderMapper.toDomain(item));
     }
 
-    async updateOrderProducts(orderId: string, order: Order): Promise<Order> {
+    async updateOrderProducts(orderId: string, order: IOrder): Promise<IOrder> {
         const data = await this.prisma.$transaction(async tx => {
             await tx.orderProduct.deleteMany({
                 where: { orderId },
@@ -113,7 +113,7 @@ export class PrismaOrderRepository implements IOrderRepository {
         return PrismaOrderMapper.toDomain(data);
     }
 
-    async updateStatus(id: string, order: Order): Promise<Order> {
+    async updateStatus(id: string, order: IOrder): Promise<IOrder> {
         const data = await this.prisma.order.update({
             where: { id },
             data: { status: order.status },

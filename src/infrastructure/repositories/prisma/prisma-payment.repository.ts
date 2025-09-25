@@ -2,16 +2,16 @@ import { PrismaClient } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 
 import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/list-payment.dto';
-import { Payment } from '#/domain/entities/payment.entity';
+import { IPayment } from '#/domain/entities/payment.entity';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
 import { TYPES } from '#/infrastructure/config/types';
 import { PrismaPaymentMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-payment.mapper';
 
 @injectable()
 export class PrismaPaymentRepository implements IPaymentRepository {
-    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
+    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) { }
 
-    async create(payment: Payment): Promise<Payment> {
+    async create(payment: IPayment): Promise<IPayment> {
         const data = await this.prisma.payment.create({
             data: PrismaPaymentMapper.toCreate(payment),
         });
@@ -19,7 +19,7 @@ export class PrismaPaymentRepository implements IPaymentRepository {
         return PrismaPaymentMapper.toDomainSimple(data);
     }
 
-    async findById(id: string): Promise<Payment | null> {
+    async findById(id: string): Promise<IPayment | null> {
         const data = await this.prisma.payment.findUnique({
             where: { id },
             include: {
@@ -30,14 +30,14 @@ export class PrismaPaymentRepository implements IPaymentRepository {
         return PrismaPaymentMapper.toDomain(data);
     }
 
-    async list(query?: ListPaymentDto): Promise<Payment[]> {
+    async list(query?: ListPaymentDto): Promise<IPayment[]> {
         const data = await this.prisma.payment.findMany({
             where: query,
         });
         return data.map(item => PrismaPaymentMapper.toDomainSimple(item));
     }
 
-    async update(id: string, payment: Payment): Promise<Payment> {
+    async update(id: string, payment: IPayment): Promise<IPayment> {
         const data = await this.prisma.payment.update({
             where: { id },
             data: PrismaPaymentMapper.toUpdate(payment),
