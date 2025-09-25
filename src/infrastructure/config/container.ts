@@ -69,6 +69,13 @@ import { OrderController } from '#/interfaces/controller/order.controller';
 import { PaymentController } from '#/interfaces/controller/payment.controller';
 import { ProductCategoryController } from '#/interfaces/controller/product-category.controller';
 import { ProductController } from '#/interfaces/controller/product.controller';
+import { IClientController } from '#/interfaces/controller/types/client';
+import { IIdentifyController } from '#/interfaces/controller/types/identify';
+import { IOrderController } from '#/interfaces/controller/types/order';
+import { IPaymentController } from '#/interfaces/controller/types/payment';
+import { IProductController } from '#/interfaces/controller/types/product';
+import { IProductCategoryController } from '#/interfaces/controller/types/product-category';
+import { IWebhookController } from '#/interfaces/controller/types/webhook';
 import { WebhookController } from '#/interfaces/controller/webhook.controller';
 
 const container = new Container();
@@ -123,15 +130,15 @@ container
     .inTransientScope();
 
 // Controllers
-container.bind<ClientController>(TYPES.ClientController).to(ClientController).inTransientScope();
-container.bind<IdentifyController>(TYPES.IdentifyController).to(IdentifyController).inTransientScope();
-container.bind<OrderController>(TYPES.OrderController).to(OrderController).inTransientScope();
-container.bind<PaymentController>(TYPES.PaymentController).to(PaymentController).inTransientScope();
+container.bind<IClientController>(TYPES.ClientController).to(ClientController).inTransientScope();
+container.bind<IIdentifyController>(TYPES.IdentifyController).to(IdentifyController).inTransientScope();
+container.bind<IOrderController>(TYPES.OrderController).to(OrderController).inTransientScope();
+container.bind<IPaymentController>(TYPES.PaymentController).to(PaymentController).inTransientScope();
 container
-    .bind<ProductCategoryController>(TYPES.ProductCategoryController)
+    .bind<IProductCategoryController>(TYPES.ProductCategoryController)
     .to(ProductCategoryController)
     .inTransientScope();
-container.bind<ProductController>(TYPES.ProductController).to(ProductController).inTransientScope();
+container.bind<IProductController>(TYPES.ProductController).to(ProductController).inTransientScope();
 
 // Gateways
 container.bind<ICreatePayment>(TYPES.CreatePaymentGateway).to(MercadoPagoCreatePayment).inSingletonScope();
@@ -144,6 +151,6 @@ container.bind<PaymentOrchestrationService>(TYPES.PaymentOrchestrationService).t
 
 // Webhook
 container.bind<IWebhookHandlerUseCase>(TYPES.WebhookHandlerUseCase).to(WebhookHandler).inSingletonScope();
-container.bind<WebhookController>(TYPES.WebhookController).to(WebhookController).inSingletonScope();
+container.bind<IWebhookController>(TYPES.WebhookController).to(WebhookController).inSingletonScope();
 
 export { container };
