@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: fastfood-api
-        image: 601273246696.dkr.ecr.us-east-1.amazonaws.com/fastfood-api:latest
+        image: ${ECR_URI}:${IMAGE_TAG}
+        imagePullPolicy: Always
         command: ["node", "dist/index.js"]  # Skip wait-for.sh, use only node
         ports:
         - containerPort: 3000
