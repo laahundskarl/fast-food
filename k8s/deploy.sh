@@ -1,18 +1,14 @@
 #!/bin/bash
 set -e
 
-# Tempo de início do deploy
+# Tempo de início do deploy - mais robusto
 DEPLOY_START_TIME=$(date +%s)
-echo "🚀 Deploy iniciado em: $(date)"
+echo "🚀 Deploy iniciado em: $(date) (timestamp: $DEPLOY_START_TIME)"
 
 show_step() {
-    current_time=$(date +%s)
-    elapsed=$((current_time - DEPLOY_START_TIME))
-    minutes=$((elapsed / 60))
-    seconds=$((elapsed % 60))
-    
+    local step_time=$(date "+%H:%M:%S")
     echo ""
-    echo "$(printf '%02dm%02ds elapsed') - $1"
+    echo "⏱️  [$step_time] $1"
 }
 
 show_step "[0/10] Configurando kubectl para o cluster EKS..."
