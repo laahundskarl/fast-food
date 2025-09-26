@@ -1,12 +1,27 @@
 #!/bin/bash
 set -e
 
-echo "[0/13] Configurando kubectl para o cluster EKS..."
+# Tempo de início do deploy
+DEPLOY_START_TIME=$(date +%s)
+echo "🚀 Deploy iniciado em: $(date)"
+
+show_step() {
+    current_time=$(date +%s)
+    elapsed=$((current_time - DEPLOY_START_TIME))
+    minutes=$((elapsed / 60))
+    seconds=$((elapsed % 60))
+    
+    echo ""
+    echo "$(printf '%02dm%02ds elapsed') - $1"
+}
+
+show_step "[0/10] Configurando kubectl para o cluster EKS..."
 aws eks update-kubeconfig --region us-east-1 --name fast-food-cluster-prd
 
-echo "[1/13] Obtendo URI do ECR..."
+show_step "[1/10] Obtendo URI do ECR e endpoint do RDS..."
 cd ../terraform
 ECR_URI=$(terraform output -raw ecr_repository_url 2>/dev/null)
+RDS_ENDPOINT_RAW=$(terraform output -raw rds_endpoint 2>/dev/null)
 cd ../k8s
 
 if [ -z "$ECR_URI" ]; then
@@ -15,23 +30,24 @@ if [ -z "$ECR_URI" ]; then
     exit 1
 fi
 
+if [ -z "$RDS_ENDPOINT_RAW" ]; then
+    echo "⚠️  Erro: Não foi possível obter RDS endpoint do terraform output"
+    echo "Execute: cd ../terraform && terraform output rds_endpoint"
+    exit 1
+fi
+
+# Remove aspas e porta :3306 se estiver presente
+RDS_ENDPOINT=$(echo "$RDS_ENDPOINT_RAW" | sed 's/"//g' | sed 's/:3306$//')
+
 echo "📦 Usando imagem: $ECR_URI:latest"
+echo "🗄️  RDS endpoint bruto: $RDS_ENDPOINT_RAW"
+echo "🗄️  RDS endpoint limpo: $RDS_ENDPOINT"
 
-echo "[2/13] Aplicando PVC do MySQL..."
-kubectl apply -f 01-mysql-pvc.yaml
+show_step "[2/10] Deploy do serviço da API e LoadBalancer..."
+kubectl apply -f 01-api-service.yaml
+kubectl apply -f 02-loadbalancer.yaml
 
-echo "[3/13] Deploy do MySQL..."
-kubectl apply -f 02-mysql-deployment.yaml
-kubectl apply -f 03-mysql-service.yaml
-
-echo "[4/13] Aguardando MySQL ficar pronto..."
-kubectl wait --for=condition=Ready pod -l app=mysql --timeout=300s
-
-echo "[5/13] Deploy do serviço da API e LoadBalancer..."
-kubectl apply -f 04-api-service.yaml
-kubectl apply -f 05-loadbalancer.yaml
-
-echo "[6/13] Aguardando LoadBalancer obter External IP..."
+show_step "[3/10] Aguardando LoadBalancer obter External IP..."
 # Aguardar até 5 minutos pelo LoadBalancer
 LOADBALANCER_URL=""
 for i in {1..30}; do
@@ -49,22 +65,29 @@ if [ -z "$LOADBALANCER_URL" ]; then
     LOADBALANCER_URL="a7a9258de2e8b4c638f8214ce6360ffc-609270677.us-east-1.elb.amazonaws.com"
 fi
 
-echo "[7/13] Aplicando ConfigMap com URL dinâmica..."
+show_step "[4/10] Aplicando ConfigMap com RDS endpoint e URL dinâmica..."
 # Exportar variáveis para envsubst
 export LOADBALANCER_URL="$LOADBALANCER_URL"
+export RDS_ENDPOINT="$RDS_ENDPOINT"
+
+echo "🔧 Variáveis de substituição:"
+echo "   LOADBALANCER_URL: $LOADBALANCER_URL"
+echo "   RDS_ENDPOINT: $RDS_ENDPOINT"
 
 # Substituir variáveis e aplicar
-envsubst < 06-config.yaml | kubectl apply -f -
+envsubst < 03-config.yaml | kubectl apply -f -
 
-echo "[8/13] Deploy da API..."
+show_step "[5/10] Deploy da API..."
 # Exportar variáveis para API
 export ECR_URI="$ECR_URI"
 export IMAGE_TAG="latest"
 
-# Substituir variáveis e aplicar
-envsubst < 07-api-deployment.yaml | kubectl apply -f -
+echo "🔧 DATABASE_URL que será usada: mysql://admin:admin123@$RDS_ENDPOINT:3306/fastfood?allowPublicKeyRetrieval=true"
 
-echo "[9/13] Verificando se precisa reiniciar deployments..."
+# Substituir variáveis e aplicar
+envsubst < 04-api-deployment.yaml | kubectl apply -f -
+
+show_step "[6/10] Verificando se precisa reiniciar deployments..."
 if kubectl get deployment fastfood-api >/dev/null 2>&1 && [ "$(kubectl get deployment fastfood-api -o jsonpath='{.status.replicas}')" -gt 0 ]; then
     echo "Deployment já existe - forçando restart para pegar nova imagem e configs..."
     kubectl rollout restart deployment/fastfood-api
@@ -74,21 +97,23 @@ else
     kubectl wait --for=condition=Ready pod -l app=fastfood-api --timeout=300s
 fi
 
-echo "[10/13] Executando migrations do banco de dados..."
+show_step "[7/10] Executando migrations do banco de dados no RDS..."
 API_POD=$(kubectl get pods -l app=fastfood-api -o jsonpath="{.items[0].metadata.name}")
 kubectl exec $API_POD -- npx prisma migrate deploy
-echo "Migrations executadas com sucesso!"
+echo "Migrations executadas com sucesso no RDS!"
 
-echo "[11/13] Instalando Metrics Server oficial..."
+show_step "[8/10] Instalando Metrics Server oficial..."
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
-echo "[12/13] Aguardando Metrics Server ficar pronto..."
+show_step "[9/10] Aguardando Metrics Server ficar pronto..."
 kubectl wait --for=condition=Ready pod -l k8s-app=metrics-server -n kube-system --timeout=300s
 
-echo "[13/13] Deploy do HPA..."
-kubectl apply -f 08-hpa.yaml
+show_step "[10/10] Aplicando HPA (Horizontal Pod Autoscaler)..."
+kubectl apply -f 05-hpa.yaml
 
-echo "\n[✅] Deploy finalizado com sucesso!\n"
+echo ""
+echo "[✅] Deploy finalizado com sucesso!"
+echo ""
 kubectl get pods
 kubectl get svc
 kubectl get hpa

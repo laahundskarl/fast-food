@@ -1,24 +1,12 @@
-resource "aws_security_group" "rds_mysql" {
-  name_prefix = "fastfood-rds-"
-  vpc_id      = data.aws_vpc.existing.id
-
-  ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = [data.aws_vpc.existing.cidr_block]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "fastfood-rds-sg"
-  }
+# Security group rule para permitir MySQL no security group do EKS
+resource "aws_security_group_rule" "rds_mysql_access" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  source_security_group_id = module.eks.node_security_group_id
+  security_group_id        = module.eks.node_security_group_id
+  description              = "MySQL access within EKS cluster"
 }
 
 resource "aws_db_subnet_group" "fastfood_mysql" {
@@ -46,8 +34,10 @@ resource "aws_db_instance" "fastfood_mysql" {
   password = "admin123"
   port     = 3306
 
-  vpc_security_group_ids = [aws_security_group.rds_mysql.id]
+  vpc_security_group_ids = [module.eks.node_security_group_id]
   db_subnet_group_name   = aws_db_subnet_group.fastfood_mysql.name
+  
+  # RDS privado - apenas acessível dentro da VPC
   publicly_accessible    = false
   
   multi_az                = false
@@ -70,4 +60,9 @@ output "rds_endpoint" {
 output "rds_database_name" {
   description = "Nome do banco de dados"
   value       = aws_db_instance.fastfood_mysql.db_name
+}
+
+output "rds_security_group_id" {
+  description = "Security Group ID do RDS (mesmo do EKS)"
+  value       = module.eks.node_security_group_id
 }

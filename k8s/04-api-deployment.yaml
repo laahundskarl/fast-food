@@ -24,7 +24,7 @@ spec:
         - containerPort: 3000
         env:
         - name: DATABASE_URL
-          value: "mysql://admin:admin123@${RDS_ENDPOINT}:3306/fastfood?allowPublicKeyRetrieval=true"
+          value: "mysql://admin:admin123@${RDS_ENDPOINT}/fastfood?allowPublicKeyRetrieval=true"
         envFrom:
         - configMapRef:
             name: fastfood-config
