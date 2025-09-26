@@ -25,6 +25,11 @@ output "cluster_security_group_id" {
   value       = module.eks.cluster_security_group_id
 }
 
+output "node_security_group_id" {
+  description = "Security Group ID dos nodes EKS"
+  value       = module.eks.node_security_group_id
+}
+
 output "cluster_arn" {
   description = "ARN do cluster EKS"
   value       = module.eks.cluster_arn

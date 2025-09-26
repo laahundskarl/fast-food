@@ -25,7 +25,7 @@ A arquitetura implementa:
 
 - **Escalabilidade horizontal:** Uso de HPA (Horizontal Pod Autoscaler) para lidar com picos de demanda nos horários de maior movimento, garantindo que o totem não fique lento
 - **Alta disponibilidade:** Múltiplas réplicas do serviço em diferentes zonas de disponibilidade
-- **Persistência de dados:** Banco MySQL com volumes persistentes
+- **Persistência de dados:** Amazon RDS MySQL gerenciado
 - **Balanceamento de carga:** LoadBalancer para distribuir requisições
 - **Segurança:** Configurações de segurança e secrets no Kubernetes
 - **Monitoramento:** Metrics Server para coleta de métricas de utilização
@@ -41,17 +41,22 @@ A arquitetura implementa:
 api/                        → Coleções Postman para testes dos endpoints
 docs/                       → Informações do Event Storming
 k8s/                        → Configurações Kubernetes para deploy
-│   ├── 01-config.yaml      → Configurações e secrets para K8s
-│   ├── 02-mysql-pvc.yaml   → Volume persistente para MySQL
-│   ├── 03-mysql-deployment.yaml → Deployment do MySQL
-│   ├── 04-mysql-service.yaml → Serviço do MySQL
-│   ├── 05-api-deployment.yaml → Deployment da API
-│   ├── 06-api-service.yaml → Serviço da API
-│   ├── 07-loadbalancer.yaml → LoadBalancer para acesso externo
-│   ├── 08-hpa.yaml         → Horizontal Pod Autoscaler
+│   ├── 01-api-service.yaml → Serviço da API
+│   ├── 02-loadbalancer.yaml → LoadBalancer para acesso externo
+│   ├── 03-config.yaml      → Configurações e secrets para K8s
+│   ├── 04-api-deployment.yaml → Deployment da API
+│   ├── 05-hpa.yaml         → Horizontal Pod Autoscaler
 │   └── deploy.sh           → Script de deploy automatizado
 │
 terraform/                  → Infraestrutura como código para AWS
+│   ├── data.tf             → Data sources para recursos AWS
+│   ├── ecr.tf              → Configuração do ECR
+│   ├── eks.tf              → Configuração do EKS
+│   ├── outputs.tf          → Outputs do Terraform
+│   ├── providers.tf        → Providers da AWS
+│   ├── rds.tf              → Configuração do RDS MySQL
+│   ├── variables.tf        → Variáveis do Terraform
+│   └── vpc.tf              → Configuração da VPC
 src/
 ├── application/            → Camada de aplicação (casos de uso)
 │   ├── services/           → Serviços de orquestração
@@ -131,7 +136,7 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 - Node.js com TypeScript
 - Fastify como framework HTTP
 - Prisma para ORM
-- MySQL como banco de dados
+- Amazon RDS MySQL como banco de dados
 - Zod para validação de dados
 - Docker & Docker Compose para conteinerização
 - Swagger para documentação da API
@@ -189,7 +194,7 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 
 ## 🗃️ Banco de Dados
 
-O banco de dados utilizado é o MySQL. As entidades estão configuradas usando o TypeORM com migrations para versionamento do esquema do banco de dados.
+O banco de dados utilizado é o **Amazon RDS MySQL**, um serviço gerenciado que oferece alta disponibilidade, backups automáticos e escalabilidade. As entidades estão configuradas usando o Prisma ORM com migrations para versionamento do esquema do banco de dados.
 
 Para executar manualmente as migrations:
 ```bash
@@ -369,9 +374,6 @@ kubectl top nodes
 
 # Ver logs da aplicação
 kubectl logs -l app=fastfood-api -f
-
-# Ver logs do MySQL
-kubectl logs -l app=mysql
 ```
 
 ### Passo 6: Testar a Aplicação
@@ -437,14 +439,14 @@ terraform show
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   LoadBalancer  │────│  FastFood API   │────│     MySQL       │
-│   (AWS ELB)     │    │   (2 replicas)  │    │  (Persistent)   │
+│   LoadBalancer  │────│  FastFood API   │────│   Amazon RDS    │
+│   (AWS ELB)     │    │   (2 replicas)  │    │     MySQL       │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
                                 │                       │
                                 │                       │
                           ┌─────────────────┐    ┌─────────────────┐
-                          │   Kubernetes    │    │   EBS Volume    │
-                          │   (AWS EKS)     │    │  (gp2 storage)  │
+                          │   Kubernetes    │    │  Managed MySQL  │
+                          │   (AWS EKS)     │    │                 │
                           └─────────────────┘    └─────────────────┘
 ```
 
@@ -452,7 +454,7 @@ terraform show
 
 - **EKS Cluster**: Kubernetes gerenciado
 - **ECR Repository**: Registry de imagens Docker
-- **EBS CSI Driver**: Volumes persistentes
+- **RDS MySQL**: Banco de dados gerenciado
 - **VPC + Subnets**: Rede isolada
 - **IAM Roles**: Permissões de acesso
 - **Security Groups**: Firewall
@@ -482,36 +484,26 @@ Se preferir, você pode executar cada comando manualmente, conforme descrito aba
 # 1. Navegar para diretório k8s
 cd k8s/
 
-# 2. Aplicar configurações e secrets
-kubectl apply -f 01-config.yaml
+# 2. Aplicar serviço da API
+kubectl apply -f 01-api-service.yaml
 
-# 3. Aplicar PVC para MySQL
-kubectl apply -f 02-mysql-pvc.yaml
+# 3. Aplicar LoadBalancer (acesso externo)
+kubectl apply -f 02-loadbalancer.yaml
 
-# 4. Deploy MySQL
-kubectl apply -f 03-mysql-deployment.yaml
-kubectl apply -f 04-mysql-service.yaml
+# 4. Aplicar configurações e secrets
+kubectl apply -f 03-config.yaml
 
-# 5. Aguardar MySQL estar pronto (Aguarde a mensagem "condition met" aparecer)
-kubectl wait --for=condition=Ready pod -l app=mysql --timeout=300s
+# 5. Deploy da API (conecta automaticamente ao RDS)
+kubectl apply -f 04-api-deployment.yaml
 
-# 6. Deploy da API
-kubectl apply -f 05-api-deployment.yaml
-
-# 7. Instalar Metrics Server (necessário para HPA)
+# 6. Instalar Metrics Server (necessário para HPA)
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
-# 8. Aguardar Metrics Server estar pronto
+# 7. Aguardar Metrics Server estar pronto
 kubectl wait --for=condition=Ready pod -l k8s-app=metrics-server -n kube-system --timeout=300s
 
-# 9. Deploy serviço da API
-kubectl apply -f 06-api-service.yaml
-
-# 10. Aplicar LoadBalancer (acesso externo)
-kubectl apply -f 07-loadbalancer.yaml
-
-# 11. Aplicar HPA (Horizontal Pod Autoscaler)
-kubectl apply -f 08-hpa.yaml
+# 8. Aplicar HPA (Horizontal Pod Autoscaler)
+kubectl apply -f 05-hpa.yaml
 ```
 
 > **Recomendação:** Use o `deploy.sh` para evitar erros de ordem ou comandos esquecidos.
