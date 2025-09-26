@@ -6,7 +6,7 @@ data:
   DATABASE_HOST: "mysql-service"
   DATABASE_PORT: "3306"
   DATABASE_USER: "admin"
-  DATABASE_NAME: "fast-food"
+  DATABASE_NAME: "fastfood"
   PORT: "3000"
   MERCADO_PAGO_BASE_URL: "https://api.mercadopago.com"
   MERCADO_PAGO_USER_ID: "2597335196"
