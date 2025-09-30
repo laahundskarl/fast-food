@@ -1,4 +1,3 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 
 import { IdentifyDto } from '#/application/use-cases/identify/identify.dto';
@@ -10,9 +9,7 @@ import { IIdentifyController } from '#/interfaces/controller/types/identify';
 export class IdentifyController implements IIdentifyController {
     constructor(@inject(TYPES.IdentifyUseCase) private readonly identifyUseCase: IIdentifyUseCase) {}
 
-    async get(request: FastifyRequest, reply: FastifyReply) {
-        const body = request.body as IdentifyDto;
-        const result = await this.identifyUseCase.execute(body);
-        return reply.send(result);
+    async get(request: IdentifyDto): Promise<void> {
+        await this.identifyUseCase.execute(request);
     }
 }
