@@ -10,7 +10,6 @@ import { IUpdateClientUseCase } from '#/application/use-cases/client/update-clie
 import { TYPES } from '#/infrastructure/config/di/types';
 import { IClientController } from '#/interfaces/controller/types/client';
 import { ClientResponseDTO } from '#/interfaces/presenter/client/client-response.dto';
-import { ClientWithOrdersPresenter } from '#/interfaces/presenter/client/client-with-orders.presenter';
 import { ClientPresenter } from '#/interfaces/presenter/client/client.presenter';
 
 @injectable()
@@ -39,7 +38,7 @@ export class ClientController implements IClientController {
 
     async getOrders(cpf: string): Promise<ClientResponseDTO> {
         const result = await this.getClientOrdersUseCase.execute(cpf);
-        return ClientWithOrdersPresenter.toDTO(result);
+        return ClientPresenter.toDTO(result);
     }
 
     async update(cpf: string, request: UpdateClientDto): Promise<ClientResponseDTO> {
