@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { WebhookController } from '#/interfaces/controller/webhook.controller';
 import { mercadoPagoWebhookSchema } from '#/interfaces/http/docs/webhook.docs';
 

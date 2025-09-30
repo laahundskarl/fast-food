@@ -4,7 +4,7 @@ import { injectable, inject } from 'inversify';
 import { ListOrderDto } from '#/application/use-cases/order/list-order/list-order.dto';
 import { IOrder } from '#/domain/entities/order.entity';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { PrismaOrderMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-order.mapper';
 
 @injectable()

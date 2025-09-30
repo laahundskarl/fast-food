@@ -8,7 +8,7 @@ import { IGetClientUseCase } from '#/application/use-cases/client/get-client/get
 import { IGetClientOrdersUseCase } from '#/application/use-cases/client/get-client-orders/get-client-orders.use-case';
 import { UpdateClientDto } from '#/application/use-cases/client/update-client/update-client.dto';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { IClientController } from '#/interfaces/controller/types/client';
 import { ClientPresenter } from '#/interfaces/presenter/client.presenter';
 import { httpPresenter } from '#/interfaces/presenter/shared/http.presenter';

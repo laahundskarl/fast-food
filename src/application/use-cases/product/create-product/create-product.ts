@@ -6,7 +6,7 @@ import { IProduct, Product } from '#/domain/entities/product.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
 import { IProductRepository } from '#/domain/repositories/product.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class CreateProduct implements ICreateProductUseCase {

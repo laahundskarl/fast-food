@@ -7,7 +7,7 @@ import { NotFoundError } from '#/domain/errors';
 import { IGetPayment } from '#/domain/gateways/get-payment';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 const statusPayment: Record<string, StatusPayment> = {
     pending: StatusPayment.PENDING,

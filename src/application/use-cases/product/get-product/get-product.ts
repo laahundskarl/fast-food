@@ -4,7 +4,7 @@ import { IGetProductUseCase } from '#/application/use-cases/product/get-product/
 import { IProduct } from '#/domain/entities/product.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IProductRepository } from '#/domain/repositories/product.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class GetProduct implements IGetProductUseCase {

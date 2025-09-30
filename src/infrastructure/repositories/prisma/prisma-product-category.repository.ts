@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import { ListProductCategoryDto } from '#/application/use-cases/product-category/list-product-category/list-product-category.dto';
 import { IProductCategory } from '#/domain/entities/product-category.entity';
 import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { PrismaProductCategoryMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product-category.mapper';
 
 @injectable()

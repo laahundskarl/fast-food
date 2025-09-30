@@ -8,7 +8,7 @@ import { ICreateOrderUseCase } from '#/application/use-cases/order/create-order/
 import { IOrder } from '#/domain/entities/order.entity';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { OrderBuilderService } from '#/domain/services/order-builder.service';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class CreateOrder implements ICreateOrderUseCase {

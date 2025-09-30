@@ -5,7 +5,7 @@ import { ICreateClientUseCase } from '#/application/use-cases/client/create-clie
 import { Client, IClient } from '#/domain/entities/client.entity';
 import { ConflictError } from '#/domain/errors';
 import { IClientRepository } from '#/domain/repositories/client.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class CreateClient implements ICreateClientUseCase {

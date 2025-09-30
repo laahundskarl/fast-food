@@ -4,7 +4,7 @@ import { inject, injectable } from 'inversify';
 import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/list-payment.dto';
 import { IPayment } from '#/domain/entities/payment.entity';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { PrismaPaymentMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-payment.mapper';
 
 @injectable()

@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
-import { TYPES } from '#/infrastructure/config/types';
-import { ClientController } from '#/interfaces/controller/client.controller';
+import { TYPES } from '#/infrastructure/config/di/types';
+import { IClientController } from '#/interfaces/controller/types/client';
 import {
     clientCreateDocs,
     clientGetSchema,
@@ -11,7 +11,7 @@ import {
 } from '#/interfaces/http/docs/client.docs';
 
 export const clientRoute = (app: FastifyInstance) => {
-    const controller = app.container.get<ClientController>(TYPES.ClientController);
+    const controller = app.container.get<IClientController>(TYPES.ClientController);
 
     app.post('/', clientCreateDocs, controller.create.bind(controller));
     app.delete('/:cpf', clientDeleteSchema, controller.delete.bind(controller));

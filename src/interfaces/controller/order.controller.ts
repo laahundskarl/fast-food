@@ -11,7 +11,7 @@ import { IListOrderUseCase } from '#/application/use-cases/order/list-order/list
 import { UpdateOrderDto } from '#/application/use-cases/order/update-order/update-order.dto';
 import { IUpdateOrderUseCase } from '#/application/use-cases/order/update-order/update-order.use-case';
 import { IUpdateOrderStatusUseCase } from '#/application/use-cases/order/update-order-status/update-order-status.use-case';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { IOrderController } from '#/interfaces/controller/types/order';
 import { OrderPresenter } from '#/interfaces/presenter/order.presenter';
 import { httpPresenter } from '#/interfaces/presenter/shared/http.presenter';

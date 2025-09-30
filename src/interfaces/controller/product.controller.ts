@@ -9,7 +9,7 @@ import { ListProductDto } from '#/application/use-cases/product/list-product/lis
 import { IListProductUseCase } from '#/application/use-cases/product/list-product/list-product.use-case';
 import { UpdateProductDto } from '#/application/use-cases/product/update-product/update-product.dto';
 import { IUpdateProductUseCase } from '#/application/use-cases/product/update-product/update-product.use-case';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { IProductController } from '#/interfaces/controller/types/product';
 import { ProductPresenter } from '#/interfaces/presenter/product.presenter';
 import { httpPresenter } from '#/interfaces/presenter/shared/http.presenter';

@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { ProductController } from '#/interfaces/controller/product.controller';
 import {
     productCreateSchema,

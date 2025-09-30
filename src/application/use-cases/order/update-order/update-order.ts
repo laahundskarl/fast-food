@@ -7,7 +7,7 @@ import { Order } from '#/domain/entities/order.entity';
 import { BusinessError, NotFoundError } from '#/domain/errors';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
 import { IProductRepository } from '#/domain/repositories/product.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class UpdateOrder implements IUpdateOrderUseCase {

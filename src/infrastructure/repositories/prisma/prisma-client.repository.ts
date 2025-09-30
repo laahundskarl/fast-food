@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 
 import { IClient } from '#/domain/entities/client.entity';
 import { IClientRepository } from '#/domain/repositories/client.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { PrismaClientMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-client.mapper';
 
 @injectable()

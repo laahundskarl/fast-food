@@ -5,7 +5,7 @@ import { IUpdateClientUseCase } from '#/application/use-cases/client/update-clie
 import { Client } from '#/domain/entities/client.entity';
 import { ConflictError, NotFoundError } from '#/domain/errors';
 import { IClientRepository } from '#/domain/repositories/client.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class UpdateClient implements IUpdateClientUseCase {

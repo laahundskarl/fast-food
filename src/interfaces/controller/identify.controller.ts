@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 
 import { IdentifyDto } from '#/application/use-cases/identify/identify.dto';
 import { IIdentifyUseCase } from '#/application/use-cases/identify/identify.use-case';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { IIdentifyController } from '#/interfaces/controller/types/identify';
 
 @injectable()

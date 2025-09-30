@@ -4,7 +4,7 @@ import { IGetClientUseCase } from '#/application/use-cases/client/get-client/get
 import { Client } from '#/domain/entities/client.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IClientRepository } from '#/domain/repositories/client.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class GetClient implements IGetClientUseCase {

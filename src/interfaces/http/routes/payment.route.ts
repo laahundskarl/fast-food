@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { PaymentController } from '#/interfaces/controller/payment.controller';
 import { paymentGetSchema, paymentListSchema } from '#/interfaces/http/docs/payment.docs';
 

@@ -4,7 +4,7 @@ import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/lis
 import { IListPaymentUseCase } from '#/application/use-cases/payment/list-payment/list-payment.use-case';
 import { Payment } from '#/domain/entities/payment.entity';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class ListPayment implements IListPaymentUseCase {

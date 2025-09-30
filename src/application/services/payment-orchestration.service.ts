@@ -5,7 +5,7 @@ import { Payment } from '#/domain/entities/payment.entity';
 import { ICreatePayment } from '#/domain/gateways/create-payment';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
 import { PaymentBuilderService } from '#/domain/services/payment-builder.service';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class PaymentOrchestrationService {

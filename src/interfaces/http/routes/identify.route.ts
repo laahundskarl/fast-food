@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 import { IdentifyController } from '#/interfaces/controller/identify.controller';
 import { identifySchema } from '#/interfaces/http/docs/identify.docs';
 

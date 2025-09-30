@@ -5,7 +5,7 @@ import { IUpdateOrderStatusUseCase } from '#/application/use-cases/order/update-
 import { IOrder } from '#/domain/entities/order.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class UpdateOrderStatus implements IUpdateOrderStatusUseCase {
