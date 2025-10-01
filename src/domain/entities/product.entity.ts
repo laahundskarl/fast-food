@@ -10,7 +10,7 @@ export interface IProduct {
     category: IProductCategory;
 }
 
-type ProductPayload = {
+export type ProductPayload = {
     id?: string;
     name: string;
     value: number;

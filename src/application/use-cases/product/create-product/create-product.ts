@@ -16,7 +16,7 @@ export class CreateProduct implements ICreateProductUseCase {
     ) {}
 
     async execute(request: CreateProductDto): Promise<IProduct> {
-        const category = await this.productCategoryRepository.findById(request.categoryId, false);
+        const category = await this.productCategoryRepository.findById(request.categoryId, []);
         if (!category) {
             throw new NotFoundError(`Category with id ${request.categoryId} not found`);
         }

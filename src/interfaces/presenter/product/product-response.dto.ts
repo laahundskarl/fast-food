@@ -3,7 +3,7 @@ export interface ProductResponseDTO {
     name: string;
     value: number;
     description: string | null;
-    category: {
+    category?: {
         id: string;
         name: string;
     };

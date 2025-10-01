@@ -22,7 +22,7 @@ export class UpdateProduct implements IUpdateProductUseCase {
             throw new NotFoundError('Product not found');
         }
         if (request.categoryId) {
-            category = await this.productCategoryRepository.findById(request.categoryId, false);
+            category = await this.productCategoryRepository.findById(request.categoryId, []);
             if (!category) {
                 throw new NotFoundError(`Category with id ${request.categoryId} not found`);
             }

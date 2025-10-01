@@ -12,8 +12,8 @@ export class GetProductCategory implements IGetProductCategoryUseCase {
         @inject(TYPES.ProductCategoryRepository) private readonly productCategoryRepository: IProductCategoryRepository,
     ) {}
 
-    async execute(id: string): Promise<ProductCategory> {
-        const category = await this.productCategoryRepository.findById(id, true);
+    async execute(id: string, includes: string[]): Promise<ProductCategory> {
+        const category = await this.productCategoryRepository.findById(id, includes);
         if (!category) {
             throw new NotFoundError('Category not found');
         }

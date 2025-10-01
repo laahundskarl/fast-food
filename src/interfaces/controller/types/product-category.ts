@@ -1,12 +1,7 @@
-import { FastifyRequest, FastifyReply } from 'fastify';
-
-import { IHttpPresenter } from '#/interfaces/controller/types/shared';
-import { ProductCategoryPresenterOutput } from '#/interfaces/presenter/product-category.presenter';
+import { ListProductCategoryDto } from '#/application/use-cases/product-category/list-product-category/list-product-category.dto';
+import { ProductCategoryResponseDTO } from '#/interfaces/presenter/product-category/product-category-response.dto';
 
 export interface IProductCategoryController {
-    get(
-        request: FastifyRequest<{ Params: { id: string } }>,
-        reply: FastifyReply,
-    ): Promise<IHttpPresenter<ProductCategoryPresenterOutput>>;
-    list(request: FastifyRequest, reply: FastifyReply): Promise<IHttpPresenter<ProductCategoryPresenterOutput[]>>;
+    get(id: string, includes: string[]): Promise<ProductCategoryResponseDTO>;
+    list(query: ListProductCategoryDto): Promise<ProductCategoryResponseDTO[]>;
 }

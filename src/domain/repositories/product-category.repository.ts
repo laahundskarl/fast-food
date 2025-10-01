@@ -2,6 +2,6 @@ import { ListProductCategoryDto } from '#/application/use-cases/product-category
 import { IProductCategory } from '#/domain/entities/product-category.entity';
 
 export interface IProductCategoryRepository {
-    findById(id: string, withProducts: boolean): Promise<IProductCategory | null>;
+    findById(id: string, includes: string[]): Promise<IProductCategory | null>;
     list(query?: ListProductCategoryDto): Promise<IProductCategory[]>;
 }

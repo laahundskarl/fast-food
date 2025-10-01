@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-import { Product } from '#/domain/entities/product.entity';
+import { Product, ProductPayload } from '#/domain/entities/product.entity';
 import { PrismaProductCategoryMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product-category.mapper';
 
 export class PrismaProductMapper {
@@ -10,17 +10,10 @@ export class PrismaProductMapper {
             name: data.name,
             value: data.value,
             description: data.description,
-            category: PrismaProductCategoryMapper.toDomainSimple(data.category),
-        });
-    }
-
-    static toDomainSimple(data: any): Product {
-        return new Product({
-            id: data.id,
-            name: data.name,
-            value: data.value,
-            description: data.description,
-        });
+            ...(data.category && {
+                category: PrismaProductCategoryMapper.toDomain(data.category),
+            }),
+        } as ProductPayload);
     }
 
     static toCreate(data: Product): Prisma.ProductCreateInput {
@@ -29,7 +22,7 @@ export class PrismaProductMapper {
             value: data.value,
             description: data.description,
             category: {
-                connect: { id: data.category!.id },
+                connect: { id: data.category.id },
             },
         };
     }
@@ -40,7 +33,7 @@ export class PrismaProductMapper {
             value: data.value,
             description: data.description,
             category: {
-                connect: { id: data.category!.id },
+                connect: { id: data.category.id },
             },
         };
     }

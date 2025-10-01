@@ -8,7 +8,7 @@ export interface IProductCategory {
     products?: IProduct[];
 }
 
-type ProductCategoryPayload = {
+export type ProductCategoryPayload = {
     id?: string;
     name: string;
     products?: IProduct[];

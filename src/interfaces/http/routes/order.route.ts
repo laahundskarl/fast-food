@@ -5,7 +5,7 @@ import { CreateOrderDto } from '#/application/use-cases/order/create-order/creat
 import { ListOrderRequestDto } from '#/application/use-cases/order/list-order/list-order.dto';
 import { UpdateOrderDto } from '#/application/use-cases/order/update-order/update-order.dto';
 import { TYPES } from '#/infrastructure/config/di/types';
-import { OrderController } from '#/interfaces/controller/order.controller';
+import { IOrderController } from '#/interfaces/controller/types/order';
 import {
     orderCreateSchema,
     orderDeleteSchema,
@@ -16,7 +16,7 @@ import {
 } from '#/interfaces/http/docs/order.docs';
 
 export const orderRoute = (app: FastifyInstance) => {
-    const controller = app.container.get<OrderController>(TYPES.OrderController);
+    const controller = app.container.get<IOrderController>(TYPES.OrderController);
 
     app.post('/', orderCreateSchema, async (req, reply) => {
         const body = req.body as CreateOrderDto;
