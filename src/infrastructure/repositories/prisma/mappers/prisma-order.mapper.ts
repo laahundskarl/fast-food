@@ -15,7 +15,7 @@ export class PrismaOrderMapper {
             orderProducts:
                 data.orderProducts?.map((orderProduct: any) => PrismaOrderProductMapper.toDomain(orderProduct)) || [],
             payments: data.payments?.map((payment: any) => PrismaPaymentMapper.toDomainSimple(payment)) || [],
-            client: data.client ? PrismaClientMapper.toDomainSimple(data.client) : undefined,
+            client: data.client ? PrismaClientMapper.toDomain(data.client) : undefined,
         });
     }
 

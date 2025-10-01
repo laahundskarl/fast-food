@@ -15,19 +15,22 @@ export class OrderPresenter {
                 product: {
                     id: op.product.id,
                     name: op.product.name,
-                    description: op.product.description,
+                    value: op.product.value,
+                    description: op.product.description ?? null,
                     category: {
                         id: op.product.category.id,
                         name: op.product.category.name,
                     },
                 },
             })),
-            payments: order.payments.map(p => ({
-                id: p.id,
-                status: p.status,
-                externalReference: p.externalReference,
-                qrCode: p.qrCode,
-            })),
+            ...(order.payments && {
+                payments: order.payments.map(p => ({
+                    id: p.id,
+                    status: p.status,
+                    externalReference: p.externalReference ?? null,
+                    qrCode: p.qrCode ?? null,
+                })),
+            }),
             ...(order.client && {
                 client: {
                     id: order.client.id,

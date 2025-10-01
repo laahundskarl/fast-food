@@ -10,8 +10,8 @@ import { TYPES } from '#/infrastructure/config/di/types';
 export class GetClientOrders implements IGetClientOrdersUseCase {
     constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
-    async execute(cpf: string): Promise<IClient> {
-        const client = await this.clientRepository.findByCpf(cpf, true);
+    async execute(cpf: string, includes: string[]): Promise<IClient> {
+        const client = await this.clientRepository.findByCpf(cpf, includes);
         if (!client) {
             throw new NotFoundError('Client not found');
         }

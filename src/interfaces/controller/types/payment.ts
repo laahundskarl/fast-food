@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 import { IHttpPresenter } from '#/interfaces/controller/types/shared';
-import { PaymentPresenterOutput } from '#/interfaces/presenter/payment.presenter';
+import { PaymentPresenterOutput } from '#/interfaces/presenter/payment/payment.presenter';
 
 export interface IPaymentController {
     get(

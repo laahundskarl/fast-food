@@ -5,7 +5,6 @@ import { ClientResponseDTO } from '#/interfaces/presenter/client/client-response
 export interface IClientController {
     create(request: CreateClientDto): Promise<ClientResponseDTO>;
     delete(cpf: string): Promise<void>;
-    get(cpf: string): Promise<ClientResponseDTO>;
-    getOrders(cpf: string): Promise<ClientResponseDTO>;
+    get(cpf: string, includes: string[]): Promise<ClientResponseDTO>;
     update(cpf: string, request: UpdateClientDto): Promise<ClientResponseDTO>;
 }

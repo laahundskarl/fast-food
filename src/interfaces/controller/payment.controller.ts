@@ -6,7 +6,7 @@ import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/lis
 import { IListPaymentUseCase } from '#/application/use-cases/payment/list-payment/list-payment.use-case';
 import { TYPES } from '#/infrastructure/config/di/types';
 import { IPaymentController } from '#/interfaces/controller/types/payment';
-import { PaymentPresenter } from '#/interfaces/presenter/payment.presenter';
+import { PaymentPresenter } from '#/interfaces/presenter/payment/payment.presenter';
 import { httpPresenter } from '#/interfaces/presenter/shared/http.presenter';
 
 @injectable()

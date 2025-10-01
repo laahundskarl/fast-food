@@ -10,7 +10,7 @@ export interface IClient {
     orders?: IOrder[];
 }
 
-type ClientPayload = {
+export type ClientPayload = {
     id?: string;
     name: string;
     cpf: string;

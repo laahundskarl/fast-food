@@ -9,10 +9,10 @@ import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class Identify implements IIdentifyUseCase {
-    constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) { }
+    constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
     async execute(request: IdentifyDto): Promise<IClient> {
-        const client = await this.clientRepository.findByCpf(request.cpf, false);
+        const client = await this.clientRepository.findByCpf(request.cpf, []);
         if (!client) {
             throw new NotFoundError('Client not found, please register');
         }

@@ -9,7 +9,7 @@ import { PrismaProductMapper } from '#/infrastructure/repositories/prisma/mapper
 
 @injectable()
 export class PrismaProductRepository implements IProductRepository {
-    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) { }
+    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
 
     async create(product: IProduct): Promise<IProduct> {
         const data = await this.prisma.product.create({

@@ -7,7 +7,6 @@ import { IClientController } from '#/interfaces/controller/types/client';
 import {
     clientCreateDocs,
     clientGetSchema,
-    clientGetWithOrdersSchema,
     clientUpdateSchema,
     clientDeleteSchema,
 } from '#/interfaces/http/docs/client.docs';
@@ -29,13 +28,10 @@ export const clientRoute = (app: FastifyInstance) => {
 
     app.get('/:cpf', clientGetSchema, async (req, reply) => {
         const cpf = (req.params as { cpf: string }).cpf;
-        const response = await controller.get(cpf);
-        return reply.send(response);
-    });
+        const include = (req.query as { include?: string }).include;
 
-    app.get('/orders/:cpf', clientGetWithOrdersSchema, async (req, reply) => {
-        const cpf = (req.params as { cpf: string }).cpf;
-        const response = await controller.getOrders(cpf);
+        const includes = include ? include.split(',') : [];
+        const response = await controller.get(cpf, includes);
         return reply.send(response);
     });
 

@@ -9,7 +9,7 @@ import { PrismaOrderMapper } from '#/infrastructure/repositories/prisma/mappers/
 
 @injectable()
 export class PrismaOrderRepository implements IOrderRepository {
-    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) { }
+    constructor(@inject(TYPES.PrismaClient) private readonly prisma: PrismaClient) {}
 
     async create(order: IOrder): Promise<IOrder> {
         const data = await this.prisma.order.create({

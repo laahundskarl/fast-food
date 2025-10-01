@@ -4,7 +4,6 @@ import { CreateClientDto } from '#/application/use-cases/client/create-client/cr
 import { ICreateClientUseCase } from '#/application/use-cases/client/create-client/create-client.use-case';
 import { IDeleteClientUseCase } from '#/application/use-cases/client/delete-client/delete-client.use-case';
 import { IGetClientUseCase } from '#/application/use-cases/client/get-client/get-client.use-case';
-import { IGetClientOrdersUseCase } from '#/application/use-cases/client/get-client-orders/get-client-orders.use-case';
 import { UpdateClientDto } from '#/application/use-cases/client/update-client/update-client.dto';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
 import { TYPES } from '#/infrastructure/config/di/types';
@@ -18,7 +17,6 @@ export class ClientController implements IClientController {
         @inject(TYPES.CreateClientUseCase) private readonly createClientUseCase: ICreateClientUseCase,
         @inject(TYPES.DeleteClientUseCase) private readonly deleteClientUseCase: IDeleteClientUseCase,
         @inject(TYPES.GetClientUseCase) private readonly getClientUseCase: IGetClientUseCase,
-        @inject(TYPES.GetClientOrdersUseCase) private readonly getClientOrdersUseCase: IGetClientOrdersUseCase,
         @inject(TYPES.UpdateClientUseCase) private readonly updateClientUseCase: IUpdateClientUseCase,
     ) {}
 
@@ -31,13 +29,8 @@ export class ClientController implements IClientController {
         await this.deleteClientUseCase.execute(cpf);
     }
 
-    async get(cpf: string): Promise<ClientResponseDTO> {
-        const result = await this.getClientUseCase.execute(cpf);
-        return ClientPresenter.toDTO(result);
-    }
-
-    async getOrders(cpf: string): Promise<ClientResponseDTO> {
-        const result = await this.getClientOrdersUseCase.execute(cpf);
+    async get(cpf: string, includes: string[]): Promise<ClientResponseDTO> {
+        const result = await this.getClientUseCase.execute(cpf, includes);
         return ClientPresenter.toDTO(result);
     }
 

@@ -21,7 +21,8 @@ export class ClientPresenter {
                         product: {
                             id: op.product.id,
                             name: op.product.name,
-                            description: op.product.description,
+                            value: op.product.value,
+                            description: op.product.description ?? null,
                             category: {
                                 id: op.product.category.id,
                                 name: op.product.category.name,
@@ -31,8 +32,8 @@ export class ClientPresenter {
                     payments: order.payments.map(p => ({
                         id: p.id,
                         status: p.status,
-                        externalReference: p.externalReference,
-                        qrCode: p.qrCode,
+                        externalReference: p.externalReference ?? null,
+                        qrCode: p.qrCode ?? null,
                     })),
                 })),
             }),

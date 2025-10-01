@@ -10,7 +10,7 @@ export class DeleteClient implements IDeleteClientUseCase {
     constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
     async execute(cpf: string): Promise<void> {
-        const client = await this.clientRepository.findByCpf(cpf, false);
+        const client = await this.clientRepository.findByCpf(cpf, []);
         if (!client) {
             throw new NotFoundError('Client not found');
         }
