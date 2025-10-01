@@ -1,8 +1,5 @@
 import z from 'zod';
 
-import { paymentResponseSchema } from '#/interfaces/http/schema/payment.schema';
-import { productResponseSchema } from '#/interfaces/http/schema/product.schema';
-
 const messages = {
     product_required: 'ProductId is required',
     quantity_required: 'Quantity is required',
@@ -32,29 +29,5 @@ export const validatorUpdateOrder = z.object({
             }),
         )
         .min(1, { message: messages.minimum_products })
-        .optional(),
-});
-
-export const orderProductSchema = z.object({
-    id: z.string().uuid(),
-    amount: z.number(),
-    value: z.number(),
-    product: productResponseSchema,
-});
-
-export const orderResponseSchema = z.object({
-    id: z.string().uuid().optional(),
-    value: z.number(),
-    orderNumber: z.number(),
-    status: z.string(),
-    orderProducts: z.array(orderProductSchema),
-    payments: z.array(paymentResponseSchema),
-    client: z
-        .object({
-            id: z.string().uuid(),
-            name: z.string(),
-            cpf: z.string().length(11),
-            email: z.string().email(),
-        })
         .optional(),
 });

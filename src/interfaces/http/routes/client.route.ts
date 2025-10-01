@@ -5,7 +5,7 @@ import { UpdateClientDto } from '#/application/use-cases/client/update-client/up
 import { TYPES } from '#/infrastructure/config/di/types';
 import { IClientController } from '#/interfaces/controller/types/client';
 import {
-    clientCreateDocs,
+    clientCreateSchema,
     clientGetSchema,
     clientUpdateSchema,
     clientDeleteSchema,
@@ -14,7 +14,7 @@ import {
 export const clientRoute = (app: FastifyInstance) => {
     const controller = app.container.get<IClientController>(TYPES.ClientController);
 
-    app.post('/', clientCreateDocs, async (req, reply) => {
+    app.post('/', clientCreateSchema, async (req, reply) => {
         const body = req.body as CreateClientDto;
         const response = await controller.create(body);
         return reply.status(201).send(response);

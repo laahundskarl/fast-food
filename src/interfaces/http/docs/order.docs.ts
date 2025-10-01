@@ -6,7 +6,7 @@ import {
     errorNotFoundSchema,
     errorResponseValidationSchema,
 } from '#/interfaces/http/docs/util.docs';
-import { orderResponseSchema, validatorCreateOrder, validatorUpdateOrder } from '#/interfaces/http/schema/order.schema';
+import { validatorCreateOrder, validatorUpdateOrder } from '#/interfaces/http/schema/order.schema';
 
 export const orderCreateSchema = {
     schema: {
@@ -14,7 +14,9 @@ export const orderCreateSchema = {
         summary: 'Cria pedido',
         body: validatorCreateOrder,
         response: {
-            200: orderResponseSchema,
+            200: {
+                $ref: 'OrderResponseDTO#',
+            },
             400: errorResponseValidationSchema,
         },
     },
@@ -28,7 +30,9 @@ export const orderGetSchema = {
             id: z.string(),
         }),
         response: {
-            200: orderResponseSchema,
+            200: {
+                $ref: 'OrderResponseDTO#',
+            },
             404: errorNotFoundSchema,
         },
     },
@@ -47,7 +51,10 @@ export const orderListSchema = {
             limit: z.string().optional().default('10'),
         }),
         response: {
-            200: z.array(orderResponseSchema),
+            200: {
+                type: 'array',
+                items: { $ref: 'OrderResponseDTO#' },
+            },
         },
     },
 };
@@ -58,7 +65,9 @@ export const orderUpdateSchema = {
         summary: 'Atualiza pedido',
         body: validatorUpdateOrder,
         response: {
-            200: orderResponseSchema,
+            200: {
+                $ref: 'OrderResponseDTO#',
+            },
             400: errorResponseValidationSchema,
             404: errorNotFoundSchema,
         },
@@ -76,7 +85,9 @@ export const orderUpdateStatusSchema = {
             status: z.enum(['WAITING', 'RECEIVED', 'IN_PROGRESS', 'DONE', 'FINISHED', 'CANCELED']),
         }),
         response: {
-            200: orderResponseSchema,
+            200: {
+                $ref: 'OrderResponseDTO#',
+            },
             400: errorBusinessSchema,
             404: errorNotFoundSchema,
         },

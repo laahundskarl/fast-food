@@ -1,5 +1,4 @@
 import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/util.docs';
-import { clientResponseSchema } from '#/interfaces/http/schema/client.schema';
 import { validatorIdentify } from '#/interfaces/http/validator/identify.validator';
 
 export const identifySchema = {
@@ -8,7 +7,9 @@ export const identifySchema = {
         summary: 'Identifica cliente pelo CPF',
         body: validatorIdentify,
         response: {
-            200: clientResponseSchema,
+            200: {
+                $ref: 'ClientResponseDTO#',
+            },
             404: errorNotFoundSchema,
             400: errorResponseValidationSchema,
         },

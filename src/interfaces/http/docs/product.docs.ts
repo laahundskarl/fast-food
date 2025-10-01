@@ -5,7 +5,6 @@ import {
     errorNotFoundSchema,
     errorResponseValidationSchema,
 } from '#/interfaces/http/docs/util.docs';
-import { productResponseSchema } from '#/interfaces/http/schema/product.schema';
 
 export const productCreateSchema = {
     schema: {
@@ -18,7 +17,9 @@ export const productCreateSchema = {
             categoryId: z.string().uuid(),
         }),
         response: {
-            201: productResponseSchema,
+            201: {
+                $ref: 'ProductResponseDTO#',
+            },
             400: errorResponseValidationSchema,
         },
     },
@@ -32,7 +33,9 @@ export const productGetSchema = {
             id: z.string().uuid(),
         }),
         response: {
-            200: productResponseSchema,
+            200: {
+                $ref: 'ProductResponseDTO#',
+            },
             404: errorNotFoundSchema,
         },
     },
@@ -48,7 +51,12 @@ export const productListSchema = {
             productId: z.string().uuid().optional(),
         }),
         response: {
-            200: z.array(productResponseSchema),
+            200: {
+                type: 'array',
+                items: {
+                    $ref: 'ProductResponseDTO#',
+                },
+            },
         },
     },
 };
@@ -67,7 +75,9 @@ export const productUpdateSchema = {
             id: z.string().uuid(),
         }),
         response: {
-            200: productResponseSchema,
+            200: {
+                $ref: 'ProductResponseDTO#',
+            },
             404: errorNotFoundSchema,
             400: errorResponseValidationSchema,
         },

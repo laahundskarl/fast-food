@@ -4,21 +4,17 @@ import {
     errorNotFoundSchema,
     errorResponseValidationSchema,
 } from '#/interfaces/http/docs/util.docs';
-import {
-    clientResponseSchema,
-    clientWithOrderResponseSchema,
-    createClientSchema,
-    validatorParams,
-    validatorUpdateClient,
-} from '#/interfaces/http/schema/client.schema';
+import { validatorCreateClient, validatorParams, validatorUpdateClient } from '#/interfaces/http/schema/client.schema';
 
-export const clientCreateDocs = {
+export const clientCreateSchema = {
     schema: {
         tags: ['Clientes'],
         summary: 'Registrar cliente',
-        body: createClientSchema,
+        body: validatorCreateClient,
         response: {
-            201: clientResponseSchema,
+            201: {
+                $ref: 'ClientResponseDTO#',
+            },
             400: errorResponseValidationSchema,
             409: errorConflictSchema,
         },
@@ -31,7 +27,9 @@ export const clientGetSchema = {
         summary: 'Buscar cliente',
         params: validatorParams,
         response: {
-            200: clientResponseSchema,
+            200: {
+                $ref: 'ClientResponseDTO#',
+            },
             404: errorNotFoundSchema,
         },
     },
@@ -43,7 +41,9 @@ export const clientGetWithOrdersSchema = {
         summary: 'Busca cliente e seus pedidos',
         params: validatorParams,
         response: {
-            200: clientWithOrderResponseSchema,
+            200: {
+                $ref: 'ClientResponseDTO#',
+            },
             404: errorNotFoundSchema,
         },
     },
@@ -55,7 +55,9 @@ export const clientUpdateSchema = {
         summary: 'Atualizar cliente',
         body: validatorUpdateClient,
         response: {
-            200: clientResponseSchema,
+            200: {
+                $ref: 'ClientResponseDTO#',
+            },
             400: errorResponseValidationSchema,
             404: errorNotFoundSchema,
         },

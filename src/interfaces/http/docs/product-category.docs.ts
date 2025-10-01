@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/docs/util.docs';
-import { productCategoryResponseSchema } from '#/interfaces/http/schema/product-category.schema';
 
 export const productCategoryGetSchema = {
     schema: {
@@ -11,7 +10,9 @@ export const productCategoryGetSchema = {
             id: z.string().uuid(),
         }),
         response: {
-            200: productCategoryResponseSchema,
+            200: {
+                $ref: 'ProductCategoryResponseDTO#',
+            },
             404: errorNotFoundSchema,
             400: errorResponseValidationSchema,
         },
@@ -23,7 +24,10 @@ export const productCategoryListSchema = {
         summary: 'Lista e filtra as categorias de produtos',
         tags: ['Categoria'],
         response: {
-            200: z.array(productCategoryResponseSchema),
+            200: {
+                type: 'array',
+                items: { $ref: 'ProductCategoryResponseDTO#' },
+            },
         },
     },
 };

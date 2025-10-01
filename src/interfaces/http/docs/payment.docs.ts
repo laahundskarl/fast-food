@@ -1,7 +1,6 @@
 import z from 'zod';
 
 import { errorNotFoundSchema } from '#/interfaces/http/docs/util.docs';
-import { paymentResponseSchema } from '#/interfaces/http/schema/payment.schema';
 
 export const paymentGetSchema = {
     schema: {
@@ -13,7 +12,9 @@ export const paymentGetSchema = {
             productId: z.string().uuid().optional(),
         }),
         response: {
-            // 200: paymentResponseSchema,
+            200: {
+                $ref: 'PaymentResponseDTO#',
+            },
             404: errorNotFoundSchema,
         },
     },
@@ -28,7 +29,10 @@ export const paymentListSchema = {
             status: z.string().optional(),
         }),
         response: {
-            200: z.array(paymentResponseSchema),
+            200: {
+                type: 'array',
+                items: { $ref: 'PaymentResponseDTO#' },
+            },
             404: errorNotFoundSchema,
         },
     },
