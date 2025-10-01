@@ -8,21 +8,23 @@ export class OrderPresenter {
             value: order.value,
             orderNumber: order.orderNumber,
             status: order.status,
-            orderProducts: order.orderProducts.map(op => ({
-                id: op.id,
-                amount: op.amount,
-                value: op.value,
-                product: {
-                    id: op.product.id,
-                    name: op.product.name,
-                    value: op.product.value,
-                    description: op.product.description ?? null,
-                    category: {
-                        id: op.product.category.id,
-                        name: op.product.category.name,
+            ...(order.orderProducts && {
+                orderProducts: order.orderProducts.map(op => ({
+                    id: op.id,
+                    amount: op.amount,
+                    value: op.value,
+                    product: {
+                        id: op.product.id,
+                        name: op.product.name,
+                        value: op.product.value,
+                        description: op.product.description ?? null,
+                        category: {
+                            id: op.product.category.id,
+                            name: op.product.category.name,
+                        },
                     },
-                },
-            })),
+                })),
+            }),
             ...(order.payments && {
                 payments: order.payments.map(p => ({
                     id: p.id,

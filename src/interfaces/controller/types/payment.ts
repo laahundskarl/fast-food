@@ -1,12 +1,7 @@
-import { FastifyRequest, FastifyReply } from 'fastify';
-
-import { IHttpPresenter } from '#/interfaces/controller/types/shared';
-import { PaymentPresenterOutput } from '#/interfaces/presenter/payment/payment.presenter';
+import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/list-payment.dto';
+import { PaymentResponseDTO } from '#/interfaces/presenter/payment/payment-response.dto';
 
 export interface IPaymentController {
-    get(
-        request: FastifyRequest<{ Params: { id: string } }>,
-        reply: FastifyReply,
-    ): Promise<IHttpPresenter<PaymentPresenterOutput>>;
-    list(request: FastifyRequest, reply: FastifyReply): Promise<IHttpPresenter>;
+    get(id: string): Promise<PaymentResponseDTO>;
+    list(query: ListPaymentDto): Promise<PaymentResponseDTO[]>;
 }

@@ -14,7 +14,7 @@ export interface OrderResponseDTO {
     value: number;
     orderNumber: number;
     status: string;
-    orderProducts: OrderProductResponseDTO[];
+    orderProducts?: OrderProductResponseDTO[];
     payments?: PaymentResponseDTO[];
     client?: ClientResponseDTO;
 }
