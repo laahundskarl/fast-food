@@ -1,5 +1,5 @@
-import { FastifyRequest, FastifyReply } from 'fastify';
+import { WebhookHandlerDto } from '#/application/use-cases/webhook/webhook-handler.dto';
 
 export interface IWebhookController {
-    mercadoPago(request: FastifyRequest, reply: FastifyReply): Promise<void>;
+    mercadoPago(request: WebhookHandlerDto): Promise<void>;
 }
