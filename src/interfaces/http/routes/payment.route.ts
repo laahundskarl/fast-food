@@ -10,13 +10,13 @@ export const paymentRoute = (app: FastifyInstance) => {
 
     app.get('/:id', paymentGetSchema, async (req, reply) => {
         const id = (req.params as { id: string }).id;
-        const result = await controller.get(id);
-        return reply.send(result);
+        const response = await controller.get(id);
+        return reply.send(response);
     });
 
     app.get('/', paymentListSchema, async (req, reply) => {
         const query = req.query as ListPaymentDto;
-        const result = await controller.list(query);
-        return reply.send(result);
+        const response = await controller.list(query);
+        return reply.send(response);
     });
 };

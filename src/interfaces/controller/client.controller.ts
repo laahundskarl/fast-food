@@ -21,8 +21,8 @@ export class ClientController implements IClientController {
     ) {}
 
     async create(request: CreateClientDto): Promise<ClientResponseDTO> {
-        const result = await this.createClientUseCase.execute(request);
-        return ClientPresenter.toDTO(result);
+        const response = await this.createClientUseCase.execute(request);
+        return ClientPresenter.toDTO(response);
     }
 
     async delete(cpf: string): Promise<void> {
@@ -30,12 +30,12 @@ export class ClientController implements IClientController {
     }
 
     async get(cpf: string, includes: string[]): Promise<ClientResponseDTO> {
-        const result = await this.getClientUseCase.execute(cpf, includes);
-        return ClientPresenter.toDTO(result);
+        const response = await this.getClientUseCase.execute(cpf, includes);
+        return ClientPresenter.toDTO(response);
     }
 
     async update(cpf: string, request: UpdateClientDto): Promise<ClientResponseDTO> {
-        const result = await this.updateClientUseCase.execute(cpf, request);
-        return ClientPresenter.toDTO(result);
+        const response = await this.updateClientUseCase.execute(cpf, request);
+        return ClientPresenter.toDTO(response);
     }
 }

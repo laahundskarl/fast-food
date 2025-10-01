@@ -17,12 +17,12 @@ export class ProductCategoryController implements IProductCategoryController {
     ) {}
 
     async get(id: string, includes: string[]): Promise<ProductCategoryResponseDTO> {
-        const result = await this.getProductCategoryUseCase.execute(id, includes);
-        return ProductCategoryPresenter.toDTO(result);
+        const response = await this.getProductCategoryUseCase.execute(id, includes);
+        return ProductCategoryPresenter.toDTO(response);
     }
 
     async list(query: ListProductCategoryDto): Promise<ProductCategoryResponseDTO[]> {
-        const result = await this.listProductCategoryUseCase.execute(query);
-        return result.map(item => ProductCategoryPresenter.toDTO(item));
+        const response = await this.listProductCategoryUseCase.execute(query);
+        return response.map(item => ProductCategoryPresenter.toDTO(item));
     }
 }

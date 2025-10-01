@@ -16,12 +16,12 @@ export class PaymentController implements IPaymentController {
     ) {}
 
     async get(id: string): Promise<PaymentResponseDTO> {
-        const result = await this.getPaymentUseCase.execute(id);
-        return PaymentPresenter.toDTO(result);
+        const response = await this.getPaymentUseCase.execute(id);
+        return PaymentPresenter.toDTO(response);
     }
 
     async list(query: ListPaymentDto): Promise<PaymentResponseDTO[]> {
-        const result = await this.listPaymentUseCase.execute(query);
-        return result.map(item => PaymentPresenter.toDTO(item));
+        const response = await this.listPaymentUseCase.execute(query);
+        return response.map(item => PaymentPresenter.toDTO(item));
     }
 }

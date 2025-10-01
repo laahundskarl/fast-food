@@ -27,8 +27,8 @@ export class OrderController implements IOrderController {
     ) {}
 
     async create(request: CreateOrderDto): Promise<OrderResponseDTO> {
-        const result = await this.createOrderUseCase.execute(request);
-        return OrderPresenter.toDTO(result);
+        const response = await this.createOrderUseCase.execute(request);
+        return OrderPresenter.toDTO(response);
     }
 
     async delete(id: string): Promise<void> {
@@ -36,22 +36,22 @@ export class OrderController implements IOrderController {
     }
 
     async get(id: string): Promise<OrderResponseDTO> {
-        const result = await this.getOrderUseCase.execute(id);
-        return OrderPresenter.toDTO(result);
+        const response = await this.getOrderUseCase.execute(id);
+        return OrderPresenter.toDTO(response);
     }
 
     async list(query: ListOrderRequestDto): Promise<OrderResponseDTO[]> {
-        const result = await this.listOrderUseCase.execute(query);
-        return result.map(item => OrderPresenter.toDTO(item));
+        const response = await this.listOrderUseCase.execute(query);
+        return response.map(item => OrderPresenter.toDTO(item));
     }
 
     async update(id: string, request: UpdateOrderDto): Promise<OrderResponseDTO> {
-        const result = await this.updateOrderUseCase.execute(id, request);
-        return OrderPresenter.toDTO(result);
+        const response = await this.updateOrderUseCase.execute(id, request);
+        return OrderPresenter.toDTO(response);
     }
 
     async updateStatus(id: string, status: OrderStatus): Promise<OrderResponseDTO> {
-        const result = await this.updateOrderStatusUseCase.execute(id, status);
-        return OrderPresenter.toDTO(result);
+        const response = await this.updateOrderStatusUseCase.execute(id, status);
+        return OrderPresenter.toDTO(response);
     }
 }
