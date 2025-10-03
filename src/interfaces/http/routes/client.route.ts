@@ -9,7 +9,7 @@ import {
     clientGetSchema,
     clientUpdateSchema,
     clientDeleteSchema,
-} from '#/interfaces/http/docs/client.docs';
+} from '#/interfaces/http/schemas/client/client.route-schema';
 
 export const clientRoute = (app: FastifyInstance) => {
     const controller = app.container.get<IClientController>(TYPES.ClientController);

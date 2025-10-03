@@ -1,25 +1,23 @@
 import z from 'zod';
 
 import {
+    productCreateValidator,
+    productResponseSchema,
+    productUpdateValidator,
+} from '#/interfaces/http/schemas/product/product.schema';
+import {
     deleteResponseSchema,
     errorNotFoundSchema,
     errorResponseValidationSchema,
-} from '#/interfaces/http/docs/util.docs';
+} from '#/interfaces/http/schemas/until.schema';
 
 export const productCreateSchema = {
     schema: {
         tags: ['Produtos'],
         summary: 'Cria produto',
-        body: z.object({
-            name: z.string(),
-            description: z.string().optional(),
-            value: z.number(),
-            categoryId: z.string().uuid(),
-        }),
+        body: productCreateValidator,
         response: {
-            201: {
-                $ref: 'ProductResponseDTO#',
-            },
+            201: productResponseSchema,
             400: errorResponseValidationSchema,
         },
     },
@@ -33,9 +31,7 @@ export const productGetSchema = {
             id: z.string().uuid(),
         }),
         response: {
-            200: {
-                $ref: 'ProductResponseDTO#',
-            },
+            200: productResponseSchema,
             404: errorNotFoundSchema,
         },
     },
@@ -51,12 +47,7 @@ export const productListSchema = {
             productId: z.string().uuid().optional(),
         }),
         response: {
-            200: {
-                type: 'array',
-                items: {
-                    $ref: 'ProductResponseDTO#',
-                },
-            },
+            200: z.array(productResponseSchema),
         },
     },
 };
@@ -65,19 +56,12 @@ export const productUpdateSchema = {
     schema: {
         tags: ['Produtos'],
         summary: 'Atualiza produto',
-        body: z.object({
-            name: z.string().optional(),
-            description: z.string().optional(),
-            value: z.number().optional(),
-            categoryId: z.string().uuid().optional(),
-        }),
+        body: productUpdateValidator,
         params: z.object({
             id: z.string().uuid(),
         }),
         response: {
-            200: {
-                $ref: 'ProductResponseDTO#',
-            },
+            200: productResponseSchema,
             404: errorNotFoundSchema,
             400: errorResponseValidationSchema,
         },

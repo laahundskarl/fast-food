@@ -13,7 +13,7 @@ import {
     orderListSchema,
     orderUpdateSchema,
     orderUpdateStatusSchema,
-} from '#/interfaces/http/docs/order.docs';
+} from '#/interfaces/http/schemas/order/order.route-schema';
 
 export const orderRoute = (app: FastifyInstance) => {
     const controller = app.container.get<IOrderController>(TYPES.OrderController);

@@ -3,7 +3,10 @@ import { FastifyInstance } from 'fastify';
 import { ListProductCategoryDto } from '#/application/use-cases/product-category/list-product-category/list-product-category.dto';
 import { TYPES } from '#/infrastructure/config/di/types';
 import { IProductCategoryController } from '#/interfaces/controller/types/product-category';
-import { productCategoryGetSchema, productCategoryListSchema } from '#/interfaces/http/docs/product-category.docs';
+import {
+    productCategoryGetSchema,
+    productCategoryListSchema,
+} from '#/interfaces/http/schemas/product-category/product-category.route-schema';
 
 export function productCategoryRoutes(app: FastifyInstance) {
     const controller = app.container.get<IProductCategoryController>(TYPES.ProductCategoryController);

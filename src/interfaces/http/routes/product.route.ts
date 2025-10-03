@@ -11,7 +11,7 @@ import {
     productGetSchema,
     productListSchema,
     productUpdateSchema,
-} from '#/interfaces/http/docs/product.docs';
+} from '#/interfaces/http/schemas/product/product.route-schema';
 
 export const productRoute = (app: FastifyInstance) => {
     const controller = app.container.get<IProductController>(TYPES.ProductController);

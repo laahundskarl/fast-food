@@ -1,9 +1,9 @@
 import z from 'zod';
 
-export const mercadoPagoWebhookSchema = {
+export const webhookSchema = {
     schema: {
         tags: ['Webhook'],
-        summary: 'MercadoPago webhook',
+        summary: 'MercadoPago Webhook',
         body: z.object({
             data: z.object({
                 id: z.string(),

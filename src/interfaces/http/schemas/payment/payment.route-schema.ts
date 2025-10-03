@@ -1,20 +1,15 @@
 import z from 'zod';
 
-import { errorNotFoundSchema } from '#/interfaces/http/docs/util.docs';
+import { paymentResponseSchema, paymentQueryValidator } from '#/interfaces/http/schemas/payment/payment.schema';
+import { errorNotFoundSchema } from '#/interfaces/http/schemas/until.schema';
 
 export const paymentGetSchema = {
     schema: {
         tags: ['Pagamentos'],
         summary: 'Busca pagamento',
-        query: z.object({
-            name: z.string().optional(),
-            categoryId: z.string().uuid().optional(),
-            productId: z.string().uuid().optional(),
-        }),
+        query: paymentQueryValidator,
         response: {
-            200: {
-                $ref: 'PaymentResponseDTO#',
-            },
+            200: paymentResponseSchema,
             404: errorNotFoundSchema,
         },
     },
@@ -29,10 +24,7 @@ export const paymentListSchema = {
             status: z.string().optional(),
         }),
         response: {
-            200: {
-                type: 'array',
-                items: { $ref: 'PaymentResponseDTO#' },
-            },
+            200: z.array(paymentResponseSchema),
             404: errorNotFoundSchema,
         },
     },

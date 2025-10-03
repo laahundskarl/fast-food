@@ -3,7 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/list-payment.dto';
 import { TYPES } from '#/infrastructure/config/di/types';
 import { IPaymentController } from '#/interfaces/controller/types/payment';
-import { paymentGetSchema, paymentListSchema } from '#/interfaces/http/docs/payment.docs';
+import { paymentGetSchema, paymentListSchema } from '#/interfaces/http/schemas/payment/payment.route-schema';
 
 export const paymentRoute = (app: FastifyInstance) => {
     const controller = app.container.get<IPaymentController>(TYPES.PaymentController);
