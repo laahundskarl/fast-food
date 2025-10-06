@@ -19,3 +19,6 @@ terraform/*.tfvars.json
 # Kubernetes secrets
 kubeconfig
 *.kubeconfig
+
+# Copilot instructions (development only)
+.github/copilot-instructions.md
