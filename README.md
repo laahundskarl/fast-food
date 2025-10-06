@@ -1,6 +1,25 @@
-# FastFood Autoatendimento - Tech Challenge (Grupo 277)
+# FastFood Autoatendimento - Application (Grupo 277)
 
-Este projeto é a implementação de um sistema backend para uma lanchonete com autoatendimento, utilizando TypeScript, Fastify, PrismaORM e MySQL, seguindo a arquitetura hexagonal (também conhecida como Ports and Adapters).
+Este repositório contém **apenas a aplicação** do sistema backend para uma lanchonete com autoatendimento, utilizando TypeScript, Fastify, PrismaORM e MySQL, seguindo a arquitetura hexagonal (também conhecida como Ports and Adapters).
+
+## 🏗️ **Arquitetura Desacoplada**
+
+A infraestrutura foi desacoplada em repositórios separados:
+
+- **[fast-food](https://github.com/laahundskarl/fast-food)** (este repositório) - Aplicação FastFood
+- **[fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)** - Infraestrutura Kubernetes (EKS + ECR)
+- **[fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)** - Infraestrutura Database (RDS MySQL)
+
+### Pipeline CI/CD Automatizado
+
+```
+Database Infra → K8s Infra → Application Build → Deploy
+```
+
+1. **DB Infrastructure** deploys RDS MySQL
+2. **K8s Infrastructure** deploys EKS cluster and ECR
+3. **Application** builds and pushes Docker image 
+4. **Auto-deploy** triggers Kubernetes deployment
 
 ---
 
@@ -35,28 +54,11 @@ A arquitetura implementa:
 
 ---
 
-## Estrutura do Projeto
+## Estrutura do Projeto (Application Only)
 
 ```markdown
 api/                        → Coleções Postman para testes dos endpoints
 docs/                       → Informações do Event Storming
-k8s/                        → Configurações Kubernetes para deploy
-│   ├── 01-api-service.yaml → Serviço da API
-│   ├── 02-loadbalancer.yaml → LoadBalancer para acesso externo
-│   ├── 03-config.yaml      → Configurações e secrets para K8s
-│   ├── 04-api-deployment.yaml → Deployment da API
-│   ├── 05-hpa.yaml         → Horizontal Pod Autoscaler
-│   └── deploy.sh           → Script de deploy automatizado
-│
-terraform/                  → Infraestrutura como código para AWS
-│   ├── data.tf             → Data sources para recursos AWS
-│   ├── ecr.tf              → Configuração do ECR
-│   ├── eks.tf              → Configuração do EKS
-│   ├── outputs.tf          → Outputs do Terraform
-│   ├── providers.tf        → Providers da AWS
-│   ├── rds.tf              → Configuração do RDS MySQL
-│   ├── variables.tf        → Variáveis do Terraform
-│   └── vpc.tf              → Configuração da VPC
 src/
 ├── application/            → Camada de aplicação (casos de uso)
 │   ├── services/           → Serviços de orquestração
@@ -76,7 +78,6 @@ src/
 │   ├── services/           → Serviços de domínio
 │   └── errors.ts           → Definição de erros de domínio
 │
-├── infrastructure/         → Camada de infraestrutura (implementações concretas)
 ├── infrastructure/         → Camada de infraestrutura (implementações concretas)
 │   ├── config/             → Configurações da aplicação
 │   │   ├── container.ts    → Container de injeção de dependência
@@ -105,15 +106,16 @@ src/
 │
 └── index.ts                → Ponto de entrada da aplicação
 
-# Arquivos de Configuração na Raiz:
+# Arquivos de Configuração:
+.github/workflows/          → CI/CD pipelines
 .editorconfig               → Configuração do editor
 .env                        → Variáveis de ambiente
 .env.example                → Exemplo de variáveis de ambiente
 .gitignore                  → Arquivos ignorados pelo Git
 .prettierignore             → Arquivos ignorados pelo Prettier
 .prettierrc                 → Configuração do Prettier
-docker-compose.prod.yml     → Configuração Docker para produção
 docker-compose.yml          → Configuração Docker para desenvolvimento
+docker-compose.prod.yml     → Configuração Docker para produção
 Dockerfile                  → Instruções para build da imagem Docker
 eslint.config.mjs           → Configuração do ESLint
 package.json                → Dependências e scripts do projeto

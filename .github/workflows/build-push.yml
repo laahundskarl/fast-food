@@ -1,0 +1,86 @@
+name: 'Build and Push to ECR'
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'tsconfig.json'
+      - 'Dockerfile'
+      - '.github/workflows/build-push.yml'
+  repository_dispatch:
+    types: [infrastructure-ready]
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  build-push:
+    name: 'Build and Push'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Get ECR URI
+      id: ecr_uri
+      run: |
+        if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+          echo "ecr_uri=${{ github.event.client_payload.ecr_uri }}" >> $GITHUB_OUTPUT
+        else
+          ECR_URI=$(aws ecr describe-repositories --repository-names fastfood-api --query 'repositories[0].repositoryUri' --output text)
+          echo "ecr_uri=$ECR_URI" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build and push Docker image
+      id: build-image
+      run: |
+        ECR_URI="${{ steps.ecr_uri.outputs.ecr_uri }}"
+        IMAGE_TAG="${{ github.sha }}"
+        
+        # Build image
+        docker build -t $ECR_URI:$IMAGE_TAG .
+        docker tag $ECR_URI:$IMAGE_TAG $ECR_URI:latest
+        
+        # Push image
+        docker push $ECR_URI:$IMAGE_TAG
+        docker push $ECR_URI:latest
+        
+        echo "image_uri=$ECR_URI:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+    - name: Notify Success
+      run: |
+        echo "✅ Image built and pushed successfully!"
+        echo "Image URI: ${{ steps.build-image.outputs.image_uri }}"
+
+    - name: Trigger K8s Deployment
+      if: success()
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        script: |
+          github.rest.repos.createDispatchEvent({
+            owner: 'laahundskarl',
+            repo: 'fast-food-k8s-infra',
+            event_type: 'deploy-app',
+            client_payload: {
+              image_tag: '${{ steps.build-image.outputs.image_tag }}',
+              image_uri: '${{ steps.build-image.outputs.image_uri }}',
+              trigger_source: 'application-build'
+            }
+          })
