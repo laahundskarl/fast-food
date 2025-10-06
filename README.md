@@ -18,7 +18,7 @@ Database Infra → K8s Infra → Application Build → Deploy
 
 1. **DB Infrastructure** deploys RDS MySQL
 2. **K8s Infrastructure** deploys EKS cluster and ECR
-3. **Application** builds and pushes Docker image 
+3. **Application** builds and pushes Docker image
 4. **Auto-deploy** triggers Kubernetes deployment
 
 ---

@@ -51,15 +51,15 @@ jobs:
       run: |
         ECR_URI="${{ steps.ecr_uri.outputs.ecr_uri }}"
         IMAGE_TAG="${{ github.sha }}"
-        
+
         # Build image
         docker build -t $ECR_URI:$IMAGE_TAG .
         docker tag $ECR_URI:$IMAGE_TAG $ECR_URI:latest
-        
+
         # Push image
         docker push $ECR_URI:$IMAGE_TAG
         docker push $ECR_URI:latest
-        
+
         echo "image_uri=$ECR_URI:$IMAGE_TAG" >> $GITHUB_OUTPUT
         echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
 
