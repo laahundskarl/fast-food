@@ -9,6 +9,13 @@ on:
       - 'tsconfig.json'
       - 'Dockerfile'
       - '.github/workflows/build-test.yml'
+  workflow_dispatch:
+    inputs:
+      run_tests:
+        description: 'Run full test suite'
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   build-test:
