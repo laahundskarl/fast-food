@@ -35,3 +35,9 @@ export class PaymentExternalError extends Error {
         this.name = 'PaymentExternalError';
     }
 }
+
+export class UnauthorizedError extends AppError {
+    constructor(message = 'UnauthorizedException') {
+        super(message, 401, 'UnauthorizedException');
+    }
+}
