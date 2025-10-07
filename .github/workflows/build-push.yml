@@ -11,6 +11,13 @@ on:
       - '.github/workflows/build-push.yml'
   repository_dispatch:
     types: [infrastructure-ready]
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deployment from current branch'
+        required: false
+        type: boolean
+        default: false
 
 env:
   AWS_REGION: us-east-1
@@ -21,6 +28,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check branch and trigger
+      run: |
+        echo "Current branch: ${{ github.ref_name }}"
+        echo "Event: ${{ github.event_name }}"
+        
+        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref_name }}" != "modulo_3" ]; then
+          echo "❌ Push events only allowed on modulo_3 branch"
+          exit 1
+        fi
+        
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "✅ Manual execution triggered"
+          if [ "${{ github.event.inputs.force_deploy }}" = "true" ]; then
+            echo "⚠️ Force deployment enabled - deploying from ${{ github.ref_name }}"
+          elif [ "${{ github.ref_name }}" != "modulo_3" ]; then
+            echo "❌ Manual execution only allowed on modulo_3 branch (use force_deploy=true to override)"
+            exit 1
+          fi
+        fi
     - name: Checkout
       uses: actions/checkout@v3
 
