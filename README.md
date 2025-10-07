@@ -517,19 +517,19 @@ kubectl top nodes
 2. Execute "Cleanup - Application and Infrastructure"
 3. Selecione "full-infrastructure" e digite "DESTROY"
 ```
-
-**💡 Economia esperada:** ~$120-140/mês com cleanup completo
-
 #### **Cleanup Manual** (caso necessário)
 ```bash
 # 1. Remover aplicação Kubernetes (via repositório k8s-infra)
 # Consulte: https://github.com/laahundskarl/fast-food-k8s-infra
 
-# 2. Destruir infraestrutura (via repositórios separados)
+# 2. Destruir infraestrutura Lambda (via repositório lambda)
+# Consulte: https://github.com/laahundskarl/fast-food-lambda
+
+# 3. Destruir infraestrutura (via repositórios separados)
 # Database: https://github.com/laahundskarl/fast-food-db-infra
 # K8s: https://github.com/laahundskarl/fast-food-k8s-infra
 
-# 3. Ou use as workflows de cleanup via GitHub Actions (recomendado)
+# 4. Ou use as workflows de cleanup via GitHub Actions (recomendado)
 ```
 
 ### Arquitetura do Deploy
