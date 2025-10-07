@@ -72,15 +72,13 @@ O projeto utiliza **GitHub Actions** com workflows padronizadas seguindo conven�
 - **`CD - Deploy Application`** - Deploy da aplicação no Kubernetes
 - **`Cleanup - Destroy Kubernetes`** - Limpeza completa da infraestrutura K8s
 
-**💰 Gestão de Custos:** Workflows de cleanup disponíveis para eliminar ~$120-140/mês quando necessário.
-
 ---
 
-## Estrutura do Projeto (Application Only)
+## 📁 Estrutura do Projeto
 
-```markdown
+```
 api/                        → Coleções Postman para testes dos endpoints
-docs/                       → Informações do Event Storming
+docs/                       → Documentação, diagramas e convenções
 src/
 ├── application/            → Camada de aplicação (casos de uso)
 │   ├── services/           → Serviços de orquestração
@@ -108,13 +106,16 @@ src/
 │   ├── database/           → Configurações do banco de dados
 │   │   └── prisma/         → Esquemas, migrações e seeds do Prisma
 │   │       ├── migrations/ → Migrações do banco
-│   │       ├── seeds/      → Scripts para popular o banco
+│   │       ├── schema.prisma → Schema do banco de dados
+│   │       └── seeds/      → Scripts para popular o banco
 │   ├── gateways/           → Implementações de gateways externos
 │   │   └── mercado-pago/   → Gateway do Mercado Pago
 │   ├── repositories/       → Implementações dos repositórios
 │   │   └── prisma/         → Repositórios usando Prisma
-│   │       └── mappers/    → Mapeadores entre domínio e persistência
-│   └──  server/             → Configuração do servidor
+│   └── server/             → Configuração do servidor
+│       ├── app.ts          → Configuração da aplicação Fastify
+│       ├── server.ts       → Inicialização do servidor
+│       └── @types/         → Tipos TypeScript customizados
 │
 ├── interfaces/             → Camada de interface (controllers e HTTP)
 │   ├── controller/         → Controladores HTTP
@@ -122,16 +123,16 @@ src/
 │       ├── docs/           → Documentação Swagger
 │       ├── middlewares/    → Middlewares HTTP
 │       ├── routes/         → Definição das rotas
-│       ├── schema/         → Esquemas de validação
+│       ├── schema/         → Esquemas de validação Zod
 │       └── validator/      → Validadores customizados
 │
 └── index.ts                → Ponto de entrada da aplicação
 
-# Arquivos de Configuração:
+### Arquivos de Configuração:
 .github/workflows/          → CI/CD pipelines (CI, CD, Cleanup)
-api/                        → Coleção Postman para testes
-docs/                       → Documentação, diagramas e convenções
-k8s/                        → Manifests Kubernetes para deploy local
+├── app-destroy.yml         → Workflow de cleanup da aplicação
+├── build-push.yml          → Workflow de build e deploy
+└── build-test.yml          → Workflow de CI com testes
 .editorconfig               → Configuração do editor
 .env                        → Variáveis de ambiente
 .env.example                → Exemplo de variáveis de ambiente
