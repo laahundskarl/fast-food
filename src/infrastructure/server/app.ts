@@ -6,7 +6,7 @@ import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod
 import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 import { Container } from 'inversify';
 
-import { errorHandler } from '#/interfaces/http/middlewares/error-handler';
+import { errorHandler } from '#/interfaces/http/middlewares/error-handler.middleware';
 import { registerRoutes } from '#/interfaces/http/routes';
 
 export function buildApp(container: Container): FastifyInstance {
@@ -30,10 +30,6 @@ export function buildApp(container: Container): FastifyInstance {
                 {
                     name: 'Clientes',
                     description: 'Operações relacionadas a clientes',
-                },
-                {
-                    name: 'Identificação',
-                    description: 'Operações relacionada a identificação do cliente',
                 },
                 {
                     name: 'Pedidos',

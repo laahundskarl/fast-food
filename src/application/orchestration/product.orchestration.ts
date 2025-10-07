@@ -1,23 +1,24 @@
 import { inject, injectable } from 'inversify';
 
+import { IProductOrchestration } from '#/application/orchestration/interfaces/i-product.orchestration';
 import { Product } from '#/domain/entities/product.entity';
+import { ProductValidationFactory } from '#/domain/factories/product-validation.factory';
 import { IProductRepository } from '#/domain/repositories/product.repository';
-import { ProductValidationService } from '#/domain/services/product-validation.service';
 import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
-export class ProductOrchestrationService {
+export class ProductOrchestration implements IProductOrchestration {
     constructor(@inject(TYPES.ProductRepository) private readonly productRepository: IProductRepository) {}
 
     async validateAndGetProducts(
         requestedProducts: Array<{ productId: string; quantity: number }>,
     ): Promise<Product[]> {
-        ProductValidationService.validateQuantities(requestedProducts);
+        ProductValidationFactory.validateQuantities(requestedProducts);
 
         const productIds = requestedProducts.map(item => item.productId);
         const products = await this.productRepository.findMany(productIds);
 
-        ProductValidationService.validateProductsExist(requestedProducts, products);
+        ProductValidationFactory.validateProductsExist(requestedProducts, products);
 
         return products;
     }
