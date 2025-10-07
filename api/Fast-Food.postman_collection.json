@@ -7,6 +7,63 @@
 	},
 	"item": [
 		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/11.1.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cpf\": \"84935708000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/auth",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Client",
 			"item": [
 				{
@@ -59,47 +116,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/client/86373710009",
+							"raw": "{{baseURL}}/client/84935708000",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"client",
-								"86373710009"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Client Orders",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseURL}}/client/orders/86373710009",
-							"host": [
-								"{{baseURL}}"
-							],
-							"path": [
-								"client",
-								"orders",
-								"86373710009"
+								"84935708000"
 							]
 						}
 					},
@@ -1815,14 +1838,16 @@
 									""
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
 					"protocolProfileBehavior": {
 						"followRedirects": true,
 						"disableUrlEncoding": false,
-						"disableCookies": false
+						"disableCookies": false,
+						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
@@ -1832,14 +1857,23 @@
 								"value": "insomnia/11.1.0"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cpf\": \"84935708000\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{baseURL}}/product/f5288362-2aed-4ebc-9cad-cdd312a24926",
+							"raw": "{{baseURL}}/product/208656e5-7534-43cf-bca5-fb452efaa75b",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"product",
-								"f5288362-2aed-4ebc-9cad-cdd312a24926"
+								"208656e5-7534-43cf-bca5-fb452efaa75b"
 							]
 						}
 					},
@@ -2023,7 +2057,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderProducts\": [\n        {\n            \"productId\": \"05e41aae-ba8e-4d92-9310-7438cb69c35e\",\n            \"quantity\": 4\n        }\n    ]\n}",
+							"raw": "{\n    \"orderProducts\": [\n        {\n            \"productId\": \"26048ef4-b578-41de-9dd9-7549d6050735\",\n            \"quantity\": 2\n        },\n        {\n            \"productId\": \"8edb8972-36ab-4623-a0a1-f9dc9c518b95\",\n            \"quantity\": 2\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2070,13 +2104,13 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL}}/order/50d4fde9-7152-4274-b7f4-2ae6f798764c",
+							"raw": "{{baseURL}}/order/5fe9868a-fe8a-4d5a-af55-a865dbacc41d",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"order",
-								"50d4fde9-7152-4274-b7f4-2ae6f798764c"
+								"5fe9868a-fe8a-4d5a-af55-a865dbacc41d"
 							]
 						}
 					},
@@ -2110,7 +2144,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL}}/order?clientId=340c2839-af48-4e23-a21a-8ca6b08accc9",
+							"raw": "{{baseURL}}/order",
 							"host": [
 								"{{baseURL}}"
 							],
@@ -2120,7 +2154,8 @@
 							"query": [
 								{
 									"key": "clientId",
-									"value": "340c2839-af48-4e23-a21a-8ca6b08accc9"
+									"value": "340c2839-af48-4e23-a21a-8ca6b08accc9",
+									"disabled": true
 								},
 								{
 									"key": "status",
@@ -2223,7 +2258,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"orderProducts\": [\n        {\n            \"productId\": \"cdd836c3-0001-4226-a786-eeaa09472869\",\n            \"quantity\": 2\n        },\n        {\n            \"productId\": \"eca7c74e-e145-4417-bcf6-c83e82c782f2\",\n            \"quantity\": 1\n        }\n    ]\n}",
+							"raw": "{\n\t\"status\": \"FINISHED\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2231,13 +2266,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseURL}}/order/50d4fde9-7152-4274-b7f4-2ae6f798764c",
+							"raw": "{{baseURL}}/order/5fe9868a-fe8a-4d5a-af55-a865dbacc41d/status",
 							"host": [
 								"{{baseURL}}"
 							],
 							"path": [
 								"order",
-								"50d4fde9-7152-4274-b7f4-2ae6f798764c"
+								"5fe9868a-fe8a-4d5a-af55-a865dbacc41d",
+								"status"
 							]
 						}
 					},
