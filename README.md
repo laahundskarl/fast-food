@@ -76,30 +76,6 @@ O projeto utiliza **GitHub Actions** com workflows padronizadas seguindo conven�
 
 ---
 
-### Workflows CI/CD Implementadas
-
-O projeto utiliza **GitHub Actions** com workflows padronizadas seguindo convenções de nomenclatura:
-
-#### 📦 **fast-food** (este repositório)
-- **`CI - Build and Test`** - Integração contínua com build, testes, lint e auditoria de segurança
-- **`CD - Build and Deploy`** - Build da imagem Docker, push para ECR e trigger de deploy
-- **`Cleanup - Application and Infrastructure`** - Limpeza granular (app-only) ou completa (full-infrastructure)
-
-#### 🗄️ **fast-food-db-infra**
-- **`Infrastructure - Validate Database`** - Validação Terraform do banco RDS MySQL
-- **`Infrastructure - Deploy Database`** - Deploy automatizado da infraestrutura de banco
-- **`Cleanup - Destroy Database`** - Destruição segura com backup automático
-
-#### ☸️ **fast-food-k8s-infra**
-- **`Infrastructure - Validate Kubernetes`** - Validação Terraform do cluster EKS
-- **`Infrastructure - Deploy Kubernetes`** - Deploy do cluster EKS e configurações
-- **`CD - Deploy Application`** - Deploy da aplicação no Kubernetes
-- **`Cleanup - Destroy Kubernetes`** - Limpeza completa da infraestrutura K8s
-
-**💰 Gestão de Custos:** Workflows de cleanup disponíveis para eliminar ~$120-140/mês quando necessário.
-
----
-
 ## Estrutura do Projeto (Application Only)
 
 ```markdown
@@ -348,7 +324,7 @@ OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão 
 O sistema utiliza **pipeline CI/CD automatizado** através de GitHub Actions:
 
 1. **Push para `modulo_3`** no repositório `fast-food-db-infra` → Cria RDS MySQL
-2. **Aguarda conclusão** → K8s infra detecta e cria EKS cluster automaticamente  
+2. **Aguarda conclusão** → K8s infra detecta e cria EKS cluster automaticamente
 3. **Push código** no repositório `fast-food` → Build e deploy da aplicação
 
 **✅ Vantagens:**
@@ -534,7 +510,7 @@ kubectl top nodes
 
 **🚨 Cleanup Completo** (destrói toda infraestrutura):
 ```
-1. Vá para Actions no repositório fast-food  
+1. Vá para Actions no repositório fast-food
 2. Execute "Cleanup - Application and Infrastructure"
 3. Selecione "full-infrastructure" e digite "DESTROY"
 ```
