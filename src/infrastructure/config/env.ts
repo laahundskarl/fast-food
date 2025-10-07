@@ -20,6 +20,9 @@ const envSchema = z.object({
     MERCADO_PAGO_POS_ID: z.string(),
     MERCADO_PAGO_TOKEN: z.string(),
     MERCADO_PAGO_NOTIFICATION_URL: z.string(),
+
+    // JWT
+    JWT_SECRET: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

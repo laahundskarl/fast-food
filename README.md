@@ -84,7 +84,6 @@ src/
 │   ├── services/           → Serviços de orquestração
 │   └── use-cases/          → Implementação dos casos de uso
 │       ├── client/         → Casos de uso para clientes
-│       ├── identify/       → Casos de uso para identificação
 │       ├── order/          → Casos de uso para pedidos
 │       ├── payment/        → Casos de uso para pagamentos
 │       ├── product/        → Casos de uso para produtos
@@ -275,10 +274,6 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 - GET /client/:cpf - Obter cliente por CPF
 - PUT /client/:cpf - Atualizar cliente
 - DELETE /client/:cpf - Excluir cliente
-
-### Identificação
-
-- POST /identify - Identificar cliente por CPF
 
 ### Produto
 

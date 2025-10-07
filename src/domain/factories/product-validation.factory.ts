@@ -1,7 +1,7 @@
 import { IProduct } from '#/domain/entities/product.entity';
 import { NotFoundError } from '#/domain/errors';
 
-export class ProductValidationService {
+export class ProductValidationFactory {
     static validateProductsExist(
         requestProducts: { productId: string; quantity: number }[],
         availableProducts: IProduct[],
