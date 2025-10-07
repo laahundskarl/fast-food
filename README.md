@@ -52,6 +52,52 @@ A arquitetura implementa:
 - **Containerização:** Docker para empacotamento da aplicação
 - **Orquestração:** Kubernetes para gerenciamento de containers e recursos
 
+### Workflows CI/CD Implementadas
+
+O projeto utiliza **GitHub Actions** com workflows padronizadas seguindo convenções de nomenclatura:
+
+#### 📦 **fast-food** (este repositório)
+- **`CI - Build and Test`** - Integração contínua com build, testes, lint e auditoria de segurança
+- **`CD - Build and Deploy`** - Build da imagem Docker, push para ECR e trigger de deploy
+- **`Cleanup - Application and Infrastructure`** - Limpeza granular (app-only) ou completa (full-infrastructure)
+
+#### 🗄️ **fast-food-db-infra**
+- **`Infrastructure - Validate Database`** - Validação Terraform do banco RDS MySQL
+- **`Infrastructure - Deploy Database`** - Deploy automatizado da infraestrutura de banco
+- **`Cleanup - Destroy Database`** - Destruição segura com backup automático
+
+#### ☸️ **fast-food-k8s-infra**
+- **`Infrastructure - Validate Kubernetes`** - Validação Terraform do cluster EKS
+- **`Infrastructure - Deploy Kubernetes`** - Deploy do cluster EKS e configurações
+- **`CD - Deploy Application`** - Deploy da aplicação no Kubernetes
+- **`Cleanup - Destroy Kubernetes`** - Limpeza completa da infraestrutura K8s
+
+**💰 Gestão de Custos:** Workflows de cleanup disponíveis para eliminar ~$120-140/mês quando necessário.
+
+---
+
+### Workflows CI/CD Implementadas
+
+O projeto utiliza **GitHub Actions** com workflows padronizadas seguindo convenções de nomenclatura:
+
+#### 📦 **fast-food** (este repositório)
+- **`CI - Build and Test`** - Integração contínua com build, testes, lint e auditoria de segurança
+- **`CD - Build and Deploy`** - Build da imagem Docker, push para ECR e trigger de deploy
+- **`Cleanup - Application and Infrastructure`** - Limpeza granular (app-only) ou completa (full-infrastructure)
+
+#### 🗄️ **fast-food-db-infra**
+- **`Infrastructure - Validate Database`** - Validação Terraform do banco RDS MySQL
+- **`Infrastructure - Deploy Database`** - Deploy automatizado da infraestrutura de banco
+- **`Cleanup - Destroy Database`** - Destruição segura com backup automático
+
+#### ☸️ **fast-food-k8s-infra**
+- **`Infrastructure - Validate Kubernetes`** - Validação Terraform do cluster EKS
+- **`Infrastructure - Deploy Kubernetes`** - Deploy do cluster EKS e configurações
+- **`CD - Deploy Application`** - Deploy da aplicação no Kubernetes
+- **`Cleanup - Destroy Kubernetes`** - Limpeza completa da infraestrutura K8s
+
+**💰 Gestão de Custos:** Workflows de cleanup disponíveis para eliminar ~$120-140/mês quando necessário.
+
 ---
 
 ## Estrutura do Projeto (Application Only)
@@ -106,7 +152,10 @@ src/
 └── index.ts                → Ponto de entrada da aplicação
 
 # Arquivos de Configuração:
-.github/workflows/          → CI/CD pipelines
+.github/workflows/          → CI/CD pipelines (CI, CD, Cleanup)
+api/                        → Coleção Postman para testes
+docs/                       → Documentação, diagramas e convenções
+k8s/                        → Manifests Kubernetes para deploy local
 .editorconfig               → Configuração do editor
 .env                        → Variáveis de ambiente
 .env.example                → Exemplo de variáveis de ambiente
@@ -292,9 +341,25 @@ OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão 
 
 ---
 
-## 🚀 Deploy na AWS com Terraform e Kubernetes
+## 🚀 Deploy Automatizado na AWS
 
-### Pré-requisitos
+### 📋 **Deploy via GitHub Actions (Recomendado)**
+
+O sistema utiliza **pipeline CI/CD automatizado** através de GitHub Actions:
+
+1. **Push para `modulo_3`** no repositório `fast-food-db-infra` → Cria RDS MySQL
+2. **Aguarda conclusão** → K8s infra detecta e cria EKS cluster automaticamente  
+3. **Push código** no repositório `fast-food` → Build e deploy da aplicação
+
+**✅ Vantagens:**
+- Deploy completamente automatizado
+- Validações de segurança e qualidade
+- Gestão de custos com cleanup sob demanda
+- Zero configuração local necessária
+
+### 🛠️ **Deploy Manual (Avançado)**
+
+**Pré-requisitos:**
 
 1. **AWS CLI configurado**
 2. **Terraform >= 1.0 instalado**
@@ -454,10 +519,29 @@ aws ec2 authorize-security-group-egress \
 kubectl top nodes
 ```
 
-### Limpeza de Recursos
+### 💰 **Gestão de Custos e Cleanup**
 
-⚠️ **IMPORTANTE**: Para evitar custos desnecessários, sempre destrua os recursos após os testes:
+⚠️ **IMPORTANTE**: Para evitar custos desnecessários, utilize as workflows de cleanup:
 
+#### **Cleanup via GitHub Actions (Recomendado)**
+
+**🔄 Cleanup Apenas da Aplicação** (mantém infraestrutura):
+```
+1. Vá para Actions no repositório fast-food
+2. Execute "Cleanup - Application and Infrastructure"
+3. Selecione "app-only" e digite "CLEANUP"
+```
+
+**🚨 Cleanup Completo** (destrói toda infraestrutura):
+```
+1. Vá para Actions no repositório fast-food  
+2. Execute "Cleanup - Application and Infrastructure"
+3. Selecione "full-infrastructure" e digite "DESTROY"
+```
+
+**💡 Economia esperada:** ~$120-140/mês com cleanup completo
+
+#### **Cleanup Manual** (caso necessário)
 ```bash
 # 1. Remover aplicação Kubernetes
 kubectl delete -f k8s/
