@@ -19,14 +19,14 @@ class ClientE2ETests {
     async runAllTests() {
         console.log('🚀 Starting Client Management E2E Tests...');
         console.log(`📍 Testing against: ${APP_URL}`);
-        
+
         try {
             await this.testCreateClient();
             await this.testGetClient();
             await this.testUpdateClient();
             await this.testListClientOrders();
             await this.testDeleteClient();
-            
+
             this.printResults();
         } catch (error) {
             console.error('❌ Test suite failed:', error.message);
@@ -36,7 +36,7 @@ class ClientE2ETests {
 
     async testCreateClient() {
         console.log('\n🧪 Test: Create Client');
-        
+
         const clientData = {
             name: 'E2E Test Client',
             email: `e2e-test-${Date.now()}@example.com`,
@@ -45,7 +45,7 @@ class ClientE2ETests {
 
         try {
             const response = await axios.post(`${API_BASE}/clients`, clientData);
-            
+
             if (response.status === 201 && response.data.id) {
                 this.testClient = response.data;
                 this.logSuccess('Client created successfully', response.data);
@@ -59,12 +59,12 @@ class ClientE2ETests {
 
     async testGetClient() {
         if (!this.testClient) return this.logSkipped('Get client - no client to test');
-        
+
         console.log('\n🧪 Test: Get Client');
-        
+
         try {
             const response = await axios.get(`${API_BASE}/clients/${this.testClient.id}`);
-            
+
             if (response.status === 200 && response.data.id === this.testClient.id) {
                 this.logSuccess('Client retrieved successfully', response.data);
             } else {
@@ -77,16 +77,16 @@ class ClientE2ETests {
 
     async testUpdateClient() {
         if (!this.testClient) return this.logSkipped('Update client - no client to test');
-        
+
         console.log('\n🧪 Test: Update Client');
-        
+
         const updateData = {
             name: 'Updated E2E Test Client'
         };
 
         try {
             const response = await axios.put(`${API_BASE}/clients/${this.testClient.id}`, updateData);
-            
+
             if (response.status === 200 && response.data.name === updateData.name) {
                 this.testClient = response.data;
                 this.logSuccess('Client updated successfully', response.data);
@@ -100,12 +100,12 @@ class ClientE2ETests {
 
     async testListClientOrders() {
         if (!this.testClient) return this.logSkipped('List client orders - no client to test');
-        
+
         console.log('\n🧪 Test: List Client Orders');
-        
+
         try {
             const response = await axios.get(`${API_BASE}/clients/${this.testClient.id}/orders`);
-            
+
             if (response.status === 200 && Array.isArray(response.data)) {
                 this.logSuccess('Client orders retrieved successfully', `Found ${response.data.length} orders`);
             } else {
@@ -118,12 +118,12 @@ class ClientE2ETests {
 
     async testDeleteClient() {
         if (!this.testClient) return this.logSkipped('Delete client - no client to test');
-        
+
         console.log('\n🧪 Test: Delete Client');
-        
+
         try {
             const response = await axios.delete(`${API_BASE}/clients/${this.testClient.id}`);
-            
+
             if (response.status === 200 || response.status === 204) {
                 this.logSuccess('Client deleted successfully');
             } else {
@@ -159,12 +159,12 @@ class ClientE2ETests {
         const passed = this.testResults.filter(r => r.type === 'success').length;
         const failed = this.testResults.filter(r => r.type === 'error').length;
         const skipped = this.testResults.filter(r => r.type === 'skipped').length;
-        
+
         console.log('\n📊 Client Management Test Results:');
         console.log(`   ✅ Passed: ${passed}`);
         console.log(`   ❌ Failed: ${failed}`);
         console.log(`   ⏭️  Skipped: ${skipped}`);
-        
+
         if (failed > 0) {
             console.log('\n🚨 Failures:');
             this.testResults.filter(r => r.type === 'error').forEach(result => {

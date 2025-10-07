@@ -20,14 +20,14 @@ class AdminE2ETests {
     async runAllTests() {
         console.log('🚀 Starting Admin Operations E2E Tests...');
         console.log(`📍 Testing against: ${APP_URL}`);
-        
+
         try {
             await this.testSystemHealth();
             await this.testProductCategoryManagement();
             await this.testProductManagement();
             await this.testOrderReporting();
             await this.testSystemMetrics();
-            
+
             this.printResults();
         } catch (error) {
             console.error('❌ Test suite failed:', error.message);
@@ -37,24 +37,24 @@ class AdminE2ETests {
 
     async testSystemHealth() {
         console.log('\n🧪 Test: System Health Check');
-        
+
         try {
             const response = await axios.get(`${APP_URL}/health`);
-            
+
             if (response.status === 200) {
                 this.logSuccess('Health check passed', `Status: ${response.status}`);
-                
+
                 // Check if response has expected health data
                 if (response.data && typeof response.data === 'object') {
                     const healthData = response.data;
-                    
+
                     // Validate typical health check properties
                     const healthChecks = [
                         { check: 'Has status', passed: !!healthData.status },
                         { check: 'Has timestamp', passed: !!healthData.timestamp || !!healthData.time },
                         { check: 'Database connectivity', passed: healthData.database !== false }
                     ];
-                    
+
                     const passedChecks = healthChecks.filter(check => check.passed).length;
                     this.logSuccess(`Health validation passed (${passedChecks}/${healthChecks.length})`);
                 } else {
@@ -70,7 +70,7 @@ class AdminE2ETests {
 
     async testProductCategoryManagement() {
         console.log('\n🧪 Test: Product Category Management');
-        
+
         try {
             // Test category creation
             const categoryData = {
@@ -79,7 +79,7 @@ class AdminE2ETests {
             };
 
             const createResponse = await axios.post(`${API_BASE}/categories`, categoryData);
-            
+
             if (createResponse.status === 201 && createResponse.data.id) {
                 this.testCategory = createResponse.data;
                 this.logSuccess('Category created successfully', `ID: ${createResponse.data.id}`);
@@ -89,7 +89,7 @@ class AdminE2ETests {
 
             // Test category listing
             const listResponse = await axios.get(`${API_BASE}/categories`);
-            
+
             if (listResponse.status === 200 && Array.isArray(listResponse.data)) {
                 const categoryFound = listResponse.data.some(cat => cat.id === this.testCategory.id);
                 if (categoryFound) {
@@ -104,7 +104,7 @@ class AdminE2ETests {
             // Test category update
             const updateData = { name: `Updated ${categoryData.name}` };
             const updateResponse = await axios.put(`${API_BASE}/categories/${this.testCategory.id}`, updateData);
-            
+
             if (updateResponse.status === 200) {
                 this.logSuccess('Category updated successfully');
             } else {
@@ -118,11 +118,11 @@ class AdminE2ETests {
 
     async testProductManagement() {
         console.log('\n🧪 Test: Product Management');
-        
+
         try {
             // Get available categories first
             let categoryId = this.testCategory?.id;
-            
+
             if (!categoryId) {
                 const categoriesResponse = await axios.get(`${API_BASE}/categories`);
                 if (categoriesResponse.data && categoriesResponse.data.length > 0) {
@@ -141,7 +141,7 @@ class AdminE2ETests {
             };
 
             const createResponse = await axios.post(`${API_BASE}/products`, productData);
-            
+
             if (createResponse.status === 201 && createResponse.data.id) {
                 this.testProduct = createResponse.data;
                 this.logSuccess('Product created successfully', `ID: ${createResponse.data.id}`);
@@ -151,7 +151,7 @@ class AdminE2ETests {
 
             // Test product retrieval
             const getResponse = await axios.get(`${API_BASE}/products/${this.testProduct.id}`);
-            
+
             if (getResponse.status === 200 && getResponse.data.id === this.testProduct.id) {
                 this.logSuccess('Product retrieved successfully');
             } else {
@@ -160,7 +160,7 @@ class AdminE2ETests {
 
             // Test product listing
             const listResponse = await axios.get(`${API_BASE}/products`);
-            
+
             if (listResponse.status === 200 && Array.isArray(listResponse.data)) {
                 const productFound = listResponse.data.some(prod => prod.id === this.testProduct.id);
                 if (productFound) {
@@ -175,7 +175,7 @@ class AdminE2ETests {
             // Test product update
             const updateData = { price: 34.99 };
             const updateResponse = await axios.put(`${API_BASE}/products/${this.testProduct.id}`, updateData);
-            
+
             if (updateResponse.status === 200) {
                 this.logSuccess('Product updated successfully');
             } else {
@@ -189,7 +189,7 @@ class AdminE2ETests {
 
     async testOrderReporting() {
         console.log('\n🧪 Test: Order Reporting');
-        
+
         try {
             // Test order listing with different filters
             const tests = [
@@ -201,7 +201,7 @@ class AdminE2ETests {
             for (const test of tests) {
                 try {
                     const response = await axios.get(`${API_BASE}${test.endpoint}`);
-                    
+
                     if (response.status === 200 && Array.isArray(response.data)) {
                         this.logSuccess(`${test.description} report generated`, `Found ${response.data.length} orders`);
                     } else {
@@ -219,7 +219,7 @@ class AdminE2ETests {
 
     async testSystemMetrics() {
         console.log('\n🧪 Test: System Metrics');
-        
+
         try {
             // Test various system endpoints that might provide metrics
             const metricsTests = [
@@ -234,7 +234,7 @@ class AdminE2ETests {
             for (const test of metricsTests) {
                 try {
                     const response = await axios.get(`${APP_URL}${test.endpoint}`);
-                    
+
                     if (response.status === 200 && Array.isArray(response.data)) {
                         metrics[test.metric] = response.data.length;
                         this.logSuccess(`${test.metric} counted`, `Count: ${response.data.length}`);
@@ -284,12 +284,12 @@ class AdminE2ETests {
         const passed = this.testResults.filter(r => r.type === 'success').length;
         const failed = this.testResults.filter(r => r.type === 'error').length;
         const skipped = this.testResults.filter(r => r.type === 'skipped').length;
-        
+
         console.log('\n📊 Admin Operations Test Results:');
         console.log(`   ✅ Passed: ${passed}`);
         console.log(`   ❌ Failed: ${failed}`);
         console.log(`   ⏭️  Skipped: ${skipped}`);
-        
+
         if (failed > 0) {
             console.log('\n🚨 Failures:');
             this.testResults.filter(r => r.type === 'error').forEach(result => {

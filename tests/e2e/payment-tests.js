@@ -21,7 +21,7 @@ class PaymentE2ETests {
     async runAllTests() {
         console.log('🚀 Starting Payment Integration E2E Tests...');
         console.log(`📍 Testing against: ${APP_URL}`);
-        
+
         try {
             await this.setupTestOrder();
             await this.testCreatePayment();
@@ -29,7 +29,7 @@ class PaymentE2ETests {
             await this.testListPayments();
             await this.testPaymentWebhook();
             await this.testPaymentStatusUpdates();
-            
+
             this.printResults();
         } catch (error) {
             console.error('❌ Test suite failed:', error.message);
@@ -39,7 +39,7 @@ class PaymentE2ETests {
 
     async setupTestOrder() {
         console.log('\n🔧 Setting up test order for payment...');
-        
+
         try {
             // Create test client
             const clientResponse = await axios.post(`${API_BASE}/clients`, {
@@ -53,7 +53,7 @@ class PaymentE2ETests {
             // Get available products
             const productsResponse = await axios.get(`${API_BASE}/products`);
             const products = productsResponse.data.slice(0, 1); // Take first product
-            
+
             // Create test order
             const orderResponse = await axios.post(`${API_BASE}/orders`, {
                 clientId: this.testClient.id,
@@ -64,7 +64,7 @@ class PaymentE2ETests {
             });
             this.testOrder = orderResponse.data;
             console.log('   ✅ Test order created');
-            
+
         } catch (error) {
             console.log('   ❌ Setup failed:', error.message);
             throw error;
@@ -73,7 +73,7 @@ class PaymentE2ETests {
 
     async testCreatePayment() {
         console.log('\n🧪 Test: Create Payment');
-        
+
         if (!this.testOrder) {
             return this.logSkipped('Create payment - no order available');
         }
@@ -83,11 +83,11 @@ class PaymentE2ETests {
                 orderId: this.testOrder.id,
                 paymentMethod: 'QR_CODE'
             });
-            
+
             if (response.status === 201 && response.data.id) {
                 this.testPayment = response.data;
                 this.logSuccess('Payment created successfully', `Payment ID: ${response.data.id}`);
-                
+
                 // Validate payment properties
                 if (response.data.qrCode) {
                     this.logSuccess('QR Code generated', 'QR Code present');
@@ -104,15 +104,15 @@ class PaymentE2ETests {
 
     async testGetPayment() {
         if (!this.testPayment) return this.logSkipped('Get payment - no payment to test');
-        
+
         console.log('\n🧪 Test: Get Payment');
-        
+
         try {
             const response = await axios.get(`${API_BASE}/payments/${this.testPayment.id}`);
-            
+
             if (response.status === 200 && response.data.id === this.testPayment.id) {
                 this.logSuccess('Payment retrieved successfully', `Status: ${response.data.status}`);
-                
+
                 // Validate payment details
                 const validationChecks = [
                     { check: 'Has order reference', passed: !!response.data.orderId },
@@ -120,7 +120,7 @@ class PaymentE2ETests {
                     { check: 'Has valid status', passed: ['PENDING', 'APPROVED', 'REJECTED', 'CANCELLED'].includes(response.data.status) },
                     { check: 'Has creation timestamp', passed: !!response.data.createdAt }
                 ];
-                
+
                 const passedChecks = validationChecks.filter(check => check.passed).length;
                 if (passedChecks === validationChecks.length) {
                     this.logSuccess('Payment validation passed', `All ${passedChecks} checks passed`);
@@ -138,10 +138,10 @@ class PaymentE2ETests {
 
     async testListPayments() {
         console.log('\n🧪 Test: List Payments');
-        
+
         try {
             const response = await axios.get(`${API_BASE}/payments`);
-            
+
             if (response.status === 200 && Array.isArray(response.data)) {
                 const paymentFound = response.data.some(payment => payment.id === this.testPayment?.id);
                 if (paymentFound) {
@@ -159,9 +159,9 @@ class PaymentE2ETests {
 
     async testPaymentWebhook() {
         if (!this.testPayment) return this.logSkipped('Payment webhook - no payment to test');
-        
+
         console.log('\n🧪 Test: Payment Webhook');
-        
+
         try {
             // Simulate Mercado Pago webhook payload
             const webhookPayload = {
@@ -180,13 +180,13 @@ class PaymentE2ETests {
             };
 
             const response = await axios.post(`${API_BASE}/webhook/mercado-pago`, webhookPayload);
-            
+
             if (response.status === 200) {
                 this.logSuccess('Webhook processed successfully', 'Webhook accepted');
-                
+
                 // Wait a moment for webhook processing
                 await this.sleep(2000);
-                
+
                 // Verify payment status was updated
                 const updatedPayment = await axios.get(`${API_BASE}/payments/${this.testPayment.id}`);
                 this.logSuccess('Payment status after webhook', `Status: ${updatedPayment.data.status}`);
@@ -200,9 +200,9 @@ class PaymentE2ETests {
 
     async testPaymentStatusUpdates() {
         if (!this.testPayment) return this.logSkipped('Payment status updates - no payment to test');
-        
+
         console.log('\n🧪 Test: Payment Status Updates');
-        
+
         try {
             // Test different payment statuses
             const statusTests = [
@@ -224,7 +224,7 @@ class PaymentE2ETests {
                     };
 
                     const response = await axios.post(`${API_BASE}/webhook/mercado-pago`, webhookData);
-                    
+
                     if (response.status === 200) {
                         this.logSuccess(`${statusTest.description} webhook processed`);
                         await this.sleep(1000);
@@ -270,12 +270,12 @@ class PaymentE2ETests {
         const passed = this.testResults.filter(r => r.type === 'success').length;
         const failed = this.testResults.filter(r => r.type === 'error').length;
         const skipped = this.testResults.filter(r => r.type === 'skipped').length;
-        
+
         console.log('\n📊 Payment Integration Test Results:');
         console.log(`   ✅ Passed: ${passed}`);
         console.log(`   ❌ Failed: ${failed}`);
         console.log(`   ⏭️  Skipped: ${skipped}`);
-        
+
         if (failed > 0) {
             console.log('\n🚨 Failures:');
             this.testResults.filter(r => r.type === 'error').forEach(result => {

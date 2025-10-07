@@ -21,7 +21,7 @@ class OrderE2ETests {
     async runAllTests() {
         console.log('🚀 Starting Order Workflow E2E Tests...');
         console.log(`📍 Testing against: ${APP_URL}`);
-        
+
         try {
             await this.setupTestData();
             await this.testCreateOrder();
@@ -29,7 +29,7 @@ class OrderE2ETests {
             await this.testUpdateOrderStatus();
             await this.testListOrders();
             await this.testCompleteOrderWorkflow();
-            
+
             this.printResults();
         } catch (error) {
             console.error('❌ Test suite failed:', error.message);
@@ -39,7 +39,7 @@ class OrderE2ETests {
 
     async setupTestData() {
         console.log('\n🔧 Setting up test data...');
-        
+
         try {
             // Create test client
             const clientResponse = await axios.post(`${API_BASE}/clients`, {
@@ -54,7 +54,7 @@ class OrderE2ETests {
             const productsResponse = await axios.get(`${API_BASE}/products`);
             this.testProducts = productsResponse.data.slice(0, 2); // Take first 2 products
             console.log(`   ✅ Retrieved ${this.testProducts.length} test products`);
-            
+
         } catch (error) {
             console.log('   ❌ Setup failed:', error.message);
             throw error;
@@ -63,7 +63,7 @@ class OrderE2ETests {
 
     async testCreateOrder() {
         console.log('\n🧪 Test: Create Order');
-        
+
         if (!this.testClient || this.testProducts.length === 0) {
             return this.logSkipped('Create order - missing test data');
         }
@@ -78,7 +78,7 @@ class OrderE2ETests {
 
         try {
             const response = await axios.post(`${API_BASE}/orders`, orderData);
-            
+
             if (response.status === 201 && response.data.id) {
                 this.testOrder = response.data;
                 this.logSuccess('Order created successfully', `Order ID: ${response.data.id}`);
@@ -92,12 +92,12 @@ class OrderE2ETests {
 
     async testGetOrder() {
         if (!this.testOrder) return this.logSkipped('Get order - no order to test');
-        
+
         console.log('\n🧪 Test: Get Order');
-        
+
         try {
             const response = await axios.get(`${API_BASE}/orders/${this.testOrder.id}`);
-            
+
             if (response.status === 200 && response.data.id === this.testOrder.id) {
                 this.logSuccess('Order retrieved successfully', `Status: ${response.data.status}`);
             } else {
@@ -110,15 +110,15 @@ class OrderE2ETests {
 
     async testUpdateOrderStatus() {
         if (!this.testOrder) return this.logSkipped('Update order status - no order to test');
-        
+
         console.log('\n🧪 Test: Update Order Status');
-        
+
         const statusProgression = ['RECEIVED', 'IN_PREPARATION', 'READY', 'FINISHED'];
-        
+
         for (const status of statusProgression) {
             try {
                 const response = await axios.patch(`${API_BASE}/orders/${this.testOrder.id}/status`, { status });
-                
+
                 if (response.status === 200 && response.data.status === status) {
                     this.logSuccess(`Order status updated to ${status}`);
                     await this.sleep(1000); // Wait 1 second between status updates
@@ -134,10 +134,10 @@ class OrderE2ETests {
 
     async testListOrders() {
         console.log('\n🧪 Test: List Orders');
-        
+
         try {
             const response = await axios.get(`${API_BASE}/orders`);
-            
+
             if (response.status === 200 && Array.isArray(response.data)) {
                 const orderFound = response.data.some(order => order.id === this.testOrder?.id);
                 if (orderFound) {
@@ -155,14 +155,14 @@ class OrderE2ETests {
 
     async testCompleteOrderWorkflow() {
         console.log('\n🧪 Test: Complete Order Workflow Validation');
-        
+
         if (!this.testOrder) return this.logSkipped('Order workflow validation - no order to test');
-        
+
         try {
             // Get final order state
             const response = await axios.get(`${API_BASE}/orders/${this.testOrder.id}`);
             const finalOrder = response.data;
-            
+
             // Validate order completion
             const validationChecks = [
                 { check: 'Order exists', passed: !!finalOrder.id },
@@ -172,17 +172,17 @@ class OrderE2ETests {
                 { check: 'Order has timestamps', passed: !!finalOrder.createdAt },
                 { check: 'Order has total amount', passed: finalOrder.totalAmount > 0 }
             ];
-            
+
             const passedChecks = validationChecks.filter(check => check.passed).length;
             const totalChecks = validationChecks.length;
-            
+
             if (passedChecks === totalChecks) {
                 this.logSuccess(`Order workflow validation passed (${passedChecks}/${totalChecks})`, finalOrder.status);
             } else {
                 const failedChecks = validationChecks.filter(check => !check.passed).map(check => check.check);
                 throw new Error(`Validation failed for: ${failedChecks.join(', ')}`);
             }
-            
+
         } catch (error) {
             this.logError('Order workflow validation failed', error);
         }
@@ -217,12 +217,12 @@ class OrderE2ETests {
         const passed = this.testResults.filter(r => r.type === 'success').length;
         const failed = this.testResults.filter(r => r.type === 'error').length;
         const skipped = this.testResults.filter(r => r.type === 'skipped').length;
-        
+
         console.log('\n📊 Order Workflow Test Results:');
         console.log(`   ✅ Passed: ${passed}`);
         console.log(`   ❌ Failed: ${failed}`);
         console.log(`   ⏭️  Skipped: ${skipped}`);
-        
+
         if (failed > 0) {
             console.log('\n🚨 Failures:');
             this.testResults.filter(r => r.type === 'error').forEach(result => {
