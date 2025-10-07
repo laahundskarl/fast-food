@@ -349,6 +349,9 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 ## Vídeo Fase 2 - Tech Challenge
 [Disponível no Google Drive](https://drive.google.com/file/d/1I3kuTuB8rHYfieVRkhryJwcm9AV9dKFI/view?usp=sharing)
 
+## Vídeo Fase 3 - Tech Challenge
+[Disponível no Google Drive](https://drive.google.com/file/d/1BHgr36XaW9gyuWwWTdwwLPk7bCVMNAkS/view?usp=sharing)
+
 ## 🧑‍💻 Contribuidores
 
 - Tech Challenge
