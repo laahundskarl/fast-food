@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify';
 
+import { AuthMiddleware } from '#/interfaces/http/middlewares/auth.middleware';
 import { clientRoute } from '#/interfaces/http/routes/client.route';
 import { orderRoute } from '#/interfaces/http/routes/order.route';
 import { paymentRoute } from '#/interfaces/http/routes/payment.route';
@@ -8,6 +9,10 @@ import { productRoute } from '#/interfaces/http/routes/product.route';
 import { webhookRoute } from '#/interfaces/http/routes/webhook.route';
 
 export function registerRoutes(app: FastifyInstance) {
+    const authMiddleware = app.container.get(AuthMiddleware);
+
+    app.addHook('onRequest', authMiddleware.handle);
+
     app.register(clientRoute, { prefix: '/client' });
     app.register(orderRoute, { prefix: '/order' });
     app.register(productRoute, { prefix: '/product' });
