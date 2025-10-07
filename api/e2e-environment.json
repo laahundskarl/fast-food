@@ -1,0 +1,57 @@
+{
+  "id": "e2e-test-environment",
+  "name": "E2E Test Environment",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "{{APP_URL}}",
+      "enabled": true
+    },
+    {
+      "key": "api_url",
+      "value": "{{base_url}}/api",
+      "enabled": true
+    },
+    {
+      "key": "client_id",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "order_id",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "payment_id",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "product_id",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "category_id",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "test_client_email",
+      "value": "e2e-test-{{$timestamp}}@example.com",
+      "enabled": true
+    },
+    {
+      "key": "test_client_cpf",
+      "value": "12345678901",
+      "enabled": true
+    },
+    {
+      "key": "test_client_name",
+      "value": "E2E Test Client",
+      "enabled": true
+    }
+  ],
+  "_postman_variable_scope": "environment"
+}

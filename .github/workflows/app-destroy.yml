@@ -1,4 +1,4 @@
-name: 'Application Cleanup and Infrastructure Destroy'
+name: 'Cleanup - Application and Infrastructure'
 
 on:
   workflow_dispatch:
@@ -32,13 +32,13 @@ jobs:
       run: |
         SCOPE="${{ github.event.inputs.cleanup_scope }}"
         CONFIRM="${{ github.event.inputs.confirm_action }}"
-        
+
         if [ "$SCOPE" = "app-only" ] && [ "$CONFIRM" = "CLEANUP" ]; then
           echo "should_cleanup=true" >> $GITHUB_OUTPUT
           echo "cleanup_scope=app-only" >> $GITHUB_OUTPUT
           echo "✅ Application cleanup confirmed"
         elif [ "$SCOPE" = "full-infrastructure" ] && [ "$CONFIRM" = "DESTROY" ]; then
-          echo "should_cleanup=true" >> $GITHUB_OUTPUT  
+          echo "should_cleanup=true" >> $GITHUB_OUTPUT
           echo "cleanup_scope=full-infrastructure" >> $GITHUB_OUTPUT
           echo "✅ Full infrastructure destruction confirmed"
         else
@@ -76,10 +76,10 @@ jobs:
     - name: Stop application pods
       run: |
         echo "🛑 Stopping FastFood application..."
-        
+
         # Scale down deployment to 0
         kubectl scale deployment fastfood-api --replicas=0 || echo "⚠️ Deployment may not exist"
-        
+
         # Wait for pods to terminate
         echo "⏳ Waiting for pods to terminate..."
         kubectl wait --for=delete pod -l app=fastfood-api --timeout=120s || echo "⚠️ Pods may not exist"
@@ -87,15 +87,15 @@ jobs:
     - name: Remove application resources
       run: |
         echo "🗑️ Removing application-specific resources..."
-        
+
         # Remove HPA first
         kubectl delete hpa fastfood-api-hpa --ignore-not-found=true
-        
+
         # Remove deployment and configmap
         kubectl delete deployment fastfood-api --ignore-not-found=true
         kubectl delete configmap fastfood-config --ignore-not-found=true
         kubectl delete secret fastfood-secrets --ignore-not-found=true
-        
+
         echo "✅ Application resources removed"
 
     - name: Verify cleanup
@@ -126,7 +126,7 @@ jobs:
         github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
         script: |
           console.log('🚨 Triggering full infrastructure destruction...');
-          
+
           // Trigger K8s infrastructure destroy
           await github.rest.repos.createDispatchEvent({
             owner: 'laahundskarl',
@@ -138,7 +138,7 @@ jobs:
               timestamp: new Date().toISOString()
             }
           });
-          
+
           console.log('✅ K8s infrastructure destroy triggered');
 
     - name: Wait and trigger DB destroy
@@ -185,10 +185,10 @@ jobs:
     - name: Cleanup old images (keep latest 3)
       run: |
         echo "🧹 Cleaning up old ECR images..."
-        
+
         # Get images older than latest 3
         OLD_IMAGES=$(aws ecr describe-images --repository-name fastfood-api --query 'sort_by(imageDetails,&imagePushedAt)[:-3].[imageDigest]' --output text 2>/dev/null || echo "")
-        
+
         if [ ! -z "$OLD_IMAGES" ]; then
           echo "Removing old images..."
           for digest in $OLD_IMAGES; do
@@ -208,7 +208,7 @@ jobs:
     - name: Generate summary
       run: |
         SCOPE="${{ needs.validate-input.outputs.cleanup_scope }}"
-        
+
         echo "🏁 CLEANUP COMPLETED!"
         echo "=================="
         echo ""
@@ -216,7 +216,7 @@ jobs:
         echo "  - Application pods stopped and removed"
         echo "  - Kubernetes resources cleaned up"
         echo "  - Old ECR images pruned"
-        
+
         if [ "$SCOPE" = "full-infrastructure" ]; then
           echo "  - Infrastructure destruction initiated"
           echo ""
@@ -231,7 +231,7 @@ jobs:
           echo "  - Push new code to modulo_3 branch"
           echo "  - Infrastructure remains ready for immediate deployment"
         fi
-        
+
         echo ""
         echo "📊 Infrastructure status:"
         echo "  - EKS Cluster: $([ "$SCOPE" = "full-infrastructure" ] && echo "🔄 Destroying" || echo "✅ Running")"

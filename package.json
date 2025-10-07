@@ -14,7 +14,15 @@
         "prisma:generate": "prisma generate",
         "prisma:studio": "prisma studio",
         "prisma:seed": "prisma db seed",
-        "prod": "node dist/index.js"
+        "prod": "node dist/index.js",
+        "test:e2e": "npm run test:e2e:clients && npm run test:e2e:orders && npm run test:e2e:payments && npm run test:e2e:admin",
+        "test:e2e:local": "node tests/e2e/run-local.js",
+        "test:e2e:clients": "echo '🧪 Testing Client Management...' && node tests/e2e/client-tests.js",
+        "test:e2e:orders": "echo '🧪 Testing Order Workflow...' && node tests/e2e/order-tests.js",
+        "test:e2e:payments": "echo '🧪 Testing Payment Integration...' && node tests/e2e/payment-tests.js",
+        "test:e2e:admin": "echo '🧪 Testing Admin Operations...' && node tests/e2e/admin-tests.js",
+        "test:health": "curl -f $npm_config_app_url/health || echo 'Health check failed'",
+        "test:postman": "newman run api/Fast-Food.postman_collection.json --environment api/e2e-environment.json"
     },
     "repository": {
         "type": "git",
