@@ -4,7 +4,7 @@ import { IGetPaymentUseCase } from '#/application/use-cases/payment/get-payment/
 import { Payment } from '#/domain/entities/payment.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IPaymentRepository } from '#/domain/repositories/payment.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class GetPayment implements IGetPaymentUseCase {

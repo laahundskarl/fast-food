@@ -4,7 +4,7 @@ import { ListProductDto } from '#/application/use-cases/product/list-product/lis
 import { IListProductUseCase } from '#/application/use-cases/product/list-product/list-product.use-case';
 import { Product } from '#/domain/entities/product.entity';
 import { IProductRepository } from '#/domain/repositories/product.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class ListProduct implements IListProductUseCase {

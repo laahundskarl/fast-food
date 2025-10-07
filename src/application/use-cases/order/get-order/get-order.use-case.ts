@@ -1,5 +1,5 @@
-import { Order } from '#/domain/entities/order.entity';
+import { IOrder } from '#/domain/entities/order.entity';
 
 export interface IGetOrderUseCase {
-    execute(id: string): Promise<Order>;
+    execute(id: string): Promise<IOrder>;
 }

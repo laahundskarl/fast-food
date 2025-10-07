@@ -1,21 +1,29 @@
 import { randomUUID } from 'crypto';
 
-import { Order } from '#/domain/entities/order.entity';
+import { IOrder } from '#/domain/entities/order.entity';
 
-type ClientPayload = {
+export interface IClient {
+    id: string;
+    name: string;
+    cpf: string;
+    email: string;
+    orders?: IOrder[];
+}
+
+export type ClientPayload = {
     id?: string;
     name: string;
     cpf: string;
     email: string;
-    orders?: Order[];
+    orders?: IOrder[];
 };
 
-export class Client {
+export class Client implements IClient {
     public readonly id: string;
     public name: string;
     public cpf: string;
     public email: string;
-    public orders?: Order[];
+    public orders?: IOrder[];
 
     constructor(payload: ClientPayload) {
         this.id = payload.id || randomUUID();

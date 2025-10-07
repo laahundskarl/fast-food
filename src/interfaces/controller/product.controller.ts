@@ -1,4 +1,3 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 
 import { CreateProductDto } from '#/application/use-cases/product/create-product/create-product.dto';
@@ -9,10 +8,13 @@ import { ListProductDto } from '#/application/use-cases/product/list-product/lis
 import { IListProductUseCase } from '#/application/use-cases/product/list-product/list-product.use-case';
 import { UpdateProductDto } from '#/application/use-cases/product/update-product/update-product.dto';
 import { IUpdateProductUseCase } from '#/application/use-cases/product/update-product/update-product.use-case';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
+import { IProductController } from '#/interfaces/controller/types/product';
+import { ProductResponseDTO } from '#/interfaces/presenter/product/product-response.dto';
+import { ProductPresenter } from '#/interfaces/presenter/product/product.presenter';
 
 @injectable()
-export class ProductController {
+export class ProductController implements IProductController {
     constructor(
         @inject(TYPES.CreateProductUseCase) private readonly createProductUseCase: ICreateProductUseCase,
         @inject(TYPES.DeleteProductUseCase) private readonly deleteProductUseCase: IDeleteProductUseCase,
@@ -21,31 +23,27 @@ export class ProductController {
         @inject(TYPES.UpdateProductUseCase) private readonly updateProductUseCase: IUpdateProductUseCase,
     ) {}
 
-    async create(request: FastifyRequest, reply: FastifyReply) {
-        const body = request.body as CreateProductDto;
-        const result = await this.createProductUseCase.execute(body);
-        return reply.status(201).send(result);
+    async create(request: CreateProductDto): Promise<ProductResponseDTO> {
+        const response = await this.createProductUseCase.execute(request);
+        return ProductPresenter.toDTO(response);
     }
 
-    async delete(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-        await this.deleteProductUseCase.execute(request.params.id);
-        return reply.send({ message: 'Product deleted successfully' });
+    async delete(id: string): Promise<void> {
+        await this.deleteProductUseCase.execute(id);
     }
 
-    async get(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-        const result = await this.getProductUseCase.execute(request.params.id);
-        return reply.send(result);
+    async get(id: string): Promise<ProductResponseDTO> {
+        const response = await this.getProductUseCase.execute(id);
+        return ProductPresenter.toDTO(response);
     }
 
-    async list(request: FastifyRequest, reply: FastifyReply) {
-        const query = request.query as ListProductDto;
-        const result = await this.listProductUseCase.execute(query);
-        return reply.send(result);
+    async list(query: ListProductDto): Promise<ProductResponseDTO[]> {
+        const response = await this.listProductUseCase.execute(query);
+        return response.map(item => ProductPresenter.toDTO(item));
     }
 
-    async update(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-        const body = request.body as UpdateProductDto;
-        const result = await this.updateProductUseCase.execute(request.params.id, body);
-        return reply.send(result);
+    async update(id: string, request: UpdateProductDto): Promise<ProductResponseDTO> {
+        const result = await this.updateProductUseCase.execute(id, request);
+        return ProductPresenter.toDTO(result);
     }
 }

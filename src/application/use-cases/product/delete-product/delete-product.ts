@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { IDeleteProductUseCase } from '#/application/use-cases/product/delete-product/delete-product.use-case';
 import { NotFoundError } from '#/domain/errors';
 import { IProductRepository } from '#/domain/repositories/product.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class DeleteProduct implements IDeleteProductUseCase {

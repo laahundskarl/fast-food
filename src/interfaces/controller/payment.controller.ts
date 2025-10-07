@@ -1,26 +1,27 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 
 import { IGetPaymentUseCase } from '#/application/use-cases/payment/get-payment/get-payment.use-case';
 import { ListPaymentDto } from '#/application/use-cases/payment/list-payment/list-payment.dto';
 import { IListPaymentUseCase } from '#/application/use-cases/payment/list-payment/list-payment.use-case';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
+import { IPaymentController } from '#/interfaces/controller/types/payment';
+import { PaymentResponseDTO } from '#/interfaces/presenter/payment/payment-response.dto';
+import { PaymentPresenter } from '#/interfaces/presenter/payment/payment.presenter';
 
 @injectable()
-export class PaymentController {
+export class PaymentController implements IPaymentController {
     constructor(
         @inject(TYPES.GetPaymentUseCase) private readonly getPaymentUseCase: IGetPaymentUseCase,
         @inject(TYPES.ListPaymentUseCase) private readonly listPaymentUseCase: IListPaymentUseCase,
     ) {}
 
-    async get(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-        const payment = await this.getPaymentUseCase.execute(request.params.id);
-        return reply.send(payment);
+    async get(id: string): Promise<PaymentResponseDTO> {
+        const response = await this.getPaymentUseCase.execute(id);
+        return PaymentPresenter.toDTO(response);
     }
 
-    async list(request: FastifyRequest, reply: FastifyReply) {
-        const query = request.query as ListPaymentDto;
-        const payment = await this.listPaymentUseCase.execute(query);
-        return reply.send(payment);
+    async list(query: ListPaymentDto): Promise<PaymentResponseDTO[]> {
+        const response = await this.listPaymentUseCase.execute(query);
+        return response.map(item => PaymentPresenter.toDTO(item));
     }
 }

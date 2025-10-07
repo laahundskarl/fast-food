@@ -1,9 +1,11 @@
 import fastifyCors from '@fastify/cors';
+import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastify, { FastifyInstance } from 'fastify';
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import { jsonSchemaTransform } from 'fastify-type-provider-zod';
 import { Container } from 'inversify';
 
-import { registerSwagger } from '#/interfaces/http/docs';
 import { errorHandler } from '#/interfaces/http/middlewares/error-handler';
 import { registerRoutes } from '#/interfaces/http/routes';
 
@@ -17,7 +19,47 @@ export function buildApp(container: Container): FastifyInstance {
 
     app.register(fastifyCors);
 
-    registerSwagger(app);
+    app.register(fastifySwagger, {
+        openapi: {
+            info: {
+                title: 'API FastFood',
+                description: 'Documentação da API FastFood',
+                version: '1.0.0',
+            },
+            tags: [
+                {
+                    name: 'Clientes',
+                    description: 'Operações relacionadas a clientes',
+                },
+                {
+                    name: 'Identificação',
+                    description: 'Operações relacionada a identificação do cliente',
+                },
+                {
+                    name: 'Pedidos',
+                    description: 'Operações relacionadas a pedidos',
+                },
+                {
+                    name: 'Pagamentos',
+                    description: 'Operações relacionadas a pagamentos',
+                },
+                {
+                    name: 'Categoria',
+                    description: 'Operações relacionadas a categoria',
+                },
+                {
+                    name: 'Produtos',
+                    description: 'Operações relacionadas a produtos',
+                },
+            ],
+        },
+        transform: jsonSchemaTransform,
+    });
+
+    app.register(fastifySwaggerUi, {
+        routePrefix: '/docs',
+    });
+
     registerRoutes(app);
 
     app.setErrorHandler(errorHandler);

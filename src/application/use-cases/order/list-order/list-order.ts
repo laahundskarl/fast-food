@@ -5,7 +5,7 @@ import { ListOrderDto, ListOrderRequestDto } from '#/application/use-cases/order
 import { IListOrderUseCase } from '#/application/use-cases/order/list-order/list-order.use-case';
 import { Order } from '#/domain/entities/order.entity';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class ListOrder implements IListOrderUseCase {

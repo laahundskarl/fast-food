@@ -1,17 +1,23 @@
 import { randomUUID } from 'crypto';
 
-import { Product } from '#/domain/entities/product.entity';
+import { IProduct } from '#/domain/entities/product.entity';
 
-type ProductCategoryPayload = {
+export interface IProductCategory {
+    readonly id: string;
+    name: string;
+    products?: IProduct[];
+}
+
+export type ProductCategoryPayload = {
     id?: string;
     name: string;
-    products?: Product[];
+    products?: IProduct[];
 };
 
-export class ProductCategory {
+export class ProductCategory implements IProductCategory {
     public readonly id: string;
     public name: string;
-    public products?: Product[];
+    public products?: IProduct[];
 
     constructor(payload: ProductCategoryPayload) {
         this.id = payload.id || randomUUID();

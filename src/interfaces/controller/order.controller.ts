@@ -1,5 +1,4 @@
 import { OrderStatus } from '@prisma/client';
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 
 import { CreateOrderDto } from '#/application/use-cases/order/create-order/create-order.dto';
@@ -11,10 +10,13 @@ import { IListOrderUseCase } from '#/application/use-cases/order/list-order/list
 import { UpdateOrderDto } from '#/application/use-cases/order/update-order/update-order.dto';
 import { IUpdateOrderUseCase } from '#/application/use-cases/order/update-order/update-order.use-case';
 import { IUpdateOrderStatusUseCase } from '#/application/use-cases/order/update-order-status/update-order-status.use-case';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
+import { IOrderController } from '#/interfaces/controller/types/order';
+import { OrderResponseDTO } from '#/interfaces/presenter/order/order-response.dto';
+import { OrderPresenter } from '#/interfaces/presenter/order/order.presenter';
 
 @injectable()
-export class OrderController {
+export class OrderController implements IOrderController {
     constructor(
         @inject(TYPES.CreateOrderUseCase) private readonly createOrderUseCase: ICreateOrderUseCase,
         @inject(TYPES.DeleteOrderUseCase) private readonly deleteOrderUseCase: IDeleteOrderUseCase,
@@ -24,37 +26,32 @@ export class OrderController {
         @inject(TYPES.UpdateOrderStatusUseCase) private readonly updateOrderStatusUseCase: IUpdateOrderStatusUseCase,
     ) {}
 
-    async create(request: FastifyRequest, reply: FastifyReply) {
-        const body = request.body as CreateOrderDto;
-        const result = await this.createOrderUseCase.execute(body);
-        return reply.status(201).send(result);
+    async create(request: CreateOrderDto): Promise<OrderResponseDTO> {
+        const response = await this.createOrderUseCase.execute(request);
+        return OrderPresenter.toDTO(response);
     }
 
-    async delete(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-        await this.deleteOrderUseCase.execute(request.params.id);
-        return reply.send({ message: 'Order deleted successfully' });
+    async delete(id: string): Promise<void> {
+        await this.deleteOrderUseCase.execute(id);
     }
 
-    async get(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-        const result = await this.getOrderUseCase.execute(request.params.id);
-        return reply.send(result);
+    async get(id: string): Promise<OrderResponseDTO> {
+        const response = await this.getOrderUseCase.execute(id);
+        return OrderPresenter.toDTO(response);
     }
 
-    async list(request: FastifyRequest, reply: FastifyReply) {
-        const query = request.query as ListOrderRequestDto;
-        const result = await this.listOrderUseCase.execute(query);
-        return reply.send(result);
+    async list(query: ListOrderRequestDto): Promise<OrderResponseDTO[]> {
+        const response = await this.listOrderUseCase.execute(query);
+        return response.map(item => OrderPresenter.toDTO(item));
     }
 
-    async update(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-        const body = request.body as UpdateOrderDto;
-        const result = await this.updateOrderUseCase.execute(request.params.id, body);
-        return reply.send(result);
+    async update(id: string, request: UpdateOrderDto): Promise<OrderResponseDTO> {
+        const response = await this.updateOrderUseCase.execute(id, request);
+        return OrderPresenter.toDTO(response);
     }
 
-    async updateStatus(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
-        const { status } = request.body as { status: OrderStatus };
-        const result = await this.updateOrderStatusUseCase.execute(request.params.id, status);
-        return reply.send(result);
+    async updateStatus(id: string, status: OrderStatus): Promise<OrderResponseDTO> {
+        const response = await this.updateOrderStatusUseCase.execute(id, status);
+        return OrderPresenter.toDTO(response);
     }
 }

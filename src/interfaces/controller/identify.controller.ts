@@ -1,17 +1,18 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { inject, injectable } from 'inversify';
 
 import { IdentifyDto } from '#/application/use-cases/identify/identify.dto';
 import { IIdentifyUseCase } from '#/application/use-cases/identify/identify.use-case';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
+import { IIdentifyController } from '#/interfaces/controller/types/identify';
+import { ClientResponseDTO } from '#/interfaces/presenter/client/client-response.dto';
+import { ClientPresenter } from '#/interfaces/presenter/client/client.presenter';
 
 @injectable()
-export class IdentifyController {
+export class IdentifyController implements IIdentifyController {
     constructor(@inject(TYPES.IdentifyUseCase) private readonly identifyUseCase: IIdentifyUseCase) {}
 
-    async get(request: FastifyRequest, reply: FastifyReply) {
-        const body = request.body as IdentifyDto;
-        const result = await this.identifyUseCase.execute(body);
-        return reply.send(result);
+    async get(request: IdentifyDto): Promise<ClientResponseDTO> {
+        const response = await this.identifyUseCase.execute(request);
+        return ClientPresenter.toDTO(response);
     }
 }

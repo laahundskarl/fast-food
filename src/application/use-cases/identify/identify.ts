@@ -2,17 +2,17 @@ import { inject, injectable } from 'inversify';
 
 import { IdentifyDto } from '#/application/use-cases/identify/identify.dto';
 import { IIdentifyUseCase } from '#/application/use-cases/identify/identify.use-case';
-import { Client } from '#/domain/entities/client.entity';
+import { IClient } from '#/domain/entities/client.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IClientRepository } from '#/domain/repositories/client.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class Identify implements IIdentifyUseCase {
     constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
-    async execute(request: IdentifyDto): Promise<Client> {
-        const client = await this.clientRepository.findByCpf(request.cpf, false);
+    async execute(request: IdentifyDto): Promise<IClient> {
+        const client = await this.clientRepository.findByCpf(request.cpf, []);
         if (!client) {
             throw new NotFoundError('Client not found, please register');
         }

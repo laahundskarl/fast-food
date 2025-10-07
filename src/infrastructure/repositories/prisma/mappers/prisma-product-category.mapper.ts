@@ -1,4 +1,4 @@
-import { ProductCategory } from '#/domain/entities/product-category.entity';
+import { ProductCategory, ProductCategoryPayload } from '#/domain/entities/product-category.entity';
 import { PrismaProductMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product.mapper';
 
 export class PrismaProductCategoryMapper {
@@ -6,14 +6,9 @@ export class PrismaProductCategoryMapper {
         return new ProductCategory({
             id: data.id,
             name: data.name,
-            products: data.products.map((product: any) => PrismaProductMapper.toDomainSimple(product)) || [],
-        });
-    }
-
-    static toDomainSimple(data: any): ProductCategory {
-        return new ProductCategory({
-            id: data.id,
-            name: data.name,
-        });
+            ...(data.products && {
+                products: data.products.map((product: any) => PrismaProductMapper.toDomain(product)),
+            }),
+        } as ProductCategoryPayload);
     }
 }

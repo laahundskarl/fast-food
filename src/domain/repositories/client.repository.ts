@@ -1,11 +1,11 @@
-import { Client } from '#/domain/entities/client.entity';
+import { IClient } from '#/domain/entities/client.entity';
 
 export interface IClientRepository {
-    create(client: Client): Promise<Client>;
-    findByCpf(cpf: string, withOrders: boolean): Promise<Client | null>;
-    findByEmail(email: string): Promise<Client | null>;
-    findByCpfOrEmail(cpf: string, email: string): Promise<Client | null>;
-    findById(id: string): Promise<Client | null>;
-    update(client: Client): Promise<Client>;
+    create(client: IClient): Promise<IClient>;
+    findByCpf(cpf: string, includes: string[]): Promise<IClient | null>;
+    findByEmail(email: string): Promise<IClient | null>;
+    findByCpfOrEmail(cpf: string, email: string): Promise<IClient | null>;
+    findById(id: string): Promise<IClient | null>;
+    update(client: IClient): Promise<IClient>;
     destroy(cpf: string): Promise<void>;
 }

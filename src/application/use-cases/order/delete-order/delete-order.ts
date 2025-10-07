@@ -3,7 +3,7 @@ import { inject, injectable } from 'inversify';
 import { IDeleteOrderUseCase } from '#/application/use-cases/order/delete-order/delete-order.use-case';
 import { NotFoundError } from '#/domain/errors';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class DeleteOrder implements IDeleteOrderUseCase {

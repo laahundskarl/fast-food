@@ -5,19 +5,19 @@ import { IUpdateClientUseCase } from '#/application/use-cases/client/update-clie
 import { Client } from '#/domain/entities/client.entity';
 import { ConflictError, NotFoundError } from '#/domain/errors';
 import { IClientRepository } from '#/domain/repositories/client.repository';
-import { TYPES } from '#/infrastructure/config/types';
+import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
 export class UpdateClient implements IUpdateClientUseCase {
     constructor(@inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository) {}
 
     async execute(cpf: string, request: UpdateClientDto): Promise<Client> {
-        const client = await this.clientRepository.findByCpf(cpf, false);
+        const client = await this.clientRepository.findByCpf(cpf, []);
         if (!client) {
             throw new NotFoundError('Client not found');
         }
         if (request.cpf && request.cpf !== client.cpf) {
-            const existingClientByCpf = await this.clientRepository.findByCpf(request.cpf, false);
+            const existingClientByCpf = await this.clientRepository.findByCpf(request.cpf, []);
             if (existingClientByCpf) {
                 throw new ConflictError('Client already exists with this cpf.');
             }

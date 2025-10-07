@@ -1,4 +1,4 @@
-import { container } from '#/infrastructure/config/container';
+import { container } from '#/infrastructure/config/di/container';
 import { env } from '#/infrastructure/config/env';
 import { buildApp } from '#/infrastructure/server/app';
 
