@@ -54,10 +54,6 @@ As workflows seguem prefixos padronizados que indicam claramente o propósito:
 - Reduz erros de nomenclatura
 - Melhora documentação automática
 
-## Pipeline End-to-End
-
-### 🚀 **Nova Workflow E2E**
-
 ## Vantagens do Sistema
 
 ### 💰 **Economia de Custos**
