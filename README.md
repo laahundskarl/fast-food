@@ -14,7 +14,7 @@ A infraestrutura foi desacoplada em repositórios separados:
 ### Pipeline CI/CD Automatizado
 
 ```
-Database Infra → K8s Infra → Lambda Infra → Application Build → Deploy
+Database Infra → K8s Infra → Autenticação (AWS Lambda) → Application Build → Deploy
 ```
 
 1. **DB Infrastructure** deploys RDS MySQL
