@@ -125,6 +125,41 @@ wait-for.sh                 → Script para aguardar serviços
 
 ---
 
+## 🗄️ Modelo de Banco de Dados
+
+![Diagrama BD - MySQL](./docs/Diagrama%20BD%20-%20MySQL.png)
+
+### Justificativa para Escolha do MySQL
+
+A escolha do **MySQL** como banco de dados para o sistema FastFood foi baseada nos seguintes critérios técnicos e de negócio:
+
+#### **1. Características do Domínio**
+- **Dados estruturados:** O sistema trabalha com entidades bem definidas (Cliente, Pedido, Produto, Pagamento)
+- **Relacionamentos claros:** Relacionamentos 1:N e N:N bem estabelecidos entre as entidades
+- **Consistência ACID:** Transações financeiras (pagamentos) exigem consistência e atomicidade
+
+#### **2. Vantagens Técnicas do MySQL**
+- **Performance comprovada:** Excelente performance para operações OLTP (Online Transaction Processing)
+- **Escalabilidade vertical:** Adequado para o volume esperado de uma lanchonete
+- **Índices otimizados:** Suporte nativo a índices compostos para consultas complexas
+- **JSON support:** Capacidade de armazenar dados semi-estruturados quando necessário
+
+#### **3. Ecossistema e Operações**
+- **Amazon RDS MySQL:** Gerenciamento automático, backups, patches e alta disponibilidade
+- **Ferramentas maduras:** Vasto ecossistema de ferramentas de monitoramento e administração
+- **Conhecimento da equipe:** Tecnologia amplamente conhecida, reduzindo curva de aprendizado
+- **Custo-benefício:** Licença open-source com opções comerciais para suporte
+
+#### **4. Requisitos do Sistema**
+- **Transações financeiras:** ACID compliance essencial para integridade de pagamentos
+- **Consultas relacionais:** Necessidade de JOINs para relatórios de pedidos e histórico
+- **Backup e recuperação:** RDS oferece backup automatizado e point-in-time recovery
+- **Compliance:** Suporte a auditoria para rastreabilidade de transações
+
+**Conclusão:** MySQL oferece o equilíbrio ideal entre simplicidade operacional, performance, confiabilidade e custo para um sistema de autoatendimento FastFood.
+
+---
+
 ## Event Storming (DDD)
 
 As informações bem como a imagem do event storming estão disponibilizadas na pasta /docs da aplicação.
