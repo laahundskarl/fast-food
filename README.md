@@ -525,7 +525,7 @@ kubectl top nodes
 # 2. Destruir infraestrutura Lambda (via repositório lambda)
 # Consulte: https://github.com/laahundskarl/fast-food-lambda
 
-# 3. Destruir infraestrutura (via repositórios separados)
+# 3. Destruir demais infraestruturas (DB e K8s) via repositórios separados
 # Database: https://github.com/laahundskarl/fast-food-db-infra
 # K8s: https://github.com/laahundskarl/fast-food-k8s-infra
 
