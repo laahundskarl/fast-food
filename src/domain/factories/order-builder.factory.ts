@@ -3,9 +3,9 @@ import { OrderStatus } from '@prisma/client';
 import { IOrderProduct, OrderProduct } from '#/domain/entities/order-product.entity';
 import { IOrder, Order } from '#/domain/entities/order.entity';
 import { IProduct } from '#/domain/entities/product.entity';
-import { ProductValidationService } from '#/domain/services/product-validation.service';
+import { ProductValidationFactory } from '#/domain/factories/product-validation.factory';
 
-export class OrderBuilderService {
+export class OrderBuilderFactory {
     static buildOrderProducts(
         requestedProducts: Array<{ productId: string; quantity: number }>,
         availableProducts: IProduct[],
@@ -13,7 +13,7 @@ export class OrderBuilderService {
         let totalValue = 0;
 
         const orderProducts = requestedProducts.map(item => {
-            const product = ProductValidationService.findProductById(item.productId, availableProducts);
+            const product = ProductValidationFactory.findProductById(item.productId, availableProducts);
             const itemValue = product.value * item.quantity;
             totalValue += itemValue;
 

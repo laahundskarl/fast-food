@@ -52,8 +52,11 @@ export const TYPES = {
     CreatePaymentGateway: Symbol.for('CreatePaymentGateway'),
     GetPaymentGateway: Symbol.for('GetPaymentGateway'),
 
-    // Application Services
-    ProductOrchestrationService: Symbol.for('ProductOrchestrationService'),
-    ClientOrchestrationService: Symbol.for('ClientOrchestrationService'),
-    PaymentOrchestrationService: Symbol.for('PaymentOrchestrationService'),
+    // Orchestration
+    ProductOrchestration: Symbol.for('ProductOrchestration'),
+    ClientOrchestration: Symbol.for('ClientOrchestration'),
+    PaymentOrchestration: Symbol.for('PaymentOrchestration'),
+
+    // Services
+    ValidatorTokenService: Symbol.for('ValidatorTokenService'),
 } as const;

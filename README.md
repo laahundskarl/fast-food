@@ -14,7 +14,7 @@ A infraestrutura foi desacoplada em repositórios separados:
 ### Pipeline CI/CD Automatizado
 
 ```
-Database Infra → K8s Infra → Lambda Infra → Application Build → Deploy
+Database Infra → K8s Infra → Autenticação (AWS Lambda) → Application Build → Deploy
 ```
 
 1. **DB Infrastructure** deploys RDS MySQL
@@ -119,7 +119,6 @@ src/
 │   ├── services/           → Serviços de orquestração
 │   └── use-cases/          → Implementação dos casos de uso
 │       ├── client/         → Casos de uso para clientes
-│       ├── identify/       → Casos de uso para identificação
 │       ├── order/          → Casos de uso para pedidos
 │       ├── payment/        → Casos de uso para pagamentos
 │       ├── product/        → Casos de uso para produtos
@@ -320,10 +319,6 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 - GET /client/:cpf - Obter cliente por CPF
 - PUT /client/:cpf - Atualizar cliente
 - DELETE /client/:cpf - Excluir cliente
-
-### Identificação
-
-- POST /identify - Identificar cliente por CPF
 
 ### Produto
 
@@ -555,10 +550,10 @@ kubectl top nodes
 # 1. Remover aplicação Kubernetes (via repositório k8s-infra)
 # Consulte: https://github.com/laahundskarl/fast-food-k8s-infra
 
-# 2. Destruir infraestrutura Lambda (via repositório lambda)
+# 2. Destruir infraestrutura Lambda (via repositório fast-food-lambda)
 # Consulte: https://github.com/laahundskarl/fast-food-lambda
 
-# 3. Destruir infraestrutura (via repositórios separados)
+# 3. Destruir demais infraestruturas (DB e K8s) via repositórios separados
 # Database: https://github.com/laahundskarl/fast-food-db-infra
 # K8s: https://github.com/laahundskarl/fast-food-k8s-infra
 
