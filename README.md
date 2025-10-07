@@ -522,7 +522,7 @@ kubectl top nodes
 # 1. Remover aplicação Kubernetes (via repositório k8s-infra)
 # Consulte: https://github.com/laahundskarl/fast-food-k8s-infra
 
-# 2. Destruir infraestrutura Lambda (via repositório lambda)
+# 2. Destruir infraestrutura Lambda (via repositório fast-food-lambda)
 # Consulte: https://github.com/laahundskarl/fast-food-lambda
 
 # 3. Destruir demais infraestruturas (DB e K8s) via repositórios separados
