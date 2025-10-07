@@ -1,4 +1,4 @@
-# FastFood Autoatendimento - Application (Grupo 277)
+# FastFood Autoatendimento - Application
 
 Este repositório contém **apenas a aplicação** do sistema backend para uma lanchonete com autoatendimento, utilizando TypeScript, Fastify, PrismaORM e MySQL, seguindo a arquitetura hexagonal (também conhecida como Ports and Adapters).
 
@@ -155,6 +155,19 @@ wait-for.sh                 → Script para aguardar serviços
 
 ![Diagrama BD - MySQL](./docs/Diagrama%20BD%20-%20MySQL.png)
 
+### Configuração e Tecnologia
+
+O banco de dados utilizado é o **Amazon RDS MySQL**, um serviço gerenciado que oferece alta disponibilidade, backups automáticos e escalabilidade. As entidades estão configuradas usando o **Prisma ORM** com migrations para versionamento do esquema do banco de dados.
+
+**Comandos úteis do Prisma:**
+```bash
+npm run prisma:generate     # Gerar cliente Prisma
+npm run prisma:migrate      # Aplicar migrações
+npm run prisma:seed         # Popular com dados de teste
+```
+
+**Observação:** Para testes, ambos os ambientes (dev e prod) são populados automaticamente com dados de exemplo.
+
 ### Justificativa para Escolha do MySQL
 
 A escolha do **MySQL** como banco de dados para o sistema FastFood foi baseada nos seguintes critérios técnicos e de negócio:
@@ -254,18 +267,6 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 
 ---
 
-## 🗃️ Banco de Dados
-
-O banco de dados utilizado é o **Amazon RDS MySQL**, um serviço gerenciado que oferece alta disponibilidade, backups automáticos e escalabilidade. As entidades estão configuradas usando o Prisma ORM com migrations para versionamento do esquema do banco de dados.
-
-Para executar manualmente as migrations:
-```bash
-    npm run prisma:generate
-```
-
-OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão sendo populados com algumas informações
----
-
 ## API Endpoints
 
 ### Cliente
@@ -310,7 +311,7 @@ OBS: Apenas por via de testes, ambos os bancos do ambiente de prod e dev estão 
 
 ## 🧑‍💻 Contribuidores
 
-- Grupo 173 — Tech Challenge
+- Tech Challenge
     - RM 361923 - Leonardo Andreas - GitHub - laahundskarl - Discord - leooandreas
     - RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1 - Discord - gabrielgsd
     - RM 364043 - Willian Borba - GitHub - WillianBorba - Discord - willianrocha
@@ -363,38 +364,27 @@ aws configure
 # Inserir: Access Key, Secret Key, Region (us-east-1), Output format (json)
 ```
 
-### Passo 2: Preparar Infraestrutura com Terraform
+### Passo 2: Configurar Infraestrutura
+
+**⚠️ IMPORTANTE:** A infraestrutura Terraform está nos repositórios separados:
+- **Database:** [fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)
+- **Kubernetes:** [fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)
 
 ```bash
-# 1. Navegar para o diretório terraform
-cd terraform/
-
-# 2. Inicializar Terraform
-terraform init
-
-# 3. Validar configuração
-terraform validate
-
-# 4. Planejar deploy (revisar recursos que serão criados)
-terraform plan
-
-# 5. Aplicar infraestrutura
-terraform apply
-# Digite 'yes' quando solicitado
-
-# 6. Obter informações do cluster
-terraform output
-
-# 7. Se não houver outputs, execute um refresh
-terraform refresh
-terraform output
+# 1. Clone e configure os repositórios de infraestrutura separadamente
+# 2. Deploy primeiro o banco de dados (fast-food-db-infra)
+# 3. Deploy depois o Kubernetes (fast-food-k8s-infra)
+# 4. Retorne para este repositório para build da aplicação
 ```
 
 ### Passo 3: Build e Push da Imagem Docker
 
 ```bash
-# Usando terraform output
-ECR_URI=$(terraform output -raw ecr_repository_url 2>/dev/null)
+# ECR URI será obtido dos outputs dos repositórios de infraestrutura
+# Ou use as GitHub Actions que fazem isso automaticamente
+
+# Para deploy manual, obtenha ECR URI dos repositórios de infraestrutura
+ECR_URI="<ECR_URI_FROM_K8S_INFRA_REPO>"
 
 # Extrair hostname do registry
 ECR_REGISTRY=$(echo "$ECR_URI" | cut -d'/' -f1)
@@ -402,9 +392,6 @@ echo "ECR_REGISTRY: $ECR_REGISTRY"
 
 # Login no ECR
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ECR_REGISTRY"
-
-# volte para a pasta raíz
-cd ..
 
 # Build da imagem
 docker build -t fastfood-api .
@@ -416,18 +403,19 @@ docker tag fastfood-api:latest "$ECR_URI:latest"
 docker push "$ECR_URI:latest"
 ```
 
-### Passo 3: Deploy da Aplicação no Kubernetes
+### Passo 4: Deploy da Aplicação no Kubernetes
+
+**⚠️ IMPORTANTE:** Os manifests Kubernetes estão no repositório [fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra).
 
 ```bash
-# 1. Navegar para diretório k8s
-cd k8s/
+# Para deploy manual:
+# 1. Certifique-se que a infraestrutura K8s foi criada
+# 2. Configure kubectl para o cluster EKS
+aws eks update-kubeconfig --region us-east-1 --name fast-food-cluster-prd
 
-# 2. Executar script de deploy (inclui configuração do kubectl e todos os passos)
-chmod +x deploy.sh
-./deploy.sh
+# 3. A aplicação será deployada automaticamente via GitHub Actions
+# Ou consulte o repositório fast-food-k8s-infra para deploy manual
 ```
-
-**Observação:** O script `deploy.sh` agora inclui automaticamente a configuração do kubectl para o cluster EKS, então você não precisa executar o comando `aws eks update-kubeconfig` separadamente.
 
 ### Passo 4: Verificar Deploy
 
@@ -520,16 +508,14 @@ kubectl top nodes
 
 #### **Cleanup Manual** (caso necessário)
 ```bash
-# 1. Remover aplicação Kubernetes
-kubectl delete -f k8s/
+# 1. Remover aplicação Kubernetes (via repositório k8s-infra)
+# Consulte: https://github.com/laahundskarl/fast-food-k8s-infra
 
-# 2. Destruir infraestrutura Terraform
-cd terraform/
-terraform destroy
-# Digite 'yes' quando solicitado
+# 2. Destruir infraestrutura (via repositórios separados)
+# Database: https://github.com/laahundskarl/fast-food-db-infra
+# K8s: https://github.com/laahundskarl/fast-food-k8s-infra
 
-# 3. Verificar se todos os recursos foram removidos
-terraform show
+# 3. Ou use as workflows de cleanup via GitHub Actions (recomendado)
 ```
 
 ### Arquitetura do Deploy
@@ -557,50 +543,6 @@ terraform show
 - **Security Groups**: Firewall
 - **Load Balancer**: Acesso externo
 
----
-
-## Deploy Kubernetes (padrão)
-
-O deploy do cluster pode ser feito de forma automatizada com o script abaixo (recomendado):
-
-```bash
-cd k8s
-chmod +x deploy.sh
-./deploy.sh
-```
-
-O script executa todos os passos de criação dos recursos Kubernetes na ordem correta.
-
----
-
-## Deploy Kubernetes (manual - opcional)
-
-Se preferir, você pode executar cada comando manualmente, conforme descrito abaixo:
-
-```bash
-# 1. Navegar para diretório k8s
-cd k8s/
-
-# 2. Aplicar serviço da API
-kubectl apply -f 01-api-service.yaml
-
-# 3. Aplicar LoadBalancer (acesso externo)
-kubectl apply -f 02-loadbalancer.yaml
-
-# 4. Aplicar configurações e secrets
-kubectl apply -f 03-config.yaml
-
-# 5. Deploy da API (conecta automaticamente ao RDS)
-kubectl apply -f 04-api-deployment.yaml
-
-# 6. Instalar Metrics Server (necessário para HPA)
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-
-# 7. Aguardar Metrics Server estar pronto
-kubectl wait --for=condition=Ready pod -l k8s-app=metrics-server -n kube-system --timeout=300s
-
-# 8. Aplicar HPA (Horizontal Pod Autoscaler)
-kubectl apply -f 05-hpa.yaml
-```
-
-> **Recomendação:** Use o `deploy.sh` para evitar erros de ordem ou comandos esquecidos.
+**📝 Nota:** Para deploy completo, use as GitHub Actions ou consulte os repositórios de infraestrutura separados:
+- **[fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)** - Database
+- **[fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)** - Kubernetes
