@@ -74,6 +74,39 @@ O projeto utiliza **GitHub Actions** com workflows padronizadas seguindo conven�
 - **`CD - Deploy Application`** - Deploy da aplicação no Kubernetes
 - **`Cleanup - Destroy Kubernetes`** - Limpeza completa da infraestrutura K8s
 
+### 🔐 **Configuração de Secrets GitHub**
+
+Para que os workflows funcionem corretamente, os seguintes secrets devem estar configurados no repositório GitHub:
+
+#### Secrets Obrigatórios (Repository Settings → Secrets and variables → Actions)
+
+```bash
+# AWS Credentials para build e deploy
+AWS_ACCESS_KEY_ID         # Access Key ID da conta AWS
+AWS_SECRET_ACCESS_KEY     # Secret Access Key da conta AWS
+AWS_SESSION_TOKEN         # Session Token (se usando STS/temporárias)
+
+# Token para disparar workflows entre repositórios
+REPO_ACCESS_TOKEN         # Personal Access Token com permissão repo:write
+```
+
+#### Como Configurar
+
+1. **AWS Credentials:**
+   - Criar usuário IAM com políticas: `AmazonEC2ContainerRegistryFullAccess`, `AmazonEKSClusterPolicy`
+   - Gerar Access Key/Secret Key para o usuário
+   - Adicionar nos secrets do repositório
+
+2. **Repository Token:**
+   - GitHub → Settings → Developer settings → Personal access tokens
+   - Criar token com escopo `repo` (full control)
+   - Adicionar como `REPO_ACCESS_TOKEN` nos secrets
+
+#### Execução Manual dos Workflows
+
+- **build-push.yml:** Pode ser executado manualmente via GitHub Actions → "CD - Build and Deploy" → "Run workflow"
+- **app-destroy.yml:** Execução manual via GitHub Actions → "Cleanup - Application and Infrastructure" → "Run workflow"
+
 ---
 
 ## 📁 Estrutura do Projeto
