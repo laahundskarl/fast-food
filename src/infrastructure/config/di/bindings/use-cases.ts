@@ -10,8 +10,6 @@ import { GetClientOrders } from '#/application/use-cases/client/get-client-order
 import { IGetClientOrdersUseCase } from '#/application/use-cases/client/get-client-orders/get-client-orders.use-case';
 import { UpdateClient } from '#/application/use-cases/client/update-client/update-client';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
-import { Identify } from '#/application/use-cases/identify/identify';
-import { IIdentifyUseCase } from '#/application/use-cases/identify/identify.use-case';
 import { CreateOrder } from '#/application/use-cases/order/create-order/create-order';
 import { ICreateOrderUseCase } from '#/application/use-cases/order/create-order/create-order.use-case';
 import { DeleteOrder } from '#/application/use-cases/order/delete-order/delete-order';
@@ -50,8 +48,6 @@ export function bindUseCases(container: Container) {
     container.bind<IGetClientUseCase>(TYPES.GetClientUseCase).to(GetClient).inTransientScope();
     container.bind<IGetClientOrdersUseCase>(TYPES.GetClientOrdersUseCase).to(GetClientOrders).inTransientScope();
     container.bind<IUpdateClientUseCase>(TYPES.UpdateClientUseCase).to(UpdateClient).inTransientScope();
-
-    container.bind<IIdentifyUseCase>(TYPES.IdentifyUseCase).to(Identify).inTransientScope();
 
     container.bind<ICreateOrderUseCase>(TYPES.CreateOrderUseCase).to(CreateOrder).inTransientScope();
     container.bind<IDeleteOrderUseCase>(TYPES.DeleteOrderUseCase).to(DeleteOrder).inTransientScope();

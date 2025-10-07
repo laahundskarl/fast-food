@@ -6,8 +6,8 @@ import { IProductOrchestrationService } from '#/application/services/interfaces/
 import { CreateOrderDto } from '#/application/use-cases/order/create-order/create-order.dto';
 import { ICreateOrderUseCase } from '#/application/use-cases/order/create-order/create-order.use-case';
 import { IOrder } from '#/domain/entities/order.entity';
+import { OrderBuilderFactory } from '#/domain/factories/order-builder.factory';
 import { IOrderRepository } from '#/domain/repositories/order.repository';
-import { OrderBuilderService } from '#/domain/services/order-builder.service';
 import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
@@ -22,9 +22,9 @@ export class CreateOrder implements ICreateOrderUseCase {
     async execute(request: CreateOrderDto): Promise<IOrder> {
         const products = await this.productService.validateAndGetProducts(request.orderProducts);
 
-        const { orderProducts, totalValue } = OrderBuilderService.buildOrderProducts(request.orderProducts, products);
+        const { orderProducts, totalValue } = OrderBuilderFactory.buildOrderProducts(request.orderProducts, products);
 
-        const order = OrderBuilderService.createOrder(orderProducts, totalValue);
+        const order = OrderBuilderFactory.createOrder(orderProducts, totalValue);
 
         order.client = await this.clientService.getClientIfExists(request.clientId);
 
