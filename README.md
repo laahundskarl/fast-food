@@ -9,17 +9,19 @@ A infraestrutura foi desacoplada em repositórios separados:
 - **[fast-food](https://github.com/laahundskarl/fast-food)** (este repositório) - Aplicação FastFood
 - **[fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)** - Infraestrutura Kubernetes (EKS + ECR)
 - **[fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)** - Infraestrutura Database (RDS MySQL)
+- **[fast-food-lambda](https://github.com/laahundskarl/fast-food-lambda)** - Autenticação Serverless (AWS Lambda)
 
 ### Pipeline CI/CD Automatizado
 
 ```
-Database Infra → K8s Infra → Application Build → Deploy
+Database Infra → K8s Infra → Lambda Infra → Application Build → Deploy
 ```
 
 1. **DB Infrastructure** deploys RDS MySQL
 2. **K8s Infrastructure** deploys EKS cluster and ECR
-3. **Application** builds and pushes Docker image
-4. **Auto-deploy** triggers Kubernetes deployment
+3. **Lambda Infrastructure** deploys serverless authentication
+4. **Application** builds and pushes Docker image
+5. **Auto-deploy** triggers Kubernetes deployment
 
 ---
 
@@ -216,6 +218,9 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 - Docker & Docker Compose para conteinerização
 - Swagger para documentação da API
 - Arquitetura Hexagonal (Ports & Adapters)
+- **AWS Lambda** para autenticação serverless (repositório separado)
+- **API Gateway** para roteamento serverless
+- **JWT** para autenticação stateless
 
 ---
 
@@ -268,6 +273,13 @@ Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
 ---
 
 ## API Endpoints
+
+### Autenticação (Serverless Lambda)
+
+- POST /auth - Autenticar cliente por CPF e obter token JWT
+  - **Repositório:** [fast-food-lambda](https://github.com/laahundskarl/fast-food-lambda)
+  - **Endpoint:** Via API Gateway (URL gerada automaticamente na infraestrutura)
+  - **Função:** Valida CPF, consulta RDS e retorna JWT para autenticação
 
 ### Cliente
 
@@ -327,7 +339,8 @@ O sistema utiliza **pipeline CI/CD automatizado** através de GitHub Actions:
 
 1. **Push para `modulo_3`** no repositório `fast-food-db-infra` → Cria RDS MySQL
 2. **Aguarda conclusão** → K8s infra detecta e cria EKS cluster automaticamente
-3. **Push código** no repositório `fast-food` → Build e deploy da aplicação
+3. **Push código** no repositório `fast-food-lambda` → Deploy da autenticação serverless
+4. **Push código** no repositório `fast-food` → Build e deploy da aplicação principal
 
 **✅ Vantagens:**
 - Deploy completamente automatizado
@@ -369,6 +382,7 @@ aws configure
 **⚠️ IMPORTANTE:** A infraestrutura Terraform está nos repositórios separados:
 - **Database:** [fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)
 - **Kubernetes:** [fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)
+- **Lambda Auth:** [fast-food-lambda](https://github.com/laahundskarl/fast-food-lambda)
 
 ```bash
 # 1. Clone e configure os repositórios de infraestrutura separadamente
@@ -531,6 +545,12 @@ kubectl top nodes
                           │   Kubernetes    │    │  Managed MySQL  │
                           │   (AWS EKS)     │    │                 │
                           └─────────────────┘    └─────────────────┘
+                                │
+                                │
+                          ┌─────────────────┐
+                          │  Lambda Auth    │
+                          │  (API Gateway)  │
+                          └─────────────────┘
 ```
 
 ### Recursos AWS Utilizados
@@ -538,6 +558,8 @@ kubectl top nodes
 - **EKS Cluster**: Kubernetes gerenciado
 - **ECR Repository**: Registry de imagens Docker
 - **RDS MySQL**: Banco de dados gerenciado
+- **AWS Lambda**: Autenticação serverless
+- **API Gateway**: Roteamento para Lambda
 - **VPC + Subnets**: Rede isolada
 - **IAM Roles**: Permissões de acesso
 - **Security Groups**: Firewall
@@ -546,3 +568,4 @@ kubectl top nodes
 **📝 Nota:** Para deploy completo, use as GitHub Actions ou consulte os repositórios de infraestrutura separados:
 - **[fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)** - Database
 - **[fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)** - Kubernetes
+- **[fast-food-lambda](https://github.com/laahundskarl/fast-food-lambda)** - Lambda Auth
