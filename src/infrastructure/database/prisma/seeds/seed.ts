@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 
-import { logger } from '#/infrastructure/config/logger';
 import { seedClient } from '#/infrastructure/database/prisma/seeds/seed-client';
 import { seedOrder } from '#/infrastructure/database/prisma/seeds/seed-order';
 import { seedOrderProduct } from '#/infrastructure/database/prisma/seeds/seed-order-product';
@@ -8,7 +7,7 @@ import { seedPayment } from '#/infrastructure/database/prisma/seeds/seed-payment
 import { seedProduct } from '#/infrastructure/database/prisma/seeds/seed-product';
 import { seedProductCategory } from '#/infrastructure/database/prisma/seeds/seed-product-category';
 
-logger.info('Starting seeds...');
+console.log('Starting seeds...');
 const prismaClient = new PrismaClient();
 
 async function main() {

@@ -1,0 +1,239 @@
+name: 'Cleanup - Application and Infrastructure'
+
+on:
+  workflow_dispatch:
+    inputs:
+      cleanup_scope:
+        description: 'Select cleanup scope'
+        required: true
+        type: choice
+        options:
+          - 'app-only'
+          - 'full-infrastructure'
+        default: 'app-only'
+      confirm_action:
+        description: 'Type CLEANUP for app-only or DESTROY for full'
+        required: true
+        type: string
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  validate-input:
+    name: 'Validate Cleanup Request'
+    runs-on: ubuntu-latest
+    outputs:
+      should_cleanup: ${{ steps.check.outputs.should_cleanup }}
+      cleanup_scope: ${{ steps.check.outputs.cleanup_scope }}
+    steps:
+    - name: Validate confirmation
+      id: check
+      run: |
+        SCOPE="${{ github.event.inputs.cleanup_scope }}"
+        CONFIRM="${{ github.event.inputs.confirm_action }}"
+
+        if [ "$SCOPE" = "app-only" ] && [ "$CONFIRM" = "CLEANUP" ]; then
+          echo "should_cleanup=true" >> $GITHUB_OUTPUT
+          echo "cleanup_scope=app-only" >> $GITHUB_OUTPUT
+          echo "✅ Application cleanup confirmed"
+        elif [ "$SCOPE" = "full-infrastructure" ] && [ "$CONFIRM" = "DESTROY" ]; then
+          echo "should_cleanup=true" >> $GITHUB_OUTPUT
+          echo "cleanup_scope=full-infrastructure" >> $GITHUB_OUTPUT
+          echo "✅ Full infrastructure destruction confirmed"
+        else
+          echo "should_cleanup=false" >> $GITHUB_OUTPUT
+          echo "❌ Invalid confirmation. Use CLEANUP for app-only or DESTROY for full"
+          exit 1
+        fi
+
+  cleanup-application:
+    name: 'Remove Application from Kubernetes'
+    runs-on: ubuntu-latest
+    needs: validate-input
+    if: needs.validate-input.outputs.should_cleanup == 'true'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.28.0'
+
+    - name: Configure kubectl
+      run: |
+        aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name fast-food-cluster-prd || echo "⚠️ Cluster may not exist"
+
+    - name: Stop application pods
+      run: |
+        echo "🛑 Stopping FastFood application..."
+
+        # Scale down deployment to 0
+        kubectl scale deployment fastfood-api --replicas=0 || echo "⚠️ Deployment may not exist"
+
+        # Wait for pods to terminate
+        echo "⏳ Waiting for pods to terminate..."
+        kubectl wait --for=delete pod -l app=fastfood-api --timeout=120s || echo "⚠️ Pods may not exist"
+
+    - name: Remove application resources
+      run: |
+        echo "🗑️ Removing application-specific resources..."
+
+        # Remove HPA first
+        kubectl delete hpa fastfood-api-hpa --ignore-not-found=true
+
+        # Remove deployment and configmap
+        kubectl delete deployment fastfood-api --ignore-not-found=true
+        kubectl delete configmap fastfood-config --ignore-not-found=true
+        kubectl delete secret fastfood-secrets --ignore-not-found=true
+
+        echo "✅ Application resources removed"
+
+    - name: Verify cleanup
+      run: |
+        echo "📋 Remaining FastFood resources:"
+        kubectl get pods,deployments,configmaps,secrets -l app=fastfood-api || echo "✅ No application resources found"
+
+    - name: Cleanup summary
+      run: |
+        echo "✅ Application cleanup completed!"
+        echo "💰 Cost savings:"
+        echo "  - CPU/Memory usage: Reduced to 0"
+        echo "  - Pod costs: Eliminated"
+        echo ""
+        echo "🔄 To restart application:"
+        echo "  - Push new code to modulo_3 branch"
+        echo "  - Or manually run build-push workflow"
+
+  trigger-infrastructure-destroy:
+    name: 'Trigger Full Infrastructure Destruction'
+    runs-on: ubuntu-latest
+    needs: [validate-input, cleanup-application]
+    if: needs.validate-input.outputs.cleanup_scope == 'full-infrastructure'
+    steps:
+    - name: Trigger K8s Infrastructure Destroy
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
+        script: |
+          console.log('🚨 Triggering full infrastructure destruction...');
+
+          // Trigger K8s infrastructure destroy
+          await github.rest.repos.createDispatchEvent({
+            owner: 'laahundskarl',
+            repo: 'fast-food-k8s-infra',
+            event_type: 'app-triggered-destroy',
+            client_payload: {
+              trigger_source: 'fast-food-app',
+              destruction_type: 'full-cleanup',
+              timestamp: new Date().toISOString()
+            }
+          });
+
+          console.log('✅ K8s infrastructure destroy triggered');
+
+    - name: Wait and trigger DB destroy
+      run: |
+        echo "⏳ Waiting for K8s cleanup to complete..."
+        sleep 30
+        echo "🗄️ DB destruction will be triggered automatically by K8s workflow"
+
+    - name: Full destroy notification
+      run: |
+        echo "🚨 FULL INFRASTRUCTURE DESTRUCTION INITIATED!"
+        echo ""
+        echo "📋 Destruction sequence:"
+        echo "  1. ✅ Application pods removed"
+        echo "  2. 🔄 K8s infrastructure destroying..."
+        echo "  3. 🔄 Database will be destroyed automatically"
+        echo ""
+        echo "💰 Expected cost savings: ~$120-140/month"
+        echo "⏱️ Total cleanup time: ~10-15 minutes"
+        echo ""
+        echo "📍 Monitor progress:"
+        echo "  - K8s: https://github.com/laahundskarl/fast-food-k8s-infra/actions"
+        echo "  - DB: https://github.com/laahundskarl/fast-food-db-infra/actions"
+
+  cleanup-ecr-images:
+    name: 'Cleanup Old ECR Images (Optional)'
+    runs-on: ubuntu-latest
+    needs: [validate-input, cleanup-application]
+    if: needs.validate-input.outputs.should_cleanup == 'true'
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: List ECR images
+      run: |
+        echo "📦 Current ECR images:"
+        aws ecr describe-images --repository-name fastfood-api --query 'imageDetails[*].[imageTags[0],imagePushedAt]' --output table || echo "⚠️ ECR repository may not exist"
+
+    - name: Cleanup old images (keep latest 3)
+      run: |
+        echo "🧹 Cleaning up old ECR images..."
+
+        # Get images older than latest 3
+        OLD_IMAGES=$(aws ecr describe-images --repository-name fastfood-api --query 'sort_by(imageDetails,&imagePushedAt)[:-3].[imageDigest]' --output text 2>/dev/null || echo "")
+
+        if [ ! -z "$OLD_IMAGES" ]; then
+          echo "Removing old images..."
+          for digest in $OLD_IMAGES; do
+            aws ecr batch-delete-image --repository-name fastfood-api --image-ids imageDigest=$digest || echo "⚠️ Could not delete image $digest"
+          done
+          echo "✅ Old images cleaned up"
+        else
+          echo "📝 No old images to clean up"
+        fi
+
+  final-summary:
+    name: 'Cleanup Summary'
+    runs-on: ubuntu-latest
+    needs: [validate-input, cleanup-application, cleanup-ecr-images]
+    if: always() && needs.validate-input.outputs.should_cleanup == 'true'
+    steps:
+    - name: Generate summary
+      run: |
+        SCOPE="${{ needs.validate-input.outputs.cleanup_scope }}"
+
+        echo "🏁 CLEANUP COMPLETED!"
+        echo "=================="
+        echo ""
+        echo "✅ Completed actions:"
+        echo "  - Application pods stopped and removed"
+        echo "  - Kubernetes resources cleaned up"
+        echo "  - Old ECR images pruned"
+
+        if [ "$SCOPE" = "full-infrastructure" ]; then
+          echo "  - Infrastructure destruction initiated"
+          echo ""
+          echo "💰 Full cost savings: ~$120-140/month when complete"
+          echo "🔄 To recreate everything:"
+          echo "  1. Push to modulo_3 in fast-food-db-infra"
+          echo "  2. Wait for automatic pipeline completion"
+        else
+          echo ""
+          echo "💰 Application cost savings: CPU/Memory usage eliminated"
+          echo "🔄 To restart application:"
+          echo "  - Push new code to modulo_3 branch"
+          echo "  - Infrastructure remains ready for immediate deployment"
+        fi
+
+        echo ""
+        echo "📊 Infrastructure status:"
+        echo "  - EKS Cluster: $([ "$SCOPE" = "full-infrastructure" ] && echo "🔄 Destroying" || echo "✅ Running")"
+        echo "  - RDS Database: $([ "$SCOPE" = "full-infrastructure" ] && echo "🔄 Destroying" || echo "✅ Running")"
+        echo "  - Application: 🛑 Stopped"
