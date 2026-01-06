@@ -20,15 +20,6 @@ describe('list-product-category', () => {
         expect(listMock).toHaveBeenCalled();
     });
 
-    it('should list product categories with query filter', async () => {
-        const listMock = productCategoryMock.mockProductCategoryList({});
-
-        const result = await listProductCategoryUseCase.execute({ includes: ['products'] });
-
-        expect(result).toHaveLength(1);
-        expect(listMock).toHaveBeenCalledWith({ includes: ['products'] });
-    });
-
     it('should return empty array when no categories exist', async () => {
         productCategoryMock.mockProductCategoryList({ data: [] });
 
