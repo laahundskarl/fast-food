@@ -12,10 +12,10 @@ export default defineConfig({
   test: {
     coverage: {
       thresholds: {
-        statements: 70,
-        functions: 70,
+        statements: 90,
+        functions: 90,
         branches: 40,
-        lines: 70,
+        lines: 90,
       },
       reportOnFailure: true,
     },
