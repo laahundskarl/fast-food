@@ -11,10 +11,11 @@ export default defineConfig({
   },
   test: {
     coverage: {
+      exclude: ['**/*-mock*'],
       thresholds: {
         statements: 70,
         functions: 70,
-        branches: 40,
+        branches: 70,
         lines: 70,
       },
       reportOnFailure: true,
