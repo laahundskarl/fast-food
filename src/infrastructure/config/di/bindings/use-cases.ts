@@ -4,8 +4,10 @@ import { CreateClient } from '#/application/use-cases/client/create-client/creat
 import { ICreateClientUseCase } from '#/application/use-cases/client/create-client/create-client.use-case';
 import { DeleteClient } from '#/application/use-cases/client/delete-client/delete-client';
 import { IDeleteClientUseCase } from '#/application/use-cases/client/delete-client/delete-client.use-case';
-import { GetClient } from '#/application/use-cases/client/get-client/get-client';
-import { IGetClientUseCase } from '#/application/use-cases/client/get-client/get-client.use-case';
+import { GetClientByCpf } from '#/application/use-cases/client/get-client-by-cpf/get-client-by-cpf';
+import { IGetClientByCpfUseCase } from '#/application/use-cases/client/get-client-by-cpf/get-client-by-cpf.use-case';
+import { GetClientById } from '#/application/use-cases/client/get-client-by-id/get-client-by-id';
+import { IGetClientByIdUseCase } from '#/application/use-cases/client/get-client-by-id/get-client-by-id.use-case';
 import { UpdateClient } from '#/application/use-cases/client/update-client/update-client';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
 import { CreateProduct } from '#/application/use-cases/product/create-product/create-product';
@@ -27,7 +29,8 @@ import { TYPES } from '#/infrastructure/config/di/types';
 export function bindUseCases(container: Container) {
     container.bind<ICreateClientUseCase>(TYPES.CreateClientUseCase).to(CreateClient).inTransientScope();
     container.bind<IDeleteClientUseCase>(TYPES.DeleteClientUseCase).to(DeleteClient).inTransientScope();
-    container.bind<IGetClientUseCase>(TYPES.GetClientUseCase).to(GetClient).inTransientScope();
+    container.bind<IGetClientByCpfUseCase>(TYPES.GetClientByCpfUseCase).to(GetClientByCpf).inTransientScope();
+    container.bind<IGetClientByIdUseCase>(TYPES.GetClientByIdUseCase).to(GetClientById).inTransientScope();
     container.bind<IUpdateClientUseCase>(TYPES.UpdateClientUseCase).to(UpdateClient).inTransientScope();
 
     container.bind<ICreateProductUseCase>(TYPES.CreateProductUseCase).to(CreateProduct).inTransientScope();

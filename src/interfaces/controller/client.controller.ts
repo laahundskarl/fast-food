@@ -2,7 +2,8 @@ import { inject, injectable } from 'inversify';
 
 import { ICreateClientUseCase } from '#/application/use-cases/client/create-client/create-client.use-case';
 import { IDeleteClientUseCase } from '#/application/use-cases/client/delete-client/delete-client.use-case';
-import { IGetClientUseCase } from '#/application/use-cases/client/get-client/get-client.use-case';
+import { IGetClientByCpfUseCase } from '#/application/use-cases/client/get-client-by-cpf/get-client-by-cpf.use-case';
+import { IGetClientByIdUseCase } from '#/application/use-cases/client/get-client-by-id/get-client-by-id.use-case';
 import { IUpdateClientUseCase } from '#/application/use-cases/client/update-client/update-client.use-case';
 import { ILogger } from '#/domain/services/logger.service';
 import { TYPES } from '#/infrastructure/config/di/types';
@@ -17,7 +18,8 @@ export class ClientController {
         @inject(TYPES.Logger) private readonly logger: ILogger,
         @inject(TYPES.CreateClientUseCase) private readonly createClientUseCase: ICreateClientUseCase,
         @inject(TYPES.DeleteClientUseCase) private readonly deleteClientUseCase: IDeleteClientUseCase,
-        @inject(TYPES.GetClientUseCase) private readonly getClientUseCase: IGetClientUseCase,
+        @inject(TYPES.GetClientByCpfUseCase) private readonly getClientByCpfUseCase: IGetClientByCpfUseCase,
+        @inject(TYPES.GetClientByIdUseCase) private readonly getClientByIdUseCase: IGetClientByIdUseCase,
         @inject(TYPES.UpdateClientUseCase) private readonly updateClientUseCase: IUpdateClientUseCase,
     ) {}
 
@@ -35,7 +37,13 @@ export class ClientController {
 
     async get(cpf: string): Promise<ClientResponse> {
         this.logger.info('Retrieving client with CPF', { cpf });
-        const response = await this.getClientUseCase.execute(cpf);
+        const response = await this.getClientByCpfUseCase.execute(cpf);
+        return ClientPresenter.toHTTP(response);
+    }
+
+    async getById(id: string): Promise<ClientResponse> {
+        this.logger.info('Retrieving client with ID', { id });
+        const response = await this.getClientByIdUseCase.execute(id);
         return ClientPresenter.toHTTP(response);
     }
 

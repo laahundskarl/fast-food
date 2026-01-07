@@ -24,12 +24,17 @@ export const clientRoute = (app: FastifyInstance) => {
     });
 
     app.delete<{ Params: ClientParamsRequest }>('/:cpf', clientDeleteSchema, async (req, reply) => {
-        const response = await controller.delete(req.params.cpf);
+        const response = await controller.delete(req.params.cpf!);
         return reply.send(response);
     });
 
-    app.get<{ Params: ClientParamsRequest }>('/:cpf', clientGetSchema, async (req, reply) => {
-        const response = await controller.get(req.params.cpf);
+    app.get<{ Params: ClientParamsRequest }>('/:cpf/cpf', clientGetSchema, async (req, reply) => {
+        const response = await controller.get(req.params.cpf!);
+        return reply.send(response);
+    });
+
+    app.get<{ Params: ClientParamsRequest }>('/:id/id', clientGetSchema, async (req, reply) => {
+        const response = await controller.getById(req.params.id!);
         return reply.send(response);
     });
 
@@ -37,7 +42,7 @@ export const clientRoute = (app: FastifyInstance) => {
         Params: ClientParamsRequest;
         Body: ClientUpdateRequest;
     }>('/:cpf', clientUpdateSchema, async (req, reply) => {
-        const response = await controller.update(req.params.cpf, req.body);
+        const response = await controller.update(req.params.cpf!, req.body);
         return reply.send(response);
     });
 };

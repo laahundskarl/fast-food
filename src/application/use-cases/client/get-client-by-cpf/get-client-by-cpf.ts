@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 
-import { IGetClientUseCase } from '#/application/use-cases/client/get-client/get-client.use-case';
+import { IGetClientByCpfUseCase } from '#/application/use-cases/client/get-client-by-cpf/get-client-by-cpf.use-case';
 import { Client } from '#/domain/entities/client.entity';
 import { NotFoundError } from '#/domain/errors';
 import { IClientRepository } from '#/domain/repositories/client.repository';
@@ -8,7 +8,7 @@ import { ILogger } from '#/domain/services/logger.service';
 import { TYPES } from '#/infrastructure/config/di/types';
 
 @injectable()
-export class GetClient implements IGetClientUseCase {
+export class GetClientByCpf implements IGetClientByCpfUseCase {
     constructor(
         @inject(TYPES.Logger) private readonly logger: ILogger,
         @inject(TYPES.ClientRepository) private readonly clientRepository: IClientRepository,
@@ -24,7 +24,7 @@ export class GetClient implements IGetClientUseCase {
             throw new NotFoundError('Client not found');
         }
 
-        this.logger.info('Client fetched successfully', { clientId: client.id, cpf });
+        this.logger.info('Client fetched successfully', { client });
 
         return client;
     }

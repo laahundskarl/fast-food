@@ -10,8 +10,8 @@ export const TYPES = {
     // Use Cases
     CreateClientUseCase: Symbol.for('CreateClientUseCase'),
     DeleteClientUseCase: Symbol.for('DeleteClientUseCase'),
-    GetClientUseCase: Symbol.for('GetClientUseCase'),
-    GetClientOrdersUseCase: Symbol.for('GetClientOrdersUseCase'),
+    GetClientByIdUseCase: Symbol.for('GetClientByIdUseCase'),
+    GetClientByCpfUseCase: Symbol.for('GetClientByCpfUseCase'),
     UpdateClientUseCase: Symbol.for('UpdateClientUseCase'),
 
     CreateProductUseCase: Symbol.for('CreateProductUseCase'),

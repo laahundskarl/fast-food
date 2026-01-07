@@ -40,7 +40,7 @@ export class ProductController {
     }
 
     async get(id: string): Promise<ProductResponse> {
-        this.logger.info('Getting product with id', { id });
+        this.logger.info('Retrieving product with id', { id });
         const response = await this.getProductUseCase.execute(id);
         return ProductPresenter.toHTTP(response);
     }

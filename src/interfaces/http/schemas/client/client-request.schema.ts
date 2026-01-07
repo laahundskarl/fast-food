@@ -27,7 +27,8 @@ export const clientUpdateRequestSchema = z.object({
 });
 
 export const clientParamsRequestSchema = z.object({
-    cpf: z.string({ required_error: messages.cpf_required }),
+    id: z.string().uuid().optional(),
+    cpf: z.string({ required_error: messages.cpf_required }).optional(),
 });
 
 export type ClientCreateRequest = z.infer<typeof clientCreateRequestSchema>;
