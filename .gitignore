@@ -22,3 +22,6 @@ kubeconfig
 
 # Copilot instructions (development only)
 .github/copilot-instructions.md
+
+# Coverage
+coverage/
