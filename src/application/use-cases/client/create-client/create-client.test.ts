@@ -4,10 +4,12 @@ import { CreateClient } from '#/application/use-cases/client/create-client/creat
 import { Client } from '#/domain/entities/client.entity';
 import { ConflictError } from '#/domain/errors';
 import * as clientMock from '#/infrastructure/repositories/prisma/mocks/prisma-client-mock.repository';
+import { createLoggerMock } from '#/infrastructure/services/mocks/logger-mock.service';
 
 describe('create-client', () => {
+    const loggerMock = createLoggerMock();
     const clientRepository = new clientMock.PrismaClientMockRepository();
-    const createClientUseCase = new CreateClient(clientRepository);
+    const createClientUseCase = new CreateClient(loggerMock, clientRepository);
     it('should create a client', async () => {
         clientMock.mockClientFindByCpfOrEmail({ empty: true });
         const createClientMock = clientMock.mockClientCreateClient({});

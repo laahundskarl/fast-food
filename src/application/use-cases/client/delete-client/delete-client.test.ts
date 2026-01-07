@@ -3,10 +3,12 @@ import { describe, expect, it } from 'vitest';
 import { DeleteClient } from '#/application/use-cases/client/delete-client/delete-client';
 import { NotFoundError } from '#/domain/errors';
 import * as clientMock from '#/infrastructure/repositories/prisma/mocks/prisma-client-mock.repository';
+import { createLoggerMock } from '#/infrastructure/services/mocks/logger-mock.service';
 
 describe('delete-client', () => {
+    const loggerMock = createLoggerMock();
     const clientRepository = new clientMock.PrismaClientMockRepository();
-    const deleteClientUseCase = new DeleteClient(clientRepository);
+    const deleteClientUseCase = new DeleteClient(loggerMock, clientRepository);
 
     it('should delete a client', async () => {
         clientMock.mockClientFindByCpf({ empty: false });

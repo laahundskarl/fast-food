@@ -1,4 +1,4 @@
-export interface ListProductDto {
+export interface ProductFilterDto {
     name?: string;
     categoryId?: string;
 }

@@ -1,6 +1,6 @@
-import { ListProductCategoryDto } from '#/application/use-cases/product-category/list-product-category/list-product-category.dto';
 import { ProductCategory } from '#/domain/entities/product-category.entity';
+import { ProductCategoryListQueryRequest } from '#/interfaces/http/schemas/product-category/product-category-request.schema';
 
 export interface IListProductCategoryUseCase {
-    execute(query?: ListProductCategoryDto): Promise<ProductCategory[]>;
+    execute(query?: ProductCategoryListQueryRequest): Promise<ProductCategory[]>;
 }

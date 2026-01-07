@@ -1,8 +1,9 @@
-import { IProduct } from '#/domain/entities/product.entity';
-import { ProductResponseDTO } from '#/interfaces/presenter/product/product-response.dto';
+import { Product } from '#/domain/entities/product.entity';
+import { DeleteResponse } from '#/interfaces/http/schemas/common/util.schema';
+import { ProductResponse } from '#/interfaces/http/schemas/product/product-response.schema';
 
 export class ProductPresenter {
-    static toDTO(product: IProduct): ProductResponseDTO {
+    static toHTTP(product: Product): ProductResponse {
         return {
             id: product.id,
             name: product.name,
@@ -15,5 +16,9 @@ export class ProductPresenter {
                 },
             }),
         };
+    }
+
+    static toDeleteResponse(): DeleteResponse {
+        return { message: 'Product deleted successfully' };
     }
 }

@@ -14,3 +14,5 @@ export const productCategoryResponseSchema = z.object({
         )
         .optional(),
 });
+
+export type ProductCategoryResponseSchema = z.infer<typeof productCategoryResponseSchema>;

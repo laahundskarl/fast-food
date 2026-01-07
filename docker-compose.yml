@@ -1,17 +1,21 @@
 services:
   db:
-    image: mysql:8
+    image: mysql:8.0
     container_name: fastfood_db
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_DATABASE: ${DATABASE_NAME}
-      MYSQL_USER: ${DATABASE_USER}
-      MYSQL_PASSWORD: ${DATABASE_PASS}
-      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASS}
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASS}
     ports:
-      - "${DATABASE_PORT:-3306}:3306"
+       - "${DATABASE_PORT:-3306}:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p${DATABASE_PASS}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   api-dev:
     image: node:22-alpine
@@ -26,7 +30,8 @@ services:
       - .env
     command: sh -c "/wait-for.sh $DATABASE_HOST:$DATABASE_PORT -- npx prisma migrate deploy && npm ci && npx prisma generate && npm run dev"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   db_data:
