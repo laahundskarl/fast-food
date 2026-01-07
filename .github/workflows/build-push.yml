@@ -2,7 +2,7 @@ name: 'CD - Build and Deploy'
 
 on:
   push:
-    branches: [modulo_3]
+    branches: [modulo_4]
     paths:
       - 'src/**'
       - 'package.json'
@@ -32,18 +32,18 @@ jobs:
       run: |
         echo "Current branch: ${{ github.ref_name }}"
         echo "Event: ${{ github.event_name }}"
-        
-        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref_name }}" != "modulo_3" ]; then
-          echo "❌ Push events only allowed on modulo_3 branch"
+
+        if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref_name }}" != "modulo_4" ]; then
+          echo "❌ Push events only allowed on modulo_4 branch"
           exit 1
         fi
-        
+
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
           echo "✅ Manual execution triggered"
           if [ "${{ github.event.inputs.force_deploy }}" = "true" ]; then
             echo "⚠️ Force deployment enabled - deploying from ${{ github.ref_name }}"
-          elif [ "${{ github.ref_name }}" != "modulo_3" ]; then
-            echo "❌ Manual execution only allowed on modulo_3 branch (use force_deploy=true to override)"
+          elif [ "${{ github.ref_name }}" != "modulo_4" ]; then
+            echo "❌ Manual execution only allowed on modulo_4 branch (use force_deploy=true to override)"
             exit 1
           fi
         fi
@@ -101,7 +101,7 @@ jobs:
         github-token: ${{ secrets.REPO_ACCESS_TOKEN }}
         script: |
           github.rest.repos.createDispatchEvent({
-            owner: 'laahundskarl',
+            owner: 'fiap-software-architecture-tech',
             repo: 'fast-food-k8s-infra',
             event_type: 'deploy-app',
             client_payload: {
