@@ -1,28 +1,46 @@
 import { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
+import { StatusCodes } from 'http-status-codes';
 
-const StatusCodes = {
-    BAD_REQUEST: 400,
-    UNAUTHORIZED: 401,
-    FORBIDDEN: 403,
-    NOT_FOUND: 404,
-    INTERNAL_ERRO: 500,
-};
+import { env } from '#/infrastructure/config/env';
+
+interface ValidationDetail {
+    field: string;
+    message?: string;
+}
+
+interface ErrorResponse {
+    error: string;
+    message: string;
+    details?: ValidationDetail[];
+}
 
 export function errorHandler(error: FastifyError, request: FastifyRequest, reply: FastifyReply) {
-    request.log.error(error);
-    const statusCode = error.statusCode ?? 500;
+    request.log.error(
+        {
+            err: error,
+            requestId: request.id,
+            url: request.url,
+            method: request.method,
+        },
+        'Request error',
+    );
+
+    const statusCode = (error.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR) as StatusCodes;
 
     if (error.validation) {
-        const details = error.validation.map(err => ({
+        const details: ValidationDetail[] = error.validation.map(err => ({
             field: err.instancePath.replace('/', ''),
             message: err.message,
         }));
 
-        return reply.status(StatusCodes.BAD_REQUEST).send({
+        const response: ErrorResponse = {
             error: 'Bad Request',
             message: 'Validation failed',
             details,
-        });
+        };
+
+        reply.status(StatusCodes.BAD_REQUEST).send(response);
+        return;
     }
 
     if (statusCode === StatusCodes.UNAUTHORIZED) {
@@ -47,8 +65,18 @@ export function errorHandler(error: FastifyError, request: FastifyRequest, reply
         });
     }
 
-    return reply.status(statusCode).send({
-        error: error.name || 'Internal Server Error',
-        message: error.message || 'Unexpected error occurred',
-    });
+    if (statusCode === StatusCodes.CONFLICT) {
+        return reply.status(StatusCodes.CONFLICT).send({
+            error: 'Conflict',
+            message: error.message || 'Resource already exists',
+        });
+    }
+
+    const isDevelopment = env.NODE_ENV === 'dev';
+    const response: ErrorResponse = {
+        error: 'Internal Server Error',
+        message: isDevelopment ? error.message : 'An unexpected error occurred',
+    };
+
+    reply.status(statusCode).send(response);
 }

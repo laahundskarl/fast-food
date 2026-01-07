@@ -20,28 +20,6 @@ describe('PrismaClientMapper', () => {
             expect(client.name).toBe(mockClientData.name);
             expect(client.cpf).toBe(mockClientData.cpf);
             expect(client.email).toBe(mockClientData.email);
-            expect(client.orders).toBeUndefined();
-        });
-
-        it('should map prisma client data with orders to domain Client entity', () => {
-            const clientDataWithOrders = {
-                ...mockClientData,
-                orders: [
-                    {
-                        id: 'order-1',
-                        value: 100,
-                        orderNumber: 1,
-                        status: 'WAITING',
-                        orderProducts: [],
-                    },
-                ],
-            };
-
-            const client = PrismaClientMapper.toDomain(clientDataWithOrders);
-
-            expect(client).toBeInstanceOf(Client);
-            expect(client.orders).toBeDefined();
-            expect(client.orders).toHaveLength(1);
         });
     });
 

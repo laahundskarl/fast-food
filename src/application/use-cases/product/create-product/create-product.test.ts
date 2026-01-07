@@ -2,13 +2,15 @@ import { describe, expect, it } from 'vitest';
 
 import { CreateProduct } from '#/application/use-cases/product/create-product/create-product';
 import { NotFoundError } from '#/domain/errors';
-import * as productMock from '#/infrastructure/repositories/prisma/mocks/prisma-product-mock.repository';
 import * as productCategoryMock from '#/infrastructure/repositories/prisma/mocks/prisma-product-category-mock.repository';
+import * as productMock from '#/infrastructure/repositories/prisma/mocks/prisma-product-mock.repository';
+import { createLoggerMock } from '#/infrastructure/services/mocks/logger-mock.service';
 
 describe('create-product', () => {
+    const loggerMock = createLoggerMock();
     const productRepository = new productMock.PrismaProductMockRepository();
     const productCategoryRepository = new productCategoryMock.PrismaProductCategoryMockRepository();
-    const createProductUseCase = new CreateProduct(productRepository, productCategoryRepository);
+    const createProductUseCase = new CreateProduct(loggerMock, productRepository, productCategoryRepository);
 
     it('should create a product', async () => {
         productCategoryMock.mockProductCategoryFindById({ empty: false });

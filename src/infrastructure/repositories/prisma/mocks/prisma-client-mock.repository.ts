@@ -1,30 +1,30 @@
 import { vi } from 'vitest';
 
-import { Client, IClient } from '#/domain/entities/client.entity';
+import { Client } from '#/domain/entities/client.entity';
 import { IClientRepository } from '#/domain/repositories/client.repository';
 
 export class PrismaClientMockRepository implements IClientRepository {
-    async create(client: IClient): Promise<IClient> {
+    async create(client: Client): Promise<Client> {
         return Promise.resolve(client);
     }
 
-    async findByCpf(_cpf: string, _includes: string[]): Promise<IClient | null> {
+    async findByCpf(_cpf: string): Promise<Client | null> {
         return Promise.resolve(null);
     }
 
-    async findByEmail(_email: string): Promise<IClient | null> {
+    async findByEmail(_email: string): Promise<Client | null> {
         return Promise.resolve(null);
     }
 
-    async findByCpfOrEmail(_cpf: string, _email: string): Promise<IClient | null> {
+    async findByCpfOrEmail(_cpf: string, _email: string): Promise<Client | null> {
         return Promise.resolve(null);
     }
 
-    async findById(_id: string): Promise<IClient | null> {
+    async findById(_id: string): Promise<Client | null> {
         return Promise.resolve(null);
     }
 
-    async update(client: IClient): Promise<IClient> {
+    async update(client: Client): Promise<Client> {
         return Promise.resolve(client);
     }
 
@@ -38,11 +38,10 @@ const clientMock = new Client({
     name: 'John Doe',
     cpf: '12345678900',
     email: 'john.doe@example.com',
-    orders: [],
 });
 
 type MockOptions = {
-    data?: IClient;
+    data?: Client;
     empty?: boolean;
 };
 

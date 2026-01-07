@@ -1,0 +1,47 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Client {
+    id    String @id @default(uuid())
+    name  String @db.VarChar(255)
+    cpf   String @unique @db.VarChar(11)
+    email String @unique @db.VarChar(255)
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    @@map("client")
+}
+
+model ProductCategory {
+    id   String @id @default(uuid())
+    name String @db.VarChar(255)
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    products Product[]
+
+    @@map("product_category")
+}
+
+model Product {
+    id          String  @id @default(uuid())
+    name        String  @db.VarChar(255)
+    value       Int
+    description String? @db.VarChar(500)
+    categoryId  String  @map("category_id") @db.Char(36)
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    category ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+    @@map("product")
+}

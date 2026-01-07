@@ -1,19 +1,23 @@
 import { z } from 'zod';
 
-import { productCategoryResponseSchema } from '#/interfaces/http/schemas/product-category/product-category.schema';
-import { errorNotFoundSchema, errorResponseValidationSchema } from '#/interfaces/http/schemas/until.schema';
+import { badRequestSchema, notFoundSchema } from '#/interfaces/http/schemas//common/error.schema';
+import {
+    productCategoryParamsRequestSchema,
+    productCategoryListQueryRequestSchema,
+    productCategoryGetQueryRequestSchema,
+} from '#/interfaces/http/schemas/product-category/product-category-request.schema';
+import { productCategoryResponseSchema } from '#/interfaces/http/schemas/product-category/product-category-response.schema';
 
 export const productCategoryGetSchema = {
     schema: {
         summary: 'Busca uma categoria de produtos',
         tags: ['Categoria'],
-        params: z.object({
-            id: z.string().uuid(),
-        }),
+        params: productCategoryParamsRequestSchema,
+        query: productCategoryGetQueryRequestSchema,
         response: {
             200: productCategoryResponseSchema,
-            404: errorNotFoundSchema,
-            400: errorResponseValidationSchema,
+            404: notFoundSchema,
+            400: badRequestSchema,
         },
     },
 };
@@ -22,8 +26,10 @@ export const productCategoryListSchema = {
     schema: {
         summary: 'Lista e filtra as categorias de produtos',
         tags: ['Categoria'],
+        query: productCategoryListQueryRequestSchema,
         response: {
             200: z.array(productCategoryResponseSchema),
+            400: badRequestSchema,
         },
     },
 };

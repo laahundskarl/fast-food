@@ -4,10 +4,12 @@ import { UpdateClient } from '#/application/use-cases/client/update-client/updat
 import { Client } from '#/domain/entities/client.entity';
 import { ConflictError, NotFoundError } from '#/domain/errors';
 import * as clientMock from '#/infrastructure/repositories/prisma/mocks/prisma-client-mock.repository';
+import { createLoggerMock } from '#/infrastructure/services/mocks/logger-mock.service';
 
 describe('update-client', () => {
+    const loggerMock = createLoggerMock();
     const clientRepository = new clientMock.PrismaClientMockRepository();
-    const updateClientUseCase = new UpdateClient(clientRepository);
+    const updateClientUseCase = new UpdateClient(loggerMock, clientRepository);
 
     const existingClient = new Client({
         id: '1',

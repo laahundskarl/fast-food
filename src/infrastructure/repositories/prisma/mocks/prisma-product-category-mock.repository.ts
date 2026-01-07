@@ -1,15 +1,15 @@
 import { vi } from 'vitest';
 
-import { ListProductCategoryDto } from '#/application/use-cases/product-category/list-product-category/list-product-category.dto';
-import { IProductCategory, ProductCategory } from '#/domain/entities/product-category.entity';
+import { ProductCategory } from '#/domain/entities/product-category.entity';
+import { ProductCategoryFiltersDto } from '#/domain/repositories/dto/product-category-filters.dto';
 import { IProductCategoryRepository } from '#/domain/repositories/product-category.repository';
 
 export class PrismaProductCategoryMockRepository implements IProductCategoryRepository {
-    async findById(_id: string, _includes: string[]): Promise<IProductCategory | null> {
+    async findById(_id: string, _includes: string[]): Promise<ProductCategory | null> {
         return Promise.resolve(null);
     }
 
-    async list(_query?: ListProductCategoryDto): Promise<IProductCategory[]> {
+    async list(_query?: ProductCategoryFiltersDto): Promise<ProductCategory[]> {
         return Promise.resolve([]);
     }
 }
@@ -20,12 +20,12 @@ const categoryMock = new ProductCategory({
 });
 
 type MockOptions = {
-    data?: IProductCategory;
+    data?: ProductCategory;
     empty?: boolean;
 };
 
 type MockListOptions = {
-    data?: IProductCategory[];
+    data?: ProductCategory[];
 };
 
 export function mockProductCategoryFindById({ data = categoryMock, empty }: MockOptions = {}) {

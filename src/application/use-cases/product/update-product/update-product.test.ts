@@ -1,16 +1,18 @@
 import { describe, expect, it } from 'vitest';
 
 import { UpdateProduct } from '#/application/use-cases/product/update-product/update-product';
-import { Product } from '#/domain/entities/product.entity';
 import { ProductCategory } from '#/domain/entities/product-category.entity';
+import { Product } from '#/domain/entities/product.entity';
 import { NotFoundError } from '#/domain/errors';
-import * as productMock from '#/infrastructure/repositories/prisma/mocks/prisma-product-mock.repository';
 import * as productCategoryMock from '#/infrastructure/repositories/prisma/mocks/prisma-product-category-mock.repository';
+import * as productMock from '#/infrastructure/repositories/prisma/mocks/prisma-product-mock.repository';
+import { createLoggerMock } from '#/infrastructure/services/mocks/logger-mock.service';
 
 describe('update-product', () => {
+    const loggerMock = createLoggerMock();
     const productRepository = new productMock.PrismaProductMockRepository();
     const productCategoryRepository = new productCategoryMock.PrismaProductCategoryMockRepository();
-    const updateProductUseCase = new UpdateProduct(productRepository, productCategoryRepository);
+    const updateProductUseCase = new UpdateProduct(loggerMock, productRepository, productCategoryRepository);
 
     const existingCategory = new ProductCategory({
         id: '1',

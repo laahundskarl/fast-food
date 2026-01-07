@@ -1,25 +1,21 @@
 import {
-    clientCreateValidator,
-    clientResponseSchema,
-    clientUpdateValidator,
-    clientParamsValidator,
-} from '#/interfaces/http/schemas/client/client.schema';
-import {
-    deleteResponseSchema,
-    errorConflictSchema,
-    errorNotFoundSchema,
-    errorResponseValidationSchema,
-} from '#/interfaces/http/schemas/until.schema';
+    clientCreateRequestSchema,
+    clientParamsRequestSchema,
+    clientUpdateRequestSchema,
+} from '#/interfaces/http/schemas/client/client-request.schema';
+import { clientResponseSchema } from '#/interfaces/http/schemas/client/client-response.schema';
+import { badRequestSchema, conflictErrorSchema, notFoundSchema } from '#/interfaces/http/schemas/common/error.schema';
+import { deleteResponseSchema } from '#/interfaces/http/schemas/common/util.schema';
 
 export const clientCreateSchema = {
     schema: {
         tags: ['Clientes'],
         summary: 'Registrar cliente',
-        body: clientCreateValidator,
+        body: clientCreateRequestSchema,
         response: {
             201: clientResponseSchema,
-            400: errorResponseValidationSchema,
-            409: errorConflictSchema,
+            400: badRequestSchema,
+            409: conflictErrorSchema,
         },
     },
 };
@@ -28,10 +24,10 @@ export const clientGetSchema = {
     schema: {
         tags: ['Clientes'],
         summary: 'Buscar cliente',
-        params: clientParamsValidator,
+        params: clientParamsRequestSchema,
         response: {
             200: clientResponseSchema,
-            404: errorNotFoundSchema,
+            404: notFoundSchema,
         },
     },
 };
@@ -40,11 +36,11 @@ export const clientUpdateSchema = {
     schema: {
         tags: ['Clientes'],
         summary: 'Atualizar cliente',
-        body: clientUpdateValidator,
+        body: clientUpdateRequestSchema,
         response: {
             200: clientResponseSchema,
-            400: errorResponseValidationSchema,
-            404: errorNotFoundSchema,
+            400: badRequestSchema,
+            404: notFoundSchema,
         },
     },
 };
@@ -53,10 +49,10 @@ export const clientDeleteSchema = {
     schema: {
         tags: ['Clientes'],
         summary: 'Deletar cliente',
-        params: clientParamsValidator,
+        params: clientParamsRequestSchema,
         response: {
             200: deleteResponseSchema,
-            404: errorNotFoundSchema,
+            404: notFoundSchema,
         },
     },
 };

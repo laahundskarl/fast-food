@@ -1,5 +1,5 @@
-import { IClient } from '#/domain/entities/client.entity';
+import { Client } from '#/domain/entities/client.entity';
 
 export interface IGetClientUseCase {
-    execute(cpf: string, includes: string[]): Promise<IClient>;
+    execute(cpf: string): Promise<Client>;
 }

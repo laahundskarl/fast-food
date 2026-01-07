@@ -1,7 +1,6 @@
 import { Prisma } from '@prisma/client';
 
 import { Client, ClientPayload } from '#/domain/entities/client.entity';
-import { PrismaOrderMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-order.mapper';
 
 export class PrismaClientMapper {
     static toDomain(data: any): Client {
@@ -10,9 +9,6 @@ export class PrismaClientMapper {
             name: data.name,
             cpf: data.cpf,
             email: data.email,
-            ...(data.orders && {
-                orders: data.orders?.map((order: any) => PrismaOrderMapper.toDomain(order)),
-            }),
         } as ClientPayload);
     }
 
