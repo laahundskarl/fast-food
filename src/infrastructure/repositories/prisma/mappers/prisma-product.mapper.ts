@@ -1,10 +1,14 @@
-import { Prisma } from '@prisma/client';
+import { Product as PrismaProduct, ProductCategory as PrismaProductCategory, Prisma } from '@prisma/client';
 
 import { Product, ProductPayload } from '#/domain/entities/product.entity';
 import { PrismaProductCategoryMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product-category.mapper';
 
+type PrismaProductWithCategory = PrismaProduct & {
+    category?: PrismaProductCategory;
+};
+
 export class PrismaProductMapper {
-    static toDomain(data: any): Product {
+    static toDomain(data: PrismaProductWithCategory): Product {
         return new Product({
             id: data.id,
             name: data.name,

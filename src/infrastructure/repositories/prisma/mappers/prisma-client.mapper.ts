@@ -1,9 +1,9 @@
-import { Prisma } from '@prisma/client';
+import { Client as PrismaClient, Prisma } from '@prisma/client';
 
 import { Client, ClientPayload } from '#/domain/entities/client.entity';
 
 export class PrismaClientMapper {
-    static toDomain(data: any): Client {
+    static toDomain(data: PrismaClient): Client {
         return new Client({
             id: data.id,
             name: data.name,

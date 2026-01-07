@@ -14,6 +14,8 @@ import { CreateProduct } from '#/application/use-cases/product/create-product/cr
 import { ICreateProductUseCase } from '#/application/use-cases/product/create-product/create-product.use-case';
 import { DeleteProduct } from '#/application/use-cases/product/delete-product/delete-product';
 import { IDeleteProductUseCase } from '#/application/use-cases/product/delete-product/delete-product.use-case';
+import { FindManyProducts } from '#/application/use-cases/product/find-many-products/find-many-products';
+import { IFindManyProductsUseCase } from '#/application/use-cases/product/find-many-products/find-many-products.use-case';
 import { GetProduct } from '#/application/use-cases/product/get-product/get-product';
 import { IGetProductUseCase } from '#/application/use-cases/product/get-product/get-product.use-case';
 import { ListProduct } from '#/application/use-cases/product/list-product/list-product';
@@ -38,6 +40,7 @@ export function bindUseCases(container: Container) {
     container.bind<IGetProductUseCase>(TYPES.GetProductUseCase).to(GetProduct).inTransientScope();
     container.bind<IListProductUseCase>(TYPES.ListProductUseCase).to(ListProduct).inTransientScope();
     container.bind<IUpdateProductUseCase>(TYPES.UpdateProductUseCase).to(UpdateProduct).inTransientScope();
+    container.bind<IFindManyProductsUseCase>(TYPES.FindManyProductsUseCase).to(FindManyProducts).inTransientScope();
 
     container
         .bind<IGetProductCategoryUseCase>(TYPES.GetProductCategoryUseCase)

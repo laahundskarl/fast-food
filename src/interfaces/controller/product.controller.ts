@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 
 import { ICreateProductUseCase } from '#/application/use-cases/product/create-product/create-product.use-case';
 import { IDeleteProductUseCase } from '#/application/use-cases/product/delete-product/delete-product.use-case';
+import { IFindManyProductsUseCase } from '#/application/use-cases/product/find-many-products/find-many-products.use-case';
 import { IGetProductUseCase } from '#/application/use-cases/product/get-product/get-product.use-case';
 import { IListProductUseCase } from '#/application/use-cases/product/list-product/list-product.use-case';
 import { IUpdateProductUseCase } from '#/application/use-cases/product/update-product/update-product.use-case';
@@ -10,6 +11,7 @@ import { TYPES } from '#/infrastructure/config/di/types';
 import { DeleteResponse } from '#/interfaces/http/schemas/common/util.schema';
 import {
     ProductCreateRequest,
+    ProductFindManyRequest,
     ProductQueryRequest,
     ProductUpdateRequest,
 } from '#/interfaces/http/schemas/product/product-request.schema';
@@ -25,6 +27,7 @@ export class ProductController {
         @inject(TYPES.GetProductUseCase) private readonly getProductUseCase: IGetProductUseCase,
         @inject(TYPES.ListProductUseCase) private readonly listProductUseCase: IListProductUseCase,
         @inject(TYPES.UpdateProductUseCase) private readonly updateProductUseCase: IUpdateProductUseCase,
+        @inject(TYPES.FindManyProductsUseCase) private readonly findManyProductsUseCase: IFindManyProductsUseCase,
     ) {}
 
     async create(request: ProductCreateRequest): Promise<ProductResponse> {
@@ -55,5 +58,12 @@ export class ProductController {
         this.logger.info('Updating product with id', { id, request });
         const result = await this.updateProductUseCase.execute(id, request);
         return ProductPresenter.toHTTP(result);
+    }
+
+    async findMany(request: ProductFindManyRequest): Promise<ProductResponse[]> {
+        this.logger.info('Processing find many products request', { count: request.ids.length });
+        const response = await this.findManyProductsUseCase.execute(request.ids);
+        this.logger.info('Find many products request processed', { found: response.length });
+        return response.map(product => ProductPresenter.toHTTP(product));
     }
 }

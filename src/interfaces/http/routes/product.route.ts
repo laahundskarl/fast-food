@@ -5,6 +5,7 @@ import { TYPES } from '#/infrastructure/config/di/types';
 import { ProductController } from '#/interfaces/controller/product.controller';
 import {
     ProductCreateRequest,
+    ProductFindManyRequest,
     ProductParamsRequest,
     ProductQueryRequest,
     ProductUpdateRequest,
@@ -12,6 +13,7 @@ import {
 import {
     productCreateSchema,
     productDeleteSchema,
+    productFindManySchema,
     productGetSchema,
     productListSchema,
     productUpdateSchema,
@@ -45,6 +47,11 @@ export const productRoute = (app: FastifyInstance) => {
         Body: ProductUpdateRequest;
     }>('/:id', productUpdateSchema, async (req, reply) => {
         const response = await controller.update(req.params.id, req.body);
+        return reply.send(response);
+    });
+
+    app.post<{ Body: ProductFindManyRequest }>('/find-many', productFindManySchema, async (req, reply) => {
+        const response = await controller.findMany(req.body);
         return reply.send(response);
     });
 };

@@ -24,7 +24,12 @@ export const productQueryRequestSchema = z.object({
     productId: z.string().uuid().optional(),
 });
 
+export const productFindManyRequestSchema = z.object({
+    ids: z.array(z.string().uuid()).min(1, { message: 'At least one product ID is required' }),
+});
+
 export type ProductCreateRequest = z.infer<typeof productCreateRequestSchema>;
 export type ProductUpdateRequest = z.infer<typeof productUpdateRequestSchema>;
 export type ProductParamsRequest = z.infer<typeof productParamsRequestSchema>;
 export type ProductQueryRequest = z.infer<typeof productQueryRequestSchema>;
+export type ProductFindManyRequest = z.infer<typeof productFindManyRequestSchema>;

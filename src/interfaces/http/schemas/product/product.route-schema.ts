@@ -4,6 +4,7 @@ import { badRequestSchema, notFoundSchema } from '#/interfaces/http/schemas/comm
 import { deleteResponseSchema } from '#/interfaces/http/schemas/common/util.schema';
 import {
     productCreateRequestSchema,
+    productFindManyRequestSchema,
     productParamsRequestSchema,
     productQueryRequestSchema,
     productUpdateRequestSchema,
@@ -67,6 +68,18 @@ export const productDeleteSchema = {
         response: {
             200: deleteResponseSchema,
             404: notFoundSchema,
+        },
+    },
+};
+
+export const productFindManySchema = {
+    schema: {
+        tags: ['Produtos'],
+        summary: 'Busca múltiplos produtos por IDs',
+        body: productFindManyRequestSchema,
+        response: {
+            200: z.array(productResponseSchema),
+            400: badRequestSchema,
         },
     },
 };

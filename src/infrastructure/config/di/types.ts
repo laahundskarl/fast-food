@@ -19,6 +19,7 @@ export const TYPES = {
     GetProductUseCase: Symbol.for('GetProductUseCase'),
     ListProductUseCase: Symbol.for('ListProductUseCase'),
     UpdateProductUseCase: Symbol.for('UpdateProductUseCase'),
+    FindManyProductsUseCase: Symbol.for('FindManyProductsUseCase'),
 
     GetProductCategoryUseCase: Symbol.for('GetProductCategoryUseCase'),
     ListProductCategoryUseCase: Symbol.for('ListProductCategoryUseCase'),
