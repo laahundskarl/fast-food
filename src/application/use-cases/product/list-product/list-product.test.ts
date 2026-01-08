@@ -2,10 +2,12 @@ import { describe, expect, it } from 'vitest';
 
 import { ListProduct } from '#/application/use-cases/product/list-product/list-product';
 import * as productMock from '#/infrastructure/repositories/prisma/mocks/prisma-product-mock.repository';
+import { createLoggerMock } from '#/infrastructure/services/mocks/logger-mock.service';
 
 describe('list-product', () => {
+    const loggerMock = createLoggerMock();
     const productRepository = new productMock.PrismaProductMockRepository();
-    const listProductUseCase = new ListProduct(productRepository);
+    const listProductUseCase = new ListProduct(loggerMock, productRepository);
 
     it('should list products', async () => {
         const listMock = productMock.mockProductList({});

@@ -1,11 +1,11 @@
-import { ListProductDto } from '#/application/use-cases/product/list-product/list-product.dto';
-import { IProduct } from '#/domain/entities/product.entity';
+import { Product } from '#/domain/entities/product.entity';
+import { ProductFilterDto } from '#/domain/repositories/dto/product-filter.dto';
 
 export interface IProductRepository {
-    create(product: IProduct): Promise<IProduct>;
-    findById(id: string): Promise<IProduct | null>;
-    findMany(ids: string[]): Promise<IProduct[]>;
-    list(query?: ListProductDto): Promise<IProduct[]>;
-    update(id: string, product: IProduct): Promise<IProduct>;
+    create(product: Product): Promise<Product>;
+    findById(id: string): Promise<Product | null>;
+    findMany(ids: string[]): Promise<Product[]>;
+    list(query?: ProductFilterDto): Promise<Product[]>;
+    update(id: string, product: Product): Promise<Product>;
     destroy(id: string): Promise<void>;
 }

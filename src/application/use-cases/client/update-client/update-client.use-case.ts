@@ -1,6 +1,6 @@
-import { UpdateClientDto } from '#/application/use-cases/client/update-client/update-client.dto';
-import { IClient } from '#/domain/entities/client.entity';
+import { Client } from '#/domain/entities/client.entity';
+import { ClientUpdateRequest } from '#/interfaces/http/schemas/client/client-request.schema';
 
 export interface IUpdateClientUseCase {
-    execute(cpf: string, request: UpdateClientDto): Promise<IClient>;
+    execute(cpf: string, request: ClientUpdateRequest): Promise<Client>;
 }

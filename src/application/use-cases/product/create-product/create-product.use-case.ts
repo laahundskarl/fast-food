@@ -1,6 +1,6 @@
-import { CreateProductDto } from '#/application/use-cases/product/create-product/create-product.dto';
-import { IProduct } from '#/domain/entities/product.entity';
+import { Product } from '#/domain/entities/product.entity';
+import { ProductCreateRequest } from '#/interfaces/http/schemas/product/product-request.schema';
 
 export interface ICreateProductUseCase {
-    execute(request: CreateProductDto): Promise<IProduct>;
+    execute(request: ProductCreateRequest): Promise<Product>;
 }

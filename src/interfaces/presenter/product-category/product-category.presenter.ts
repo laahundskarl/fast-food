@@ -1,8 +1,8 @@
-import { IProductCategory } from '#/domain/entities/product-category.entity';
-import { ProductCategoryResponseDTO } from '#/interfaces/presenter/product-category/product-category-response.dto';
+import { ProductCategory } from '#/domain/entities/product-category.entity';
+import { ProductCategoryResponseSchema } from '#/interfaces/http/schemas/product-category/product-category-response.schema';
 
 export class ProductCategoryPresenter {
-    static toDTO(category: IProductCategory): ProductCategoryResponseDTO {
+    static toHTTP(category: ProductCategory): ProductCategoryResponseSchema {
         return {
             id: category.id,
             name: category.name,

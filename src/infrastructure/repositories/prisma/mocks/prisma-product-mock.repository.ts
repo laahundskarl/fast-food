@@ -1,28 +1,28 @@
 import { vi } from 'vitest';
 
-import { ListProductDto } from '#/application/use-cases/product/list-product/list-product.dto';
-import { IProduct, Product } from '#/domain/entities/product.entity';
 import { ProductCategory } from '#/domain/entities/product-category.entity';
+import { Product } from '#/domain/entities/product.entity';
+import { ProductFilterDto } from '#/domain/repositories/dto/product-filter.dto';
 import { IProductRepository } from '#/domain/repositories/product.repository';
 
 export class PrismaProductMockRepository implements IProductRepository {
-    async create(product: IProduct): Promise<IProduct> {
+    async create(product: Product): Promise<Product> {
         return Promise.resolve(product);
     }
 
-    async findById(_id: string): Promise<IProduct | null> {
+    async findById(_id: string): Promise<Product | null> {
         return Promise.resolve(null);
     }
 
-    async findMany(_ids: string[]): Promise<IProduct[]> {
+    async findMany(_ids: string[]): Promise<Product[]> {
         return Promise.resolve([]);
     }
 
-    async list(_query?: ListProductDto): Promise<IProduct[]> {
+    async list(_query?: ProductFilterDto): Promise<Product[]> {
         return Promise.resolve([]);
     }
 
-    async update(_id: string, product: IProduct): Promise<IProduct> {
+    async update(_id: string, product: Product): Promise<Product> {
         return Promise.resolve(product);
     }
 
@@ -45,12 +45,12 @@ const productMock = new Product({
 });
 
 type MockOptions = {
-    data?: IProduct;
+    data?: Product;
     empty?: boolean;
 };
 
 type MockListOptions = {
-    data?: IProduct[];
+    data?: Product[];
 };
 
 export function mockProductCreate({ data = productMock }: MockOptions = {}) {

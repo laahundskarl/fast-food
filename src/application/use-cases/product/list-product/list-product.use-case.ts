@@ -1,6 +1,6 @@
-import { ListProductDto } from '#/application/use-cases/product/list-product/list-product.dto';
 import { Product } from '#/domain/entities/product.entity';
+import { ProductQueryRequest } from '#/interfaces/http/schemas/product/product-request.schema';
 
 export interface IListProductUseCase {
-    execute(query?: ListProductDto): Promise<Product[]>;
+    execute(query?: ProductQueryRequest): Promise<Product[]>;
 }

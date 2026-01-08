@@ -3,10 +3,12 @@ import { describe, expect, it } from 'vitest';
 import { GetProductCategory } from '#/application/use-cases/product-category/get-product-category/get-product-category';
 import { NotFoundError } from '#/domain/errors';
 import * as productCategoryMock from '#/infrastructure/repositories/prisma/mocks/prisma-product-category-mock.repository';
+import { createLoggerMock } from '#/infrastructure/services/mocks/logger-mock.service';
 
 describe('get-product-category', () => {
+    const loggerMock = createLoggerMock();
     const productCategoryRepository = new productCategoryMock.PrismaProductCategoryMockRepository();
-    const getProductCategoryUseCase = new GetProductCategory(productCategoryRepository);
+    const getProductCategoryUseCase = new GetProductCategory(loggerMock, productCategoryRepository);
 
     it('should get a product category by id', async () => {
         const findByIdMock = productCategoryMock.mockProductCategoryFindById({ empty: false });

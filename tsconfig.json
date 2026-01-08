@@ -4,7 +4,7 @@
 
   "compilerOptions": {
     "lib": ["es2023"],
-    "module": "nodenext",
+    "module": "ESNext",
     "target": "es2022",
     "baseUrl": "./",
     "outDir": "dist",
@@ -15,7 +15,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
   },

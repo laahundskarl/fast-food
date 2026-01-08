@@ -32,14 +32,6 @@ export function buildApp(container: Container): FastifyInstance {
                     description: 'Operações relacionadas a clientes',
                 },
                 {
-                    name: 'Pedidos',
-                    description: 'Operações relacionadas a pedidos',
-                },
-                {
-                    name: 'Pagamentos',
-                    description: 'Operações relacionadas a pagamentos',
-                },
-                {
                     name: 'Categoria',
                     description: 'Operações relacionadas a categoria',
                 },
