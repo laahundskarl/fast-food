@@ -4,7 +4,7 @@ import { ProductCategory, ProductCategoryPayload } from '#/domain/entities/produ
 import { PrismaProductMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-product.mapper';
 
 type PrismaProductCategoryWithProducts = PrismaProductCategory & {
-    products: PrismaProduct[];
+    products?: PrismaProduct[];
 };
 
 export class PrismaProductCategoryMapper {
