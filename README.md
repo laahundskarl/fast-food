@@ -214,6 +214,8 @@ Os testes cobrem:
 - ✅ Controllers e rotas HTTP
 - ✅ Middlewares e validações
 
+O coverage dos testes está disponível em [index.html](./coverage/index.html).
+
 ## 📡 API Endpoints
 
 ### Clientes
