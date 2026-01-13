@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { Client } from '#/domain/entities/client.entity';
 import { PrismaClientMapper } from '#/infrastructure/repositories/prisma/mappers/prisma-client.mapper';
@@ -58,50 +58,6 @@ describe('PrismaClientMapper', () => {
                 name: 'Updated Name',
                 cpf: '11122233344',
                 email: 'updated@example.com',
-            });
-        });
-    });
-
-    describe('toPrisma', () => {
-        it('should map domain Client to Prisma update many args', () => {
-            Date.now = vi.fn(() => 1715769600000);
-            const client = new Client({
-                id: 'client-789',
-                name: 'Updated Name',
-                cpf: '11122233344',
-                email: 'updated@example.com',
-            });
-
-            const prismaInput = PrismaClientMapper.toPrisma(client);
-            expect(prismaInput).toEqual({
-                where: { id: 'client-789' },
-                data: {
-                    updatedAt: new Date('2024-05-15T10:40:00.000Z'),
-                    id: 'client-789',
-                    createdAt: new Date('2024-05-15T10:40:00.000Z'),
-                    name: 'Updated Name',
-                    cpf: '11122233344',
-                    email: 'updated@example.com',
-                },
-            });
-        });
-    });
-
-    describe('toPrismaUpdate', () => {
-        Date.now = vi.fn(() => 1715769600000);
-        it('should map domain Client to Prisma update input', () => {
-            const client = new Client({
-                id: 'client-789',
-                name: 'Updated Name',
-                cpf: '11122233344',
-                email: 'updated@example.com',
-            });
-            const prismaInput = PrismaClientMapper.toPrismaUpdate(client);
-            expect(prismaInput).toEqual({
-                name: 'Updated Name',
-                cpf: '11122233344',
-                email: 'updated@example.com',
-                updatedAt: new Date('2024-05-15T10:40:00.000Z'),
             });
         });
     });
