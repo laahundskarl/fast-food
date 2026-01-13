@@ -34,9 +34,9 @@ export class PrismaClientMapper {
             data: {
                 name: data.name,
                 cpf: data.cpf,
-                updatedAt: new Date(),
+                updatedAt: new Date(Date.now()),
                 id: data.id,
-                createdAt: new Date(),
+                createdAt: new Date(Date.now()),
                 email: data.email,
             },
         };
@@ -47,7 +47,7 @@ export class PrismaClientMapper {
             name: data.name,
             cpf: data.cpf,
             email: data.email,
-            updatedAt: new Date(),
+            updatedAt: new Date(Date.now()),
         };
     }
 }
