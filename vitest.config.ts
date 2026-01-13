@@ -11,7 +11,7 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      reporter: 'lcov',
+      reporter: ['lcov', 'html'],
       exclude: ['**/*-mock*'],
       thresholds: {
         statements: 70,
