@@ -17,6 +17,9 @@ export class PrismaClientMapper {
             name: data.name,
             cpf: data.cpf,
             email: data.email,
+            orders: {
+                create: [],
+            },
         };
     }
 
