@@ -61,4 +61,43 @@ describe('PrismaClientMapper', () => {
             });
         });
     });
+
+    describe('toPrisma', () => {
+        it('should map domain Client to Prisma update many args', () => {
+            const client = new Client({
+                id: 'client-789',
+                name: 'Updated Name',
+                cpf: '11122233344',
+                email: 'updated@example.com',
+            });
+
+            const prismaInput = PrismaClientMapper.toPrisma(client);
+            expect(prismaInput).toEqual({
+                where: { id: 'client-789' },
+                data: {
+                    name: 'Updated Name',
+                    cpf: '11122233344',
+                    email: 'updated@example.com',
+                },
+            });
+        });
+    });
+
+    describe('toPrismaUpdate', () => {
+        it('should map domain Client to Prisma update input', () => {
+            const client = new Client({
+                id: 'client-789',
+                name: 'Updated Name',
+                cpf: '11122233344',
+                email: 'updated@example.com',
+            });
+            const prismaInput = PrismaClientMapper.toPrismaUpdate(client);
+            expect(prismaInput).toEqual({
+                name: 'Updated Name',
+                cpf: '11122233344',
+                email: 'updated@example.com',
+                updatedAt: new Date(),
+            });
+        });
+    });
 });
