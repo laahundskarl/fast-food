@@ -9,6 +9,8 @@ describe('PrismaClientMapper', () => {
         name: 'John Doe',
         cpf: '12345678901',
         email: 'john@example.com',
+        createdAt: new Date('2023-01-01T00:00:00Z'),
+        updatedAt: new Date('2023-01-01T00:00:00Z'),
     };
 
     describe('toDomain', () => {

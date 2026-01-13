@@ -8,14 +8,19 @@ describe('PrismaProductMapper', () => {
     const mockCategory = {
         id: 'category-123',
         name: 'Beverages',
+        createdAt: new Date('2023-01-01T00:00:00Z'),
+        updatedAt: new Date('2023-01-01T00:00:00Z'),
     };
 
     const mockProductData = {
         id: 'product-123',
         name: 'Coca-Cola',
         value: 5.99,
+        categoryId: 'category-123',
         description: 'Refreshing soft drink',
         category: mockCategory,
+        createdAt: new Date('2023-01-01T00:00:00Z'),
+        updatedAt: new Date('2023-01-01T00:00:00Z'),
     };
 
     describe('toDomain', () => {
@@ -36,7 +41,10 @@ describe('PrismaProductMapper', () => {
                 id: 'product-456',
                 name: 'Water',
                 value: 2.99,
+                categoryId: 'category-123',
                 description: null,
+                createdAt: new Date('2023-01-01T00:00:00Z'),
+                updatedAt: new Date('2023-01-01T00:00:00Z'),
             };
 
             const product = PrismaProductMapper.toDomain(productDataWithoutCategory);

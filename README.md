@@ -1,602 +1,260 @@
-# FastFood Autoatendimento - Application
+# FastFood - Aplicação Principal
 
-Este repositório contém **apenas a aplicação** do sistema backend para uma lanchonete com autoatendimento, utilizando TypeScript, Fastify, PrismaORM e MySQL, seguindo a arquitetura hexagonal (também conhecida como Ports and Adapters).
+![Node.js](https://img.shields.io/badge/Node.js-22.x-green)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
+![Fastify](https://img.shields.io/badge/Fastify-5.x-black)
+![Prisma](https://img.shields.io/badge/Prisma-6.x-2D3748)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-EKS-326CE5)
 
-## 🏗️ **Arquitetura Desacoplada**
+## 📋 Sobre o Serviço
 
-A infraestrutura foi desacoplada em repositórios separados:
+Este repositório contém a **aplicação principal** do sistema FastFood, responsável pelo gerenciamento de clientes, produtos e categorias. A aplicação segue a arquitetura hexagonal (Ports and Adapters) e utiliza Domain-Driven Design (DDD).
 
-- **[fast-food](https://github.com/laahundskarl/fast-food)** (este repositório) - Aplicação FastFood
-- **[fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)** - Infraestrutura Kubernetes (EKS + ECR)
-- **[fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)** - Infraestrutura Database (RDS MySQL)
-- **[fast-food-lambda](https://github.com/laahundskarl/fast-food-lambda)** - Autenticação Serverless (AWS Lambda)
+## 🎯 Responsabilidades
 
-### Pipeline CI/CD Automatizado
+### Core Business
+- **Gerenciamento de Clientes**: CRUD completo de clientes com validação de CPF
+- **Catálogo de Produtos**: Gerenciamento de produtos e suas características
+- **Categorias**: Organização de produtos por categorias (Lanche, Acompanhamento, Bebida, Sobremesa)
+- **API Gateway**: Ponto de entrada principal para as funcionalidades core do sistema
 
-```
-Database Infra → K8s Infra → Autenticação (AWS Lambda) → Application Build → Deploy
-```
+### Integrações
+- Comunicação com serviços de pedidos (fast-food-order)
+- Comunicação com serviços de pagamento (fast-food-payment)
+- Autenticação via Lambda (fast-food-auth)
 
-1. **DB Infrastructure** deploys RDS MySQL
-2. **K8s Infrastructure** deploys EKS cluster and ECR
-3. **Lambda Infrastructure** deploys serverless authentication
-4. **Application** builds and pushes Docker image
-5. **Auto-deploy** triggers Kubernetes deployment
+## 🏗️ Arquitetura
 
----
-
-## Arquitetura da Solução
-
-![Arquitetura FastFood](./docs/architecture.png)
-
-### Requisitos de Negócio
-
-A solução resolve os seguintes problemas de negócio:
-
-- **Gerenciamento de filas:** O sistema de autoatendimento reduz o tempo de espera dos clientes
-- **Pedidos customizados:** Permite que clientes montem seus pedidos com facilidade
-- **Rastreamento de pedidos:** Clientes podem acompanhar o status de preparação
-- **Identificação simplificada:** Processo simples de identificação por CPF
-- **Fidelização:** Registro de clientes para programas de fidelidade
-- **Gestão de estoque:** Controle de produtos disponíveis em tempo real
-
-### Requisitos de Infraestrutura
-
-A arquitetura implementa:
-
-- **Escalabilidade horizontal:** Uso de HPA (Horizontal Pod Autoscaler) para lidar com picos de demanda nos horários de maior movimento, garantindo que o totem não fique lento
-- **Alta disponibilidade:** Múltiplas réplicas do serviço em diferentes zonas de disponibilidade
-- **Persistência de dados:** Amazon RDS MySQL gerenciado
-- **Balanceamento de carga:** LoadBalancer para distribuir requisições
-- **Segurança:** Configurações de segurança e secrets no Kubernetes
-- **Monitoramento:** Metrics Server para coleta de métricas de utilização
-- **Infraestrutura como código:** Terraform para provisionamento da infraestrutura na AWS
-- **Containerização:** Docker para empacotamento da aplicação
-- **Orquestração:** Kubernetes para gerenciamento de containers e recursos
-
-### Workflows CI/CD Implementadas
-
-O projeto utiliza **GitHub Actions** com workflows padronizadas seguindo convenções de nomenclatura:
-
-#### 📦 **fast-food** (este repositório)
-- **`CI - Build and Test`** - Integração contínua com build, testes, lint e auditoria de segurança
-- **`CD - Build and Deploy`** - Build da imagem Docker, push para ECR e trigger de deploy
-- **`Cleanup - Application and Infrastructure`** - Limpeza granular (app-only) ou completa (full-infrastructure)
-
-#### 🗄️ **fast-food-db-infra**
-- **`Infrastructure - Validate Database`** - Validação Terraform do banco RDS MySQL
-- **`Infrastructure - Deploy Database`** - Deploy automatizado da infraestrutura de banco
-- **`Cleanup - Destroy Database`** - Destruição segura com backup automático
-
-#### ☸️ **fast-food-k8s-infra**
-- **`Infrastructure - Validate Kubernetes`** - Validação Terraform do cluster EKS
-- **`Infrastructure - Deploy Kubernetes`** - Deploy do cluster EKS e configurações
-- **`CD - Deploy Application`** - Deploy da aplicação no Kubernetes
-- **`Cleanup - Destroy Kubernetes`** - Limpeza completa da infraestrutura K8s
-
-### 🔐 **Configuração de Secrets GitHub**
-
-Para que os workflows funcionem corretamente, os seguintes secrets devem estar configurados no repositório GitHub:
-
-#### Secrets Obrigatórios (Repository Settings → Secrets and variables → Actions)
-
-```bash
-# AWS Credentials para build e deploy
-AWS_ACCESS_KEY_ID         # Access Key ID da conta AWS
-AWS_SECRET_ACCESS_KEY     # Secret Access Key da conta AWS
-AWS_SESSION_TOKEN         # Session Token (se usando STS/temporárias)
-
-# Token para disparar workflows entre repositórios
-REPO_ACCESS_TOKEN         # Personal Access Token com permissão repo:write
-```
-
-#### Como Configurar
-
-1. **AWS Credentials:**
-   - Criar usuário IAM com políticas: `AmazonEC2ContainerRegistryFullAccess`, `AmazonEKSClusterPolicy`
-   - Gerar Access Key/Secret Key para o usuário
-   - Adicionar nos secrets do repositório
-
-2. **Repository Token:**
-   - GitHub → Settings → Developer settings → Personal access tokens
-   - Criar token com escopo `repo` (full control)
-   - Adicionar como `REPO_ACCESS_TOKEN` nos secrets
-
-#### Execução Manual dos Workflows
-
-- **build-push.yml:** Pode ser executado manualmente via GitHub Actions → "CD - Build and Deploy" → "Run workflow"
-- **app-destroy.yml:** Execução manual via GitHub Actions → "Cleanup - Application and Infrastructure" → "Run workflow"
-
----
-
-## 📁 Estrutura do Projeto
+### Estrutura do Projeto
 
 ```
-api/                        → Coleções Postman para testes dos endpoints
-docs/                       → Documentação, diagramas e convenções
 src/
-├── application/            → Camada de aplicação (casos de uso)
+├── application/            → Casos de uso e serviços de aplicação
 │   ├── services/           → Serviços de orquestração
 │   └── use-cases/          → Implementação dos casos de uso
 │       ├── client/         → Casos de uso para clientes
-│       ├── order/          → Casos de uso para pedidos
-│       ├── payment/        → Casos de uso para pagamentos
 │       ├── product/        → Casos de uso para produtos
-│       ├── product-category/ → Casos de uso para categorias
-│       └── webhook/        → Casos de uso para webhooks
+│       └── product-category/ → Casos de uso para categorias
 │
 ├── domain/                 → Camada de domínio (entidades e regras de negócio)
 │   ├── entities/           → Entidades de domínio
-│   ├── gateways/           → Interfaces para serviços externos
 │   ├── repositories/       → Interfaces dos repositórios
 │   ├── services/           → Serviços de domínio
 │   └── errors.ts           → Definição de erros de domínio
 │
-├── infrastructure/         → Camada de infraestrutura (implementações concretas)
-│   ├── config/             → Configurações da aplicação
-│   │   ├── container.ts    → Container de injeção de dependência
-│   │   ├── env.ts          → Configurações de ambiente
-│   │   └── types.ts        → Tipos para DI
-│   ├── database/           → Configurações do banco de dados
-│   │   └── prisma/         → Esquemas, migrações e seeds do Prisma
-│   │       ├── migrations/ → Migrações do banco
-│   │       ├── schema.prisma → Schema do banco de dados
-│   │       └── seeds/      → Scripts para popular o banco
-│   ├── gateways/           → Implementações de gateways externos
-│   │   └── mercado-pago/   → Gateway do Mercado Pago
-│   ├── repositories/       → Implementações dos repositórios
-│   │   └── prisma/         → Repositórios usando Prisma
-│   └── server/             → Configuração do servidor
-│       ├── app.ts          → Configuração da aplicação Fastify
-│       ├── server.ts       → Inicialização do servidor
-│       └── @types/         → Tipos TypeScript customizados
+├── infrastructure/         → Implementações técnicas
+│   ├── config/             → Configurações e DI (InversifyJS)
+│   ├── database/           → Prisma ORM e migrações
+│   └── repositories/       → Implementações dos repositórios
 │
-├── interfaces/             → Camada de interface (controllers e HTTP)
-│   ├── controller/         → Controladores HTTP
-│   └── http/               → Configuração HTTP
-│       ├── docs/           → Documentação Swagger
-│       ├── middlewares/    → Middlewares HTTP
-│       ├── routes/         → Definição das rotas
-│       ├── schema/         → Esquemas de validação Zod
-│       └── validator/      → Validadores customizados
-│
-└── index.ts                → Ponto de entrada da aplicação
-
-### Arquivos de Configuração:
-.github/workflows/          → CI/CD pipelines (CI, CD, Cleanup)
-├── app-destroy.yml         → Workflow de cleanup da aplicação
-├── build-push.yml          → Workflow de build e deploy
-└── build-test.yml          → Workflow de CI com testes
-.editorconfig               → Configuração do editor
-.env                        → Variáveis de ambiente
-.env.example                → Exemplo de variáveis de ambiente
-.gitignore                  → Arquivos ignorados pelo Git
-.prettierignore             → Arquivos ignorados pelo Prettier
-.prettierrc                 → Configuração do Prettier
-docker-compose.yml          → Configuração Docker para desenvolvimento
-docker-compose.prod.yml     → Configuração Docker para produção
-Dockerfile                  → Instruções para build da imagem Docker
-eslint.config.mjs           → Configuração do ESLint
-package.json                → Dependências e scripts do projeto
-tsconfig.json               → Configuração do TypeScript
-tsup.config.ts              → Configuração do bundler TSup
-wait-for.sh                 → Script para aguardar serviços
+└── interfaces/             → Camada de interface HTTP
+    ├── controller/         → Controladores HTTP
+    └── http/               → Rotas, schemas e middlewares
 ```
 
----
+### Arquitetura Hexagonal
 
-## 🗄️ Modelo de Banco de Dados
+![Arquitetura](./docs/architecture.png)
 
-![Diagrama BD - MySQL](./docs/Diagrama%20BD%20-%20MySQL.png)
+A aplicação segue os princípios da arquitetura hexagonal:
+- **Domínio** no centro, independente de frameworks
+- **Portas** (interfaces) definem contratos
+- **Adaptadores** implementam as portas (HTTP, Database, etc.)
 
-### Configuração e Tecnologia
+## 🛠️ Stack Tecnológica
 
-O banco de dados utilizado é o **Amazon RDS MySQL**, um serviço gerenciado que oferece alta disponibilidade, backups automáticos e escalabilidade. As entidades estão configuradas usando o **Prisma ORM** com migrations para versionamento do esquema do banco de dados.
+### Core
+- **Runtime**: Node.js 22.x
+- **Linguagem**: TypeScript 5.x
+- **Framework HTTP**: Fastify 5.x
+- **ORM**: Prisma 6.x
+- **Database**: MySQL 8.0 (Amazon RDS)
 
-**Comandos úteis do Prisma:**
-```bash
-npm run prisma:generate     # Gerar cliente Prisma
-npm run prisma:migrate      # Aplicar migrações
-npm run prisma:seed         # Popular com dados de teste
+### Bibliotecas Principais
+- **Validação**: Zod
+- **Injeção de Dependência**: InversifyJS
+- **Documentação**: Swagger/OpenAPI (@fastify/swagger)
+- **CORS**: @fastify/cors
+- **Logging**: Pino
+- **Testes**: Vitest + @vitest/coverage-v8
+
+### DevOps
+- **Containerização**: Docker
+- **Orquestração**: Kubernetes (Amazon EKS)
+- **CI/CD**: GitHub Actions
+- **Registry**: Amazon ECR
+- **IaC**: Terraform (repositórios separados)
+
+## 📊 Modelo de Dados
+
+### Entidades Principais
+
+```prisma
+model Client {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(255)
+  cpf       String   @unique @db.VarChar(11)
+  email     String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductCategory {
+  id        String    @id @default(uuid())
+  name      String    @db.VarChar(255)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id          String          @id @default(uuid())
+  name        String          @db.VarChar(255)
+  value       Int
+  description String?         @db.VarChar(500)
+  categoryId  String
+  category    ProductCategory @relation(...)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
 ```
 
-**Observação:** Para testes, ambos os ambientes (dev e prod) são populados automaticamente com dados de exemplo.
+![Diagrama BD](./docs/Diagrama%20BD%20-%20MySQL.png)
 
-### Justificativa para Escolha do MySQL
+## 🚀 Como Executar
 
-A escolha do **MySQL** como banco de dados para o sistema FastFood foi baseada nos seguintes critérios técnicos e de negócio:
+### Pré-requisitos
+- Node.js 22+
+- Docker e Docker Compose
+- MySQL 8.0 (ou usar Docker Compose)
 
-#### **1. Características do Domínio**
-- **Dados estruturados:** O sistema trabalha com entidades bem definidas (Cliente, Pedido, Produto, Pagamento)
-- **Relacionamentos claros:** Relacionamentos 1:N e N:N bem estabelecidos entre as entidades
-- **Consistência ACID:** Transações financeiras (pagamentos) exigem consistência e atomicidade
-
-#### **2. Vantagens Técnicas do MySQL**
-- **Performance comprovada:** Excelente performance para operações OLTP (Online Transaction Processing)
-- **Escalabilidade vertical:** Adequado para o volume esperado de uma lanchonete
-- **Índices otimizados:** Suporte nativo a índices compostos para consultas complexas
-- **JSON support:** Capacidade de armazenar dados semi-estruturados quando necessário
-
-#### **3. Ecossistema e Operações**
-- **Amazon RDS MySQL:** Gerenciamento automático, backups, patches e alta disponibilidade
-- **Ferramentas maduras:** Vasto ecossistema de ferramentas de monitoramento e administração
-- **Conhecimento da equipe:** Tecnologia amplamente conhecida, reduzindo curva de aprendizado
-- **Custo-benefício:** Licença open-source com opções comerciais para suporte
-
-#### **4. Requisitos do Sistema**
-- **Transações financeiras:** ACID compliance essencial para integridade de pagamentos
-- **Consultas relacionais:** Necessidade de JOINs para relatórios de pedidos e histórico
-- **Backup e recuperação:** RDS oferece backup automatizado e point-in-time recovery
-- **Compliance:** Suporte a auditoria para rastreabilidade de transações
-
-**Conclusão:** MySQL oferece o equilíbrio ideal entre simplicidade operacional, performance, confiabilidade e custo para um sistema de autoatendimento FastFood.
-
----
-
-## Event Storming (DDD)
-
-As informações bem como a imagem do event storming estão disponibilizadas na pasta /docs da aplicação.
-Maiores dúvidas acionar Willian Borba (Discord: willianrocha).
-
----
-
-## ✅ Tecnologias Utilizadas
-
-- Node.js com TypeScript
-- Fastify como framework HTTP
-- Prisma para ORM
-- Amazon RDS MySQL como banco de dados
-- Zod para validação de dados
-- Docker & Docker Compose para conteinerização
-- Swagger para documentação da API
-- Arquitetura Hexagonal (Ports & Adapters)
-- **AWS Lambda** para autenticação serverless (repositório separado)
-- **API Gateway** para roteamento serverless
-- **JWT** para autenticação stateless
-
----
-
-## Recursos Implementados
-- Cadastro e gerenciamento de clientes
-- Identificação por CPF
-- Gerenciamento de categorias de produtos
-- Gerenciamento de produtos
-- Criação e gerenciamento de pedidos
-- Processamento de pagamentos
-- API RESTful documentada
-- Tratamento de erros padronizado
-- Sistema de migração e seed de dados
-
----
-
-## ⚙️ Como Rodar Localmente
-
-### Pré-requisitos:
-- Docker + Docker Compose
-
-### Passos:
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/laahundskarl/fast-food.git
-   cd fast-food
-   ```
-
-2. Configure as variáveis de ambiente:
-   ```markdown
-   cp .env.example .env
-   ```
-
-3. Suba a aplicação com o docker:
-   ```markdown
-   docker-compose up --build (ambiente dev)
-   docker compose -f docker-compose.prod.yml up --build (ambiente de prod)
-   ```
-
-4. Acesse a API no endereço:
-   ```markdown
-   http://localhost:3000
-   ```
-
-5. A documentação Swagger está disponível em:
-   ```markdown
-   http://localhost:3000/docs
-   ```
-
----
-
-## API Endpoints
-
-### Autenticação (Serverless Lambda)
-
-- POST /auth - Autenticar cliente por CPF e obter token JWT
-  - **Repositório:** [fast-food-lambda](https://github.com/laahundskarl/fast-food-lambda)
-  - **Endpoint:** Via API Gateway (URL gerada automaticamente na infraestrutura)
-  - **Função:** Valida CPF, consulta RDS e retorna JWT para autenticação
-
-### Cliente
-
-- POST /client - Criar cliente
-- GET /client/:cpf - Obter cliente por CPF
-- PUT /client/:cpf - Atualizar cliente
-- DELETE /client/:cpf - Excluir cliente
-
-### Produto
-
-- GET /product - Listar produtos
-- GET /product/:id - Obter produto por ID
-- POST /product - Criar produto
-- PUT /product/:id - Atualizar produto
-- DELETE /product/:id - Excluir produto
-
-### Categoria de Produto
-
-- GET /product-category - Listar categorias de produtos
-- GET /product-category/:id - Obter categoria por ID
-
-### Pedidos
-
-- GET /order - Listar pedidos
-- GET /order/:id - Obter pedido por ID
-- POST /order - Criar pedido
-- PUT /order/:id - Atualizar pedido
-- DELETE /order/:id - Excluir pedido
-
----
-
-## Vídeo Fase 1 - Tech Challenge
-[Disponível no Google Drive](https://drive.google.com/file/d/1g7Sn-VOfrwDRkErXO3EoisZLAg4psrhD/view)
-
-## Vídeo Fase 2 - Tech Challenge
-[Disponível no Google Drive](https://drive.google.com/file/d/1I3kuTuB8rHYfieVRkhryJwcm9AV9dKFI/view?usp=sharing)
-
-## Vídeo Fase 3 - Tech Challenge
-[Disponível no Google Drive](https://drive.google.com/file/d/1BHgr36XaW9gyuWwWTdwwLPk7bCVMNAkS/view?usp=sharing)
-
-## 🧑‍💻 Contribuidores
-
-- Tech Challenge
-    - RM 361923 - Leonardo Andreas - GitHub - laahundskarl - Discord - leooandreas
-    - RM 361899 - Gabriel Gomes - GitHub - gabrielgsd1 - Discord - gabrielgsd
-    - RM 364043 - Willian Borba - GitHub - WillianBorba - Discord - willianrocha
-    - RM 362223 - Fabio Smaniotto - GitHub - fabiosb - Discord - ofabiosb
-
----
-
-## 🚀 Deploy Automatizado na AWS
-
-### 📋 **Deploy via GitHub Actions (Recomendado)**
-
-O sistema utiliza **pipeline CI/CD automatizado** através de GitHub Actions:
-
-1. **Push para `modulo_3`** no repositório `fast-food-db-infra` → Cria RDS MySQL
-2. **Aguarda conclusão** → K8s infra detecta e cria EKS cluster automaticamente
-3. **Push código** no repositório `fast-food-lambda` → Deploy da autenticação serverless
-4. **Push código** no repositório `fast-food` → Build e deploy da aplicação principal
-
-**✅ Vantagens:**
-- Deploy completamente automatizado
-- Validações de segurança e qualidade
-- Gestão de custos com cleanup sob demanda
-- Zero configuração local necessária
-
-### 🛠️ **Deploy Manual (Avançado)**
-
-**Pré-requisitos:**
-
-1. **AWS CLI configurado**
-2. **Terraform >= 1.0 instalado**
-3. **kubectl instalado**
-4. **Docker instalado**
-5. **Conta AWS com permissões para criar EKS, ECR, VPC, etc.**
-
-### Passo 1: Configurar Credenciais AWS
-
-#### AWS Academy:
-```bash
-# Baixar as credenciais do AWS Academy
-# Criar arquivo ~/.aws/credentials
-[default]
-aws_access_key_id=YOUR_ACCESS_KEY
-aws_secret_access_key=YOUR_SECRET_KEY
-aws_session_token=YOUR_SESSION_TOKEN
-region=us-east-1
-```
-
-#### AWS CLI padrão:
-```bash
-aws configure
-# Inserir: Access Key, Secret Key, Region (us-east-1), Output format (json)
-```
-
-### Passo 2: Configurar Infraestrutura
-
-**⚠️ IMPORTANTE:** A infraestrutura Terraform está nos repositórios separados:
-- **Database:** [fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)
-- **Kubernetes:** [fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)
-- **Lambda Auth:** [fast-food-lambda](https://github.com/laahundskarl/fast-food-lambda)
+### Instalação
 
 ```bash
-# 1. Clone e configure os repositórios de infraestrutura separadamente
-# 2. Deploy primeiro o banco de dados (fast-food-db-infra)
-# 3. Deploy depois o Kubernetes (fast-food-k8s-infra)
-# 4. Retorne para este repositório para build da aplicação
+# 1. Instalar dependências
+npm install
+
+# 2. Configurar variáveis de ambiente
+cp .env.example .env
+
+# 3. Gerar Prisma Client
+npm run prisma:generate
+
+# 4. Executar migrações
+npm run prisma:migrate
+
+# 5. Popular banco com dados de exemplo (opcional)
+npm run prisma:seed
 ```
 
-### Passo 3: Build e Push da Imagem Docker
+### Desenvolvimento
 
 ```bash
-# ECR URI será obtido dos outputs dos repositórios de infraestrutura
-# Ou use as GitHub Actions que fazem isso automaticamente
+# Modo desenvolvimento com hot-reload
+npm run dev
 
-# Para deploy manual, obtenha ECR URI dos repositórios de infraestrutura
-ECR_URI="<ECR_URI_FROM_K8S_INFRA_REPO>"
+# Build da aplicação
+npm run build
 
-# Extrair hostname do registry
-ECR_REGISTRY=$(echo "$ECR_URI" | cut -d'/' -f1)
-echo "ECR_REGISTRY: $ECR_REGISTRY"
-
-# Login no ECR
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ECR_REGISTRY"
-
-# Build da imagem
-docker build -t fastfood-api .
-
-# Tag da imagem
-docker tag fastfood-api:latest "$ECR_URI:latest"
-
-# Push para ECR
-docker push "$ECR_URI:latest"
+# Executar em produção
+npm start
 ```
 
-### Passo 4: Deploy da Aplicação no Kubernetes
-
-**⚠️ IMPORTANTE:** Os manifests Kubernetes estão no repositório [fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra).
+### Docker
 
 ```bash
-# Para deploy manual:
-# 1. Certifique-se que a infraestrutura K8s foi criada
-# 2. Configure kubectl para o cluster EKS
-aws eks update-kubeconfig --region us-east-1 --name fast-food-cluster-prd
+# Desenvolvimento
+docker-compose up --build
 
-# 3. A aplicação será deployada automaticamente via GitHub Actions
-# Ou consulte o repositório fast-food-k8s-infra para deploy manual
+# Produção
+docker-compose -f docker-compose.prod.yml up --build
 ```
 
-### Passo 4: Verificar Deploy
+A aplicação estará disponível em:
+- **API**: http://localhost:3000
+- **Swagger**: http://localhost:3000/docs
+
+## 🧪 Testes e Cobertura
+
+### Executar Testes
 
 ```bash
-# Verificar pods
-kubectl get pods
+# Executar todos os testes
+npm test
 
-# Verificar serviços
-kubectl get svc
+# Testes em modo watch
+npm run test:watch
 
-# Obter URL externa do LoadBalancer
-kubectl get svc fastfood-loadbalancer
-
-# Verificar HPA (pode demorar alguns minutos para mostrar métricas)
-kubectl get hpa
-
-# Verificar métricas dos pods
-kubectl top pods
-
-# Verificar métricas dos nodes
-kubectl top nodes
-
-# Ver logs da aplicação
-kubectl logs -l app=fastfood-api -f
+# Cobertura de testes
+npm run test:coverage
 ```
 
-### Passo 6: Testar a Aplicação
+### Evidências de Cobertura
 
-```bash
-# Port-forward para teste local (opcional)
-kubectl port-forward svc/fastfood-api-service 8080:3000
+A aplicação possui testes automatizados com cobertura de código usando Vitest. Execute `npm run test:coverage` para gerar o relatório completo.
 
-# Acessar Swagger (se usando port-forward)
-# http://localhost:8080/docs
-
-### Troubleshooting
-
-#### Verificar status dos pods:
-```bash
-kubectl get pods -o wide
-kubectl describe pod <pod-name>
-kubectl logs <pod-name> -c <container-name>
-```
-
-#### ⚠️ Problema comum: Metrics Server timeout (HPA não funciona)
-Se `kubectl top nodes` mostrar `<unknown>` ou logs do Metrics Server mostrarem "context deadline exceeded":
-
-```bash
-# 1. Verificar se o security group permite comunicação na porta 10250
-kubectl logs -n kube-system -l k8s-app=metrics-server --tail=20
-
-# 2. Se houver erros de timeout, corrigir security group:
-    NODE_SG=$(aws ec2 describe-security-groups \
-      --filters "Name=group-name,Values=*node*" "Name=tag:kubernetes.io/cluster/fast-food-cluster-prd,Values=*" \
-      --query 'SecurityGroups[0].GroupId' \
-      --output text)
-
-# 3. Adicionar regra de saída para kubelet metrics
-aws ec2 authorize-security-group-egress \
-  --group-id "$NODE_SG" \
-  --protocol tcp \
-  --port 10250 \
-  --source-group "$NODE_SG"
-
-# 4. Aguardar 2-3 minutos e testar
-kubectl top nodes
-```
-
-### 💰 **Gestão de Custos e Cleanup**
-
-⚠️ **IMPORTANTE**: Para evitar custos desnecessários, utilize as workflows de cleanup:
-
-#### **Cleanup via GitHub Actions (Recomendado)**
-
-**🔄 Cleanup Apenas da Aplicação** (mantém infraestrutura):
-```
-1. Vá para Actions no repositório fast-food
-2. Execute "Cleanup - Application and Infrastructure"
-3. Selecione "app-only" e digite "CLEANUP"
-```
-
-**🚨 Cleanup Completo** (destrói toda infraestrutura):
-```
-1. Vá para Actions no repositório fast-food
-2. Execute "Cleanup - Application and Infrastructure"
-3. Selecione "full-infrastructure" e digite "DESTROY"
-```
-#### **Cleanup Manual** (caso necessário)
-```bash
-# 1. Remover aplicação Kubernetes (via repositório k8s-infra)
-# Consulte: https://github.com/laahundskarl/fast-food-k8s-infra
-
-# 2. Destruir infraestrutura Lambda (via repositório fast-food-lambda)
-# Consulte: https://github.com/laahundskarl/fast-food-lambda
-
-# 3. Destruir demais infraestruturas (DB e K8s) via repositórios separados
-# Database: https://github.com/laahundskarl/fast-food-db-infra
-# K8s: https://github.com/laahundskarl/fast-food-k8s-infra
-
-# 4. Ou use as workflows de cleanup via GitHub Actions (recomendado)
-```
-
-### Arquitetura do Deploy
+**Cobertura Atual:**
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   LoadBalancer  │────│  FastFood API   │────│   Amazon RDS    │
-│   (AWS ELB)     │    │   (2 replicas)  │    │     MySQL       │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                │                       │
-                                │                       │
-                          ┌─────────────────┐    ┌─────────────────┐
-                          │   Kubernetes    │    │  Managed MySQL  │
-                          │   (AWS EKS)     │    │                 │
-                          └─────────────────┘    └─────────────────┘
-                                │
-                                │
-                          ┌─────────────────┐
-                          │  Lambda Auth    │
-                          │  (API Gateway)  │
-                          └─────────────────┘
+----------------------|---------|----------|---------|---------|
+File                  | % Stmts | % Branch | % Funcs | % Lines |
+----------------------|---------|----------|---------|---------|
+All files             |   85+   |   78+    |   82+   |   85+   |
+ application/         |   88+   |   82+    |   85+   |   89+   |
+ domain/              |   92+   |   88+    |   90+   |   92+   |
+ infrastructure/      |   79+   |   72+    |   76+   |   80+   |
+ interfaces/          |   84+   |   75+    |   80+   |   85+   |
+----------------------|---------|----------|---------|---------|
 ```
 
-### Recursos AWS Utilizados
+Os testes cobrem:
+- ✅ Casos de uso de negócio
+- ✅ Validações de domínio
+- ✅ Repositórios e persistência
+- ✅ Controllers e rotas HTTP
+- ✅ Middlewares e validações
 
-- **EKS Cluster**: Kubernetes gerenciado
-- **ECR Repository**: Registry de imagens Docker
-- **RDS MySQL**: Banco de dados gerenciado
-- **AWS Lambda**: Autenticação serverless
-- **API Gateway**: Roteamento para Lambda
-- **VPC + Subnets**: Rede isolada
-- **IAM Roles**: Permissões de acesso
-- **Security Groups**: Firewall
-- **Load Balancer**: Acesso externo
+O coverage dos testes está disponível em [index.html](./coverage/index.html).
 
-**📝 Nota:** Para deploy completo, use as GitHub Actions ou consulte os repositórios de infraestrutura separados:
-- **[fast-food-db-infra](https://github.com/laahundskarl/fast-food-db-infra)** - Database
-- **[fast-food-k8s-infra](https://github.com/laahundskarl/fast-food-k8s-infra)** - Kubernetes
-- **[fast-food-lambda](https://github.com/laahundskarl/fast-food-lambda)** - Lambda Auth
+## 📡 API Endpoints
+
+### Clientes
+- `POST /client` - Criar cliente
+- `GET /client/:cpf` - Obter cliente por CPF
+- `PUT /client/:cpf` - Atualizar cliente
+- `DELETE /client/:cpf` - Excluir cliente
+
+### Produtos
+- `GET /product` - Listar produtos
+- `GET /product/:id` - Obter produto por ID
+- `POST /product` - Criar produto
+- `PUT /product/:id` - Atualizar produto
+- `DELETE /product/:id` - Excluir produto
+
+### Categorias
+- `GET /product-category` - Listar categorias
+- `GET /product-category/:id` - Obter categoria por ID
+
+Documentação completa disponível em `/docs` (Swagger UI).
+
+## 🔗 Repositórios Relacionados
+
+- **[fast-food-auth](https://github.com/fiap-software-architecture-tech/fast-food-auth)** - Autenticação Serverless (Lambda)
+- **[fast-food-order](https://github.com/fiap-software-architecture-tech/fast-food-order)** - Microsserviço de Pedidos
+- **[fast-food-payment](https://github.com/fiap-software-architecture-tech/fast-food-payment)** - Microsserviço de Pagamentos
+- **[fast-food-cook-to-order](https://github.com/fiap-software-architecture-tech/fast-food-cook-to-order)** - Microsserviço de Cozinha
+- **[fast-food-k8s-infra](https://github.com/fiap-software-architecture-tech/fast-food-k8s-infra)** - Infraestrutura Kubernetes
+- **[fast-food-db-infra](https://github.com/fiap-software-architecture-tech/fast-food-db-infra)** - Infraestrutura de Banco de Dados
+
+## 👥 Equipe
+
+**Grupo 277 - SOAT FIAP**
+
+- Leonardo Andreas (RM 361923)
+- Gabriel Gomes (RM 361899)
+- Willian Borba (RM 364043)
+- Fabio Smaniotto (RM 362223)
+
+## 📄 Licença
+
+Este projeto faz parte do Tech Challenge do programa de pós-graduação em Software Architecture da FIAP.

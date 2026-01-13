@@ -7,7 +7,7 @@ export type ClientPayload = {
     email: string;
 };
 
-export class Client implements Client {
+export class Client {
     public readonly id: string;
     public name: string;
     public cpf: string;
