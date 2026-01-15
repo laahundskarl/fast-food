@@ -27,27 +27,4 @@ export class PrismaClientMapper {
             email: data.email,
         };
     }
-
-    static toPrisma(data: Client): Prisma.ClientUpdateManyArgs {
-        return {
-            where: { id: data.id },
-            data: {
-                name: data.name,
-                cpf: data.cpf,
-                updatedAt: new Date(Date.now()),
-                id: data.id,
-                createdAt: new Date(Date.now()),
-                email: data.email,
-            },
-        };
-    }
-
-    static toPrismaUpdate(data: Client): Prisma.ClientUpdateInput {
-        return {
-            name: data.name,
-            cpf: data.cpf,
-            email: data.email,
-            updatedAt: new Date(Date.now()),
-        };
-    }
 }
