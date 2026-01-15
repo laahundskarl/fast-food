@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { defineConfig } from 'vitest/config';
 
 const resolveAliases = {
@@ -11,6 +11,7 @@ export default defineConfig({
   },
   test: {
     coverage: {
+      reporter: ['lcov', 'html'],
       exclude: ['**/*-mock*'],
       thresholds: {
         statements: 70,

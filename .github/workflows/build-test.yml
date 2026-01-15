@@ -2,7 +2,7 @@ name: 'CI - Build and Test'
 
 on:
   pull_request:
-    branches: [modulo_3]
+    branches: [modulo_4]
     paths:
       - 'src/**'
       - 'package.json'
@@ -33,7 +33,7 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm ci
+      run: npm ci --ignore-scripts
 
     - name: Generate Prisma Client
       run: npx prisma generate
@@ -66,3 +66,14 @@ jobs:
       run: |
         docker build -t fastfood-api:test .
         echo "✅ Docker image built successfully"
+  sonarqube:
+    name: SonarQube
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
