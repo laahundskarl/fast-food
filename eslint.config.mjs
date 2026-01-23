@@ -85,6 +85,6 @@ export default [
         },
     },
     {
-        ignores: ['vitest.config.ts', 'node_modules', 'eslint.config.mjs', 'dist', 'docs', 'prisma/**/*'],
+        ignores: ['vitest.config.ts', 'node_modules', 'eslint.config.mjs', 'dist', 'docs', 'prisma/**/*', 'tsup.config.ts',],
     },
 ];

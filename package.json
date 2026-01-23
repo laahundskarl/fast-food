@@ -6,7 +6,7 @@
     "main": "src/index.ts",
     "author": "Grupo 277",
     "scripts": {
-        "build": "npm run build:clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+        "build": "npm run build:clean && tsup",
         "build:clean": "rimraf dist",
         "dev": "tsx watch src/index.ts",
         "start": "npm run build && node dist/index.js",
@@ -68,6 +68,7 @@
         "rimraf": "^6.0.1",
         "tsc-alias": "^1.8.16",
         "tsconfig-paths": "^4.2.0",
+        "tsup": "^8.5.1",
         "tsx": "^4.19.4",
         "typescript": "^5.8.3",
         "typescript-eslint": "^8.32.1",
