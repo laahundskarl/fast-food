@@ -24,6 +24,7 @@ COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=build /app/node_modules/@prisma /app/node_modules/@prisma
 
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/prisma ./prisma
 COPY tsconfig.json ./
 
 COPY wait-for.sh /wait-for.sh
