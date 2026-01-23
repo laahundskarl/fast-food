@@ -22,6 +22,7 @@ COPY package*.json ./
 RUN npm ci --only=production
 COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=build /app/node_modules/@prisma /app/node_modules/@prisma
+COPY --from=build /app/src/infrastructure/database/prisma /app/src/infrastructure/database/prisma
 
 COPY --from=build /app/dist ./dist
 COPY tsconfig.json ./
